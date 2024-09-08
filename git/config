@@ -1,0 +1,49 @@
+[user]
+    name = Nkululeko Jonas
+    email = nkululekojonas@gmail.com
+
+[core]
+    editor = vim
+    autocrlf = input
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    excludesfile = ~/.config/git/.gitignore_global
+
+[alias]
+    st = status
+    co = checkout
+    ci = commit
+    br = branch
+    lg = log --oneline --graph --decorate
+    amend = commit --amend
+    last = log -1 HEAD
+    unstage = reset HEAD --
+    ignore = update-index --assume-unchanged
+    unignore = update-index --no-assume-unchanged
+    changes = diff --name-status -r HEAD
+
+[branch]
+    autosetuprebase = always
+
+[merge]
+    tool = vimdiff
+    conflictstyle = diff3
+    ff = only
+
+[diff]
+    tool = vimdiff
+
+[push]
+    default = simple
+
+[color]
+    ui = true
+    branch = auto
+    diff = auto
+    interactive = auto
+    status = auto
+
+[pull]
+    rebase = true
+
+[commit]
+    gpgsign = true
