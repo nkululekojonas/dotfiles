@@ -9,9 +9,9 @@ git clone https://github.com/nkululekojonas/dotfiles.git
 cd dotfiles
 ./install.sh
 ```
-This will create .config directory in your home directory if one doesn't already exit, this is where all config files will be stored.
+This will create a .config directory in your home directory if one doesn't already exit, this is where all config files will be stored.
 
-## 📦 What's Inside
+## 📦 Some of What's Inside
 
 - `.zshrc`: ZSH shell configuration
 - `.vimrc`: Vim editor settings
@@ -19,15 +19,17 @@ This will create .config directory in your home directory if one doesn't already
 - `.gitconfig`: Git version control preferences
 - `Brewfile`: List of packages to install via Homebrew
 
+This includes some custom functions and personal aliases located in zsh/.
+
 ## 🛠 Installation
 
 1. Clone this repository to your home directory:
    ```
-   git clone https://github.com/nkululekojonas/dotfiles.git ~/.dotfiles
+   git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
    ```
 2. Run the installation script:
    ```
-   cd ~/.dotfiles
+   cd ~/dotfiles
    ./install.sh
    ```
 
@@ -38,6 +40,7 @@ The install script will symlink the appropriate files to your home directory. Ma
 Feel free to modify these dotfiles to suit your preferences. The main configuration files are:
 
 - `zsh/zshrc` for ZSH settings
+- `tmux/tmux.conf` for Tmux configuration
 - `vim/vimrc` for Vim configuration
 - `git/gitconfig` for Git setup
 
@@ -53,7 +56,7 @@ After making changes, run `./install.sh` again to update the symlinks.
 
 ## 🤝 Contributing
 
-While these dotfiles are personalized for my use, I'm open to suggestions and improvements! Feel free to fork this repository, make changes, and submit a pull request.
+While these dotfiles are personalized for my use, I'm open to suggestions and improvements! This is an ever changing repo of my personal preferances but feel free to fork this repository, make changes, and submit a pull request.
 
 ## 📄 License
 

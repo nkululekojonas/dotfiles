@@ -5,7 +5,7 @@ DOTFILES_DIR="$HOME/dotfiles"
 CONFIG_DIR="$HOME/.config"
 
 # List of files/directories to symlink
-files=("vim/vimrc" "git/gitconfig" "tmux/tmux.conf")
+files=("vim/vimrc" "git/gitconfig" "tmux/tmux.conf" "zed/settings.json")
 
 # Function to create symlink
 create_symlink() {
