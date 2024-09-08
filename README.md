@@ -9,6 +9,7 @@ git clone https://github.com/nkululekojonas/dotfiles.git
 cd dotfiles
 ./install.sh
 ```
+This will create .config directory in your home directory if one doesn't already exit, this is where all config files will be stored.
 
 ## 📦 What's Inside
 
@@ -16,13 +17,13 @@ cd dotfiles
 - `.vimrc`: Vim editor settings
 - `.tmux.conf`: Tmux terminal multiplexer configuration
 - `.gitconfig`: Git version control preferences
-- `Brewfile`: List of packages to install via Homebrew *TODO*
+- `Brewfile`: List of packages to install via Homebrew
 
 ## 🛠 Installation
 
 1. Clone this repository to your home directory:
    ```
-   git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
+   git clone https://github.com/nkululekojonas/dotfiles.git ~/.dotfiles
    ```
 2. Run the installation script:
    ```
@@ -36,9 +37,9 @@ The install script will symlink the appropriate files to your home directory. Ma
 
 Feel free to modify these dotfiles to suit your preferences. The main configuration files are:
 
-- `zsh/zshrc.symlink` for ZSH settings
-- `vim/vimrc.symlink` for Vim configuration
-- `git/gitconfig.symlink` for Git setup
+- `zsh/zshrc` for ZSH settings
+- `vim/vimrc` for Vim configuration
+- `git/gitconfig` for Git setup
 
 After making changes, run `./install.sh` again to update the symlinks.
 
@@ -46,7 +47,7 @@ After making changes, run `./install.sh` again to update the symlinks.
 
 - **Shell**: ZSH with [Oh My Zsh](https://ohmyz.sh/)
 - **Terminal**: [iTerm2](https://iterm2.com/)
-- **Editor**: [Vim](https://www.vim.org/) /[Zed](https://zed.dev) + [Visual Studio Code](https://code.visualstudio.com/)
+- **Editor**: [Vim](https://www.vim.org/) / [Zed](https://zed.dev) + [Visual Studio Code](https://code.visualstudio.com/)
 - **Version Control**: Git
 - **Package Manager**: [Homebrew](https://brew.sh/)
 
