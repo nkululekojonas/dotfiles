@@ -11,11 +11,12 @@ alias c='clear'
 alias cl='clear'
 alias rm='rm -rfI'  # Interactive prompt for safety
 alias bin="cd ~/bin"
+alias dot="cd ~/dotfiles"
 alias dt="cd ~/Desktop"
 alias dl="cd ~/Downloads"
 alias dev="cd ~/Developer"
 alias app="cd ~/Applications"
-alias docs="cd ~/Documents"  # Added Documents shortcut
+alias docs="cd ~/Documents"
 alias zshconfig="$EDITOR ~/.zsh/.zshrc"
 
 # Dev Shortcuts
