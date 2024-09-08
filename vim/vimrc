@@ -1,0 +1,102 @@
+" Vim Configuration File
+
+" Disable Vi compatibility mode
+set nocompatible
+
+" Enable filetype detection, plugin, and indent functionality
+filetype plugin indent on
+
+" Set up fuzzy-finder
+set rtp+=/opt/homebrew/opt/fzf
+
+" Enable syntax highlighting
+syntax enable
+
+" Disable the default Vim startup message
+set shortmess+=I
+
+" Show line numbers and relative line numbers
+set number
+set relativenumber
+
+" Always show the status line
+set laststatus=2
+
+" Improve backspace behavior
+set backspace=indent,eol,start
+
+" Allow hidden buffers
+set hidden
+
+" Improve search behavior
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+" Disable Ex mode
+nnoremap Q <Nop>
+
+" Disable audible bell
+set noerrorbells visualbell t_vb=
+
+" Enable mouse support
+set mouse+=a
+
+" Set indentation preferences
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+set smartindent
+
+" Change the location of .viminfo file
+set viminfo+=n~/.vim/viminfo
+
+" Prevent bad movement habits
+nnoremap <Left>  :echoe "Use h"<CR>
+nnoremap <Right> :echoe "Use l"<CR>
+nnoremap <Up>    :echoe "Use k"<CR>
+nnoremap <Down>  :echoe "Use j"<CR>
+inoremap <Left>  <ESC>:echoe "Use h"<CR>
+inoremap <Right> <ESC>:echoe "Use l"<CR>
+inoremap <Up>    <ESC>:echoe "Use k"<CR>
+inoremap <Down>  <ESC>:echoe "Use j"<CR>
+
+" fzf shortcuts
+nnoremap <silent> <C-f> :FZF<CR>
+
+" CtrlP shortcuts
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+
+" Additional useful settings
+set wildmenu
+set wildmode=longest:full,full
+set showcmd
+set showmatch
+set scrolloff=3
+set sidescrolloff=5
+set wrap
+set linebreak
+set formatoptions+=j
+set ruler
+set confirm
+set history=1000
+set undofile
+set undodir=~/.vim/undodir
+
+" Enable true color support if available
+if exists('+termguicolors')
+  set termguicolors
+endif
+
+" Set a color scheme (uncomment and modify as needed)
+" colorscheme desert
+
+" Plugin configurations (if you use a plugin manager like vim-plug)
+" call plug#begin('~/.vim/plugged')
+" Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-commentary'
+" call plug#end()
