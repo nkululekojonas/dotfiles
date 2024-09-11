@@ -4,9 +4,10 @@
 
 [core]
     editor = vim
-    autocrlf = input
+	autocrlf = false
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
     excludesfile = ~/.config/git/.gitignore_global
+	eol = lf
 
 [alias]
     st = status
@@ -44,3 +45,9 @@
 
 [pull]
     rebase = true
+[fsck]
+	zeroPaddedFilemode = ignore
+[fetch "fsck"]
+	zeroPaddedFilemode = ignore
+[receive "fsck"]
+	zeroPaddedFilemode = ignore

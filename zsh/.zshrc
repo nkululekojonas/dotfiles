@@ -49,3 +49,4 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path $ZSH_CACHE_DIR
 
 # Additional customizations can be added here
+source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
