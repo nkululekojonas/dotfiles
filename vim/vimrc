@@ -91,12 +91,6 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-" Set a color scheme (uncomment and modify as needed)
-" colorscheme desert
-
-" Plugin configurations (if you use a plugin manager like vim-plug)
-" call plug#begin('~/.vim/plugged')
-" Plug 'tpope/vim-sensible'
-" Plug 'tpope/vim-surround'
-" Plug 'tpope/vim-commentary'
-" call plug#end()
+" Remap default window control
+nnoremap <C-a> <C-w>
+nnoremap <C-x> <C-a>
