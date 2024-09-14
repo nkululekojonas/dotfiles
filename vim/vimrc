@@ -51,7 +51,7 @@ set autoindent
 set smartindent
 
 " Change the location of .viminfo file
-set viminfo+=n~/.vim/viminfo
+set viminfo+=n~/.config/vim/viminfo
 
 " Prevent bad movement habits
 nnoremap <Left>  :echoe "Use h"<CR>
@@ -69,6 +69,7 @@ nnoremap <silent> <C-f> :FZF<CR>
 " CtrlP shortcuts
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
 
 " Additional useful settings
 set wildmenu
@@ -84,13 +85,49 @@ set ruler
 set confirm
 set history=1000
 set undofile
-set undodir=~/.vim/undodir
+set undodir=~/.config/vim/undodir
 
-" Enable true color support if available
+" Plugin Manager
+call plug#begin('~/.config/vim/plugged')
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline'
+Plug 'dracula/vim', { 'as': 'dracula' }
+call plug#end()
+
+" Set a color scheme
+colorscheme dracula
+
 if exists('+termguicolors')
-  set termguicolors
+    set termguicolors
 endif
 
-" Remap default window control
-nnoremap <C-a> <C-w>
-nnoremap <C-x> <C-a>
+" Enable persistent undo
+if has('persistent_undo')
+    set undofile
+    set undodir=~/.vim/undo
+endif
+
+" Highlight current line
+set cursorline
+
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+" Remap leader key
+let mapleader = ","
+
+" Quick save
+nnoremap <leader>w :w<CR>
+
+" Split navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Set updatetime for faster git-gutter updates
+set updatetime=100
