@@ -10,14 +10,15 @@ alias cdback="cd -"
 alias c='clear'
 alias cl='clear'
 alias rm='rm -rfI'  # Interactive prompt for safety
-alias bin="cd ~/bin"
-alias dot="cd ~/dotfiles"
-alias dt="cd ~/Desktop"
+alias bn="cd ~/bin"
+alias dt="cd ~/dotfiles"
+alias dk="cd ~/Desktop"
 alias dl="cd ~/Downloads"
 alias dv="cd ~/Developer"
+alias tm="cd ~/tmp"
 alias app="cd ~/Applications"
 alias als="$EDITOR ~/.zsh/aliases.zsh"
-alias docs="cd ~/Documents"
+alias doc="cd ~/Documents"
 alias zshconfig="$EDITOR ~/.zsh/.zshrc"
 
 # Dev Shortcuts
