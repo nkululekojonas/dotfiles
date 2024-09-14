@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Define the source (dotfiles) and target (.config) directories
 DOTFILES_DIR="$HOME/dotfiles"

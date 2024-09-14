@@ -94,11 +94,11 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
-Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'whatyouhide/vim-gotham'
 call plug#end()
 
 " Set a color scheme
-colorscheme dracula
+colorscheme gotham
 
 if exists('+termguicolors')
     set termguicolors
