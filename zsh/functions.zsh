@@ -44,7 +44,6 @@ function sysupdate() {
         echo "Updating Homebrew..."
         brew doctor || { echo "Error: Brew doctor check failed."; return 1; }
         brew update || { echo "Error: Brew update failed."; return 1; }
-        brew upgrade --formula brew || { echo "Error: Homebrew upgrade failed."; return 1; }
         brew outdated
         brew upgrade || { echo "Error: Brew upgrade failed."; return 1; }
         brew outdated --cask
