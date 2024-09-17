@@ -1,0 +1,36 @@
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore backup files
+*~
+*.swp
+*.bak
+
+# Ignore local config files that might contain sensitive information
+.env
+*.local
+
+# Ignore logs
+*.log
+
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore Node.js dependencies
+node_modules/
+
+# Ignore package manager lock files
+package-lock.json
+yarn.lock
+
+# Ignore personal IDE settings
+.vscode/
+.idea/
+
+# Ignore any compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
