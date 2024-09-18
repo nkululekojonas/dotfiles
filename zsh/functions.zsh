@@ -175,6 +175,25 @@ function pyvenv() {
     python3 -m venv "$1" && source "$1/bin/activate"
 }
 
+clear_xcode() {
+    echo "Clearing Xcode Derived Data..."
+    rm -rf ~/Library/Developer/Xcode/DerivedData/*
+
+    echo "Clearing Xcode Archives..."
+    rm -rf ~/Library/Developer/Xcode/Archives/*
+
+    echo "Clearing iOS Device Support files..."
+    rm -rf ~/Library/Developer/Xcode/iOS\ DeviceSupport/*
+
+    echo "Clearing Xcode Simulator Data..."
+    rm -rf ~/Library/Developer/CoreSimulator/Devices/*
+
+    echo "Clearing Xcode Cache files..."
+    rm -rf ~/Library/Caches/com.apple.dt.Xcode/*
+
+    echo "Xcode caches cleared successfully!"
+}
+
 # Generate a random password
 function genpass() {
     local length=${1:-16}

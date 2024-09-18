@@ -52,4 +52,4 @@
 [receive "fsck"]
 	zeroPaddedFilemode = ignore
 [oh-my-zsh]
-	lastVersion = 80fa5e137672a529f65a05e396b40f0d133b2432
+	lastVersion = ac325a7caba6630538c39e1c0ffa192d866cdcff
