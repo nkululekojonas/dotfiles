@@ -95,10 +95,14 @@ Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'whatyouhide/vim-gotham'
+Plug 'joshdick/onedark.vim'
+Plug 'bluz71/vim-moonfly-colors', { 'as': 'moonfly' }
+Plug 'kyoz/purify', { 'rtp': 'vim' }
 call plug#end()
 
 " Set a color scheme
-colorscheme gotham
+syntax on " This is required
+colorscheme purify
 
 if exists('+termguicolors')
     set termguicolors
