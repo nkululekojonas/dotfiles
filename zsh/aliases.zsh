@@ -44,7 +44,7 @@ else # macOS `ls`
 fi
 
 # List all files colorized in long format
-alias l="ls -lh ${colorflag}"
+alias l="ls -AFlh ${colorflag}"
 
 # List all files colorized in long format, excluding . and ..
 alias ll="ls -lAh ${colorflag}"

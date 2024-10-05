@@ -1,5 +1,6 @@
 {
   "vim_mode": true,
+  "relative_line_numbers": true,
   "notification_panel": {
     "dock": "right"
   },
@@ -34,5 +35,6 @@
     "ui_font_size": 14,
     "buffer_font_size": 14,
     "line_height": 1.4 // Optimal line height for readability
-  }
+  },
+  "autosave": "on_focus_change"
 }
