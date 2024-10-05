@@ -6,7 +6,7 @@
     editor = vim
 	autocrlf = false
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-    excludesfile = ~/.config/git/.gitignore_global
+    excludesfile = ~/.config/git/gitignore_global
 	eol = lf
 
 [alias]
@@ -14,7 +14,7 @@
     co = checkout
     ci = commit
     br = branch
-    lg = log --oneline --graph --decorate
+    lg = log --pretty --graph --decorate
     amend = commit --amend
     last = log -1 HEAD
     unstage = reset HEAD --
@@ -53,3 +53,5 @@
 	zeroPaddedFilemode = ignore
 [oh-my-zsh]
 	lastVersion = 1514145a09140425b914e9cd98fc1d638a8c4003
+[init]
+	defaultBranch = main

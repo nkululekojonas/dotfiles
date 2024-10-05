@@ -2,8 +2,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set custom Paths
-export GIT_CONFIG="$HOME/.config/git/config"
-export ZSHDDIR="$ZDOTDIR/sessions"
+
 
 # Increase history size
 HISTSIZE=10000
@@ -53,3 +52,8 @@ source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring
 
 # Unset GIT_CONFIG
 unset GIT_CONFIG
+
+# Set up git completions
+autoload -Uz compinit && compinit
+zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.zsh
+fpath=(~/.zsh $fpath)

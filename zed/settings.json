@@ -1,9 +1,10 @@
 {
+  "vim_mode": true,
   "notification_panel": {
-    "dock": "left"
+    "dock": "right"
   },
   "chat_panel": {
-    "dock": "left"
+    "dock": "right"
   },
   "assistant": {
     "dock": "left",
