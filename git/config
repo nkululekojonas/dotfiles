@@ -13,6 +13,7 @@
     st = status
     co = checkout
     ci = commit
+    cn = config
     br = branch
     lg = log --pretty --graph --decorate
     amend = commit --amend

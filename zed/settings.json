@@ -1,11 +1,14 @@
 {
+  "collaboration_panel": {
+    "dock": "right"
+  },
   "vim_mode": true,
   "relative_line_numbers": true,
   "notification_panel": {
     "dock": "right"
   },
   "chat_panel": {
-    "dock": "right"
+    "dock": "left"
   },
   "assistant": {
     "dock": "left",
