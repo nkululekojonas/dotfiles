@@ -33,6 +33,7 @@ alias vactivate='source venv/bin/activate'  # Activate venv alias
 alias bat='bat --paging=never'
 alias cat='bat --paging=never'
 alias opv='vim $(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")'
+alias chrome='open -a "Google Chrome"'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`

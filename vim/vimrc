@@ -37,6 +37,13 @@ set hlsearch
 " Disable Ex mode
 nnoremap Q <Nop>
 
+" esc in insert & visual mode
+inoremap jk <esc>
+vnoremap jk <esc>
+
+" esc in command mode
+cnoremap jk <C-C>
+
 " Disable audible bell
 set noerrorbells visualbell t_vb=
 
