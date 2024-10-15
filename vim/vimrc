@@ -105,6 +105,7 @@ Plug 'whatyouhide/vim-gotham'
 Plug 'joshdick/onedark.vim'
 Plug 'bluz71/vim-moonfly-colors', { 'as': 'moonfly' }
 Plug 'kyoz/purify', { 'rtp': 'vim' }
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 " Set a color scheme
