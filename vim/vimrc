@@ -141,5 +141,9 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Buffer navigation
+nnoremap <C-N> :bnext<CR>
+nnoremap <C-P> :bprevious<CR>
+
 " Set updatetime for faster git-gutter updates
 set updatetime=100
