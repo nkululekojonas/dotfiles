@@ -32,8 +32,16 @@ This includes some custom functions and personal aliases located in zsh/.
    cd ~/dotfiles
    ./install.sh
    ```
-
 The install script will symlink the appropriate files to your home directory. Make sure to back up your existing dotfiles before running the script.
+
+## 🛠 Dry Run
+1. Run the installing script with --dry-run flag
+    ```
+    cd ~/dotfiles
+    ./install.sh --dry-run
+    ```
+
+    Output will be what would have changed
 
 ## ⚙️ Customization
 
