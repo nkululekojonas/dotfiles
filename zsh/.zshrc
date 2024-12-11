@@ -57,3 +57,7 @@ unset GIT_CONFIG
 autoload -Uz compinit && compinit
 zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.zsh
 fpath=(~/.zsh $fpath)
+
+# Set up nvm 
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
