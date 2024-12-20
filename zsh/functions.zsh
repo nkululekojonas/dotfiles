@@ -200,3 +200,8 @@ function genpass() {
     LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&*()_+' </dev/urandom | head -c "$length"
     echo
 }
+
+topcmds() {
+  local num=${1:-10} # Default to showing top 10 commands
+  history | awk '{CMD[$2]++; count++;} END {for (a in CMD) print CMD[a], CMD[a]/count*100 "%", a;}' | sort -nr | head -n "$num"
+}
