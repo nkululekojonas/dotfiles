@@ -1,27 +1,20 @@
-# Path to your oh-my-zsh installation.
+# Oh My Zsh configuration
 export ZSH="$HOME/.oh-my-zsh"
-
-# Set custom Paths
-
-
-# Increase history size
-HISTSIZE=10000
-SAVEHIST=20000
-HISTFILE="$ZDOTDIR/.zsh_history"
-
-# Set the location for .zcompdump files
-export ZSH_COMPDUMP="$ZDOTDIR/.zcompdump-${ZSH_VERSION}"
-zstyle ':zsh-session-manager:*' dir "$ZSHDDIR"
-
-# Set name of the theme to load
 ZSH_THEME="robbyrussell"
 
-# Which plugins would you like to load?
-plugins=(git macos tmux you-should-use)
+# Completion configuration
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh"
+zstyle ':zsh-session-manager:*' dir "$ZDOTDIR"
 
-# User configuration
+# Set zcompdump location
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}"
 
-# you-should-use configuration
+# Plugin configuration
+plugins=(git tmux you-should-use)
+
+# You-should-use settings
 export YSU_MODE=ALL
 export YSU_HARDCORE=1
 export YSU_MESSAGE_POSITION="after"
@@ -29,35 +22,23 @@ export YSU_MESSAGE_POSITION="after"
 # Load Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
-# Load some quality of life functions.
+# Load custom configurations
 source $ZDOTDIR/functions.zsh
 source $ZDOTDIR/aliases.zsh
 
-# Set up fzf key bindings and fuzzy completion
-# Set up fzf key bindings and fuzzy completion
+# FZF configuration
 source <(fzf --zsh)
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# Load additional plugins
+# Additional plugins
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# Performance optimizations
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path $ZSH_CACHE_DIR
-
-# Additional customizations can be added here
 source $(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh
 
-# Unset GIT_CONFIG
+# Git configuration
 unset GIT_CONFIG
-
-# Set up git completions
 autoload -Uz compinit && compinit
-zstyle ':completion:*:*:git:*' script ~/.zsh/git-completion.zsh
-fpath=(~/.zsh $fpath)
+zstyle ':completion:*:*:git:*' script "$ZDOTDIR/git-completion.zsh"
+fpath=("$ZDOTDIR" $fpath)
 
-# Set up nvm 
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# Load NVM
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
