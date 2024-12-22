@@ -15,25 +15,18 @@ alias dt="cd ~/dotfiles"
 alias dk="cd ~/Desktop"
 alias dl="cd ~/Downloads"
 alias dv="cd ~/Developer"
-alias tm="cd ~/tmp"
 alias app="cd ~/Applications"
-alias als="$EDITOR ~/.zsh/aliases.zsh"
 alias doc="cd ~/Documents"
-alias zshconfig="$EDITOR ~/.zsh/.zshrc"
 
 # Dev Shortcuts
 alias b='bat --paging=never'
 alias g='git'
 alias p='python3'
 alias v='vim'
-alias python='python3'
 alias pip='python -m pip'
-alias venv='python -m venv'
-alias vactivate='source venv/bin/activate'  # Activate venv alias
 alias bat='bat --paging=never'
-alias cat='bat --paging=never'
 alias opv='vim $(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")'
-alias chrome='open -a "Google Chrome"'
+alias man='MANWIDTH=105 man'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
