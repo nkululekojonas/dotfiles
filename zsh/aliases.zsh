@@ -23,6 +23,7 @@ alias b='bat --paging=never'
 alias g='git'
 alias p='python3'
 alias v='vim'
+alias tl='tldr' 
 alias pip='python -m pip'
 alias bat='bat --paging=never'
 alias opv='vim $(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")'
@@ -37,17 +38,17 @@ else # macOS `ls`
     export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
 fi
 
-# List all files colorized in long format
+# Always use color output for `ls`
+alias ls="command ls ${colorflag}"
+
+# List all files colorized in long format, with trailing symbol, exclude . and .. 
 alias l="ls -AFlh ${colorflag}"
 
-# List all files colorized in long format, excluding . and ..
-alias ll="ls -lAh ${colorflag}"
+# List all files colorized in long format, with trailing symbol, include . and .. 
+alias ll="ls -aFlh ${colorflag}"
 
 # List only directories
 alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
-
-# Always use color output for `ls`
-alias ls="command ls ${colorflag}"
 
 # Always enable colored `grep` output
 alias grep='grep --color=auto'
