@@ -15,6 +15,8 @@ alias dt="cd ~/dotfiles"
 alias dk="cd ~/Desktop"
 alias dl="cd ~/Downloads"
 alias dv="cd ~/Developer"
+alias pg='cd ~/Developer/Playgrounds'
+alias pj='cd ~/Developer/Projects'
 alias app="cd ~/Applications"
 alias doc="cd ~/Documents"
 

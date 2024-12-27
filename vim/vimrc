@@ -34,6 +34,9 @@ set smartcase
 set incsearch
 set hlsearch
 
+" Clear search high with <ESC><ESC>
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
+
 " Disable Ex mode
 nnoremap Q <Nop>
 
