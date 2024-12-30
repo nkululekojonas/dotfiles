@@ -30,6 +30,7 @@ alias pip='python -m pip'
 alias bat='bat --paging=never'
 alias opv='vim $(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")'
 alias man='MANWIDTH=105 man'
+alias type='type -a'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
