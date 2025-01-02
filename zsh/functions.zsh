@@ -39,7 +39,7 @@ function fs() {
 }
 
 # Open the current dir in Finder (macOS) or file explorer
-function o() {
+function opn() {
     if [[ "$OSTYPE" == "darwin"* ]]; then
         if [ $# -eq 0 ]; then
             open .;
@@ -57,7 +57,7 @@ function o() {
     fi
 }
 
-# Check for internet connectivity
+# Check for connection
 function check_internet() {
     ping -c 1 google.com >/dev/null 2>&1
     return $?
@@ -166,34 +166,6 @@ function extract() {
     fi
 }
 
-# Create and activate a Python virtual environment
-function pyvenv() {
-    if [ $# -eq 0 ]; then
-        echo "Usage: pyvenv <venv_name>"
-        return 1
-    fi
-    python3 -m venv "$1" && source "$1/bin/activate"
-}
-
-clear_xcode() {
-    echo "Clearing Xcode Derived Data..."
-    rm -rf ~/Library/Developer/Xcode/DerivedData/*
-
-    echo "Clearing Xcode Archives..."
-    rm -rf ~/Library/Developer/Xcode/Archives/*
-
-    echo "Clearing iOS Device Support files..."
-    rm -rf ~/Library/Developer/Xcode/iOS\ DeviceSupport/*
-
-    echo "Clearing Xcode Simulator Data..."
-    rm -rf ~/Library/Developer/CoreSimulator/Devices/*
-
-    echo "Clearing Xcode Cache files..."
-    rm -rf ~/Library/Caches/com.apple.dt.Xcode/*
-
-    echo "Xcode caches cleared successfully!"
-}
-
 # Generate a random password
 function genpass() {
     local length=${1:-16}
@@ -201,7 +173,85 @@ function genpass() {
     echo
 }
 
-topcmds() {
+# Show most used commands
+function topcmds() {
   local num=${1:-10} # Default to showing top 10 commands
   history | awk '{CMD[$2]++; count++;} END {for (a in CMD) print CMD[a], CMD[a]/count*100 "%", a;}' | sort -nr | head -n "$num"
+}
+
+function empty() {
+    local permanent_delete=false
+    local dry_run=false
+    local dir
+
+    # Parse flags and arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -r|--remove)
+                permanent_delete=true
+                shift
+                ;;
+            -d|--dry-run)
+                dry_run=true
+                shift
+                ;;
+            -*)
+                echo "Unknown flag: $1"
+                echo "Usage: empty_dir [-d|--delete] [--dry-run] <directory_path>"
+                return 1
+                ;;
+            *)
+                dir="$1"
+                shift
+                ;;
+        esac
+    done
+
+    # Ensure a directory argument is provided
+    if [ -z "$dir" ]; then
+        echo "Usage: empty_dir [-d|--delete] [--dry-run] <directory_path>"
+        return 1
+    fi
+
+    # Resolve the directory path and validate it
+    dir=$(realpath "$dir" 2>/dev/null)
+    if [ ! -d "$dir" ]; then
+        echo "Error: '$dir' is not a valid directory"
+        return 1
+    fi
+
+    # Confirm the directory is not empty
+    if [ -z "$(ls -A "$dir" 2>/dev/null)" ]; then
+        echo "$dir already empty."
+        return 0
+    fi
+
+    # Dry run: list the contents to be deleted/moved
+    if $dry_run; then
+        echo "Dry run: The following files and directories would be removed from '$dir':"
+        ls -A "$dir"
+        return 0
+    fi
+
+    # Handle permanent deletion
+    if $permanent_delete; then
+        rm -rf "$dir"/*
+        echo "$dir has been emptied"
+        return 0
+    fi
+
+    # Default: Move contents to Trash if possible
+    if command -v trash-put >/dev/null 2>&1; then
+        trash-put "$dir"/* 2>/dev/null
+        echo "$dir has been emptied"
+    elif [ -d ~/.Trash ]; then
+        mv "$dir"/* ~/.Trash/ 2>/dev/null
+        echo "Directory '$dir' has been emptied (contents moved to Trash)."
+    else
+        echo "Trash utility not found. Permanently deleting contents..."
+        rm -rf "$dir"/*
+        echo "Directory '$dir' has been emptied (contents permanently deleted)."
+    fi
+
+    return 0
 }
