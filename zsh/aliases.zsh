@@ -1,34 +1,30 @@
 # Navigation Aliases
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 alias /='cd /'
-alias cdback="cd -"
+alias cdback='cd -'
 
 # System Shortcuts
-alias c='clear'
 alias cl='clear'
 alias rm='rm -rfI'  # Interactive prompt for safety
-alias bn="cd ~/bin"
-alias dt="cd ~/dotfiles"
-alias dk="cd ~/Desktop"
-alias dl="cd ~/Downloads"
-alias dv="cd ~/Developer"
+alias bn='cd ~/bin'
+alias dt='cd ~/dotfiles'
+alias dk='cd ~/Desktop'
+alias dl='cd ~/Downloads'
+alias dv='cd ~/Developer'
 alias pg='cd ~/Developer/Playgrounds'
 alias pj='cd ~/Developer/Projects'
-alias app="cd ~/Applications"
-alias doc="cd ~/Documents"
+alias docs='cd ~/Documents'
 
 # Dev Shortcuts
 alias b='bat --paging=never'
 alias g='git'
 alias p='python3'
 alias v='vim'
-alias tl='tldr' 
+alias tl='tldr'
 alias pip='python -m pip'
-alias bat='bat --paging=never'
-alias opv='vim $(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")'
 alias man='MANWIDTH=105 man'
 alias type='type -a'
 
@@ -44,10 +40,10 @@ fi
 # Always use color output for `ls`
 alias ls="command ls ${colorflag}"
 
-# List all files colorized in long format, with trailing symbol, exclude . and .. 
+# List all files colorized in long format, with trailing symbol, exclude . and ..
 alias l="ls -AFlh ${colorflag}"
 
-# List all files colorized in long format, with trailing symbol, include . and .. 
+# List all files colorized in long format, with trailing symbol, include . and ..
 alias ll="ls -aFlh ${colorflag}"
 
 # List only directories
@@ -59,18 +55,16 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # Maintenance & Cleanup
-alias update='sudo softwareupdate -i -a && brew doctor && brew update && brew upgrade && brew cleanup && mas upgrade'
-alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
-alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* '\''delete from LSQuarantineEvent'\'
+alias cleanup='find . -type f -name "*.DS_Store" -ls -delete'
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 
 # Spotlight Control
-alias spotoff="sudo mdutil -a -i off"
-alias spoton="sudo mdutil -a -i on"
+alias spotoff='sudo mdutil -a -i off'
+alias spoton='sudo mdutil -a -i on'
 
 # Reload the shell (i.e. invoke as a login shell)
-alias reload="exec ${SHELL} -l"
+alias reload='exec ${SHELL} -l'
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
