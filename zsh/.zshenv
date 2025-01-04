@@ -30,11 +30,6 @@ for path_entry in "${extra_paths[@]}"; do
     [[ ":$PATH:" != *":$path_entry:"* ]] && PATH="$path_entry:$PATH"
 done
 
-# History configuration
-export HISTSIZE=10000
-export SAVEHIST=20000
-export HISTFILE="$ZDOTDIR/.zsh_history"
-
 # Default applications
 export EDITOR="vim"
 export VISUAL="vim"

@@ -1,11 +1,16 @@
 # Oh My Zsh configuration
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="$XDG_CONFIG_HOME/oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
 # History options
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format
 setopt HIST_IGNORE_DUPS         # Do not record an event that was just recorded again
 setopt HIST_IGNORE_ALL_DUPS     # Delete an old recorded event if a new event is a duplicate
+
+# More History configuration
+export HISTSIZE=10000
+export SAVEHIST=20000
+export HISTFILE="$ZDOTDIR/.zsh_history"
 
 # Completion configuration
 zstyle ':completion:*' accept-exact '*(N)'
@@ -17,7 +22,7 @@ zstyle ':zsh-session-manager:*' dir "$ZDOTDIR"
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}"
 
 # Plugin configuration
-plugins=(git tmux you-should-use)
+plugins=(git macos tmux you-should-use)
 
 # You-should-use settings
 export YSU_MODE=ALL
