@@ -49,6 +49,3 @@ unset GIT_CONFIG
 autoload -Uz compinit && compinit
 zstyle ':completion:*:*:git:*' script "$ZDOTDIR/git-completion.zsh"
 fpath=("$ZDOTDIR" $fpath)
-
-# Load NVM
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
