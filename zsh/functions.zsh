@@ -39,7 +39,7 @@ function fs() {
 }
 
 # Open the current dir in Finder (macOS) or file explorer
-function opn() {
+function o() {
     if [[ "$OSTYPE" == "darwin"* ]]; then
         if [ $# -eq 0 ]; then
             open .;
@@ -64,7 +64,7 @@ function check_internet() {
 }
 
 # Perform system update with enhanced error handling
-function sysupdate() {
+function update() {
     echo "Starting system update..."
 
     # Check internet connectivity
