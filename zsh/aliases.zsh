@@ -10,13 +10,13 @@ alias cdback='cd -'
 alias cl='clear'
 alias rm='rm -rfI'  # Interactive prompt for safety
 alias bn='cd ~/bin'
-alias dt='cd ~/dotfiles'
 alias dk='cd ~/Desktop'
+alias dt='cd ~/dotfiles'
 alias dl='cd ~/Downloads'
 alias dv='cd ~/Developer'
-alias pg='cd ~/Developer/Playgrounds'
+alias dc='cd ~/Documents'
 alias pj='cd ~/Developer/Projects'
-alias docs='cd ~/Documents'
+alias pg='cd ~/Developer/Playgrounds'
 
 # Dev Shortcuts
 alias b='bat --paging=never'
@@ -27,6 +27,7 @@ alias tl='tldr'
 alias pip='python -m pip'
 alias man='MANWIDTH=105 man'
 alias type='type -a'
+alias trash='mv -t ~/.Trash'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
@@ -38,25 +39,31 @@ else # macOS `ls`
 fi
 
 # Always use color output for `ls`
-alias ls="command ls ${colorflag}"
+alias ls='command ls ${colorflag}'
 
 # List all files colorized in long format, with trailing symbol, exclude . and ..
-alias l="ls -AFlh ${colorflag}"
+alias l='ls -AFlh ${colorflag}'
 
 # List all files colorized in long format, with trailing symbol, include . and ..
-alias ll="ls -aFlh ${colorflag}"
+alias ll='ls -aFlh ${colorflag}'
 
 # List only directories
-alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
+alias lsd='ls -lF ${colorflag} | grep --color=never "^d"'
 
 # Always enable colored `grep` output
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# Maintenance & Cleanup
-alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* '\''delete from LSQuarantineEvent'\'
+# Empty the Trash on all mounted volumes and the main HDD.
+# Also, clear Apple’s System Logs to improve shell startup speed.
+# Finally, clear download history from quarantine. https://mths.be/bum
+alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* "delete from LSQuarantineEvent"'
+
+# Recursively delete `.DS_Store` files
 alias cleanup='find . -type f -name "*.DS_Store" -ls -delete'
+
+# Clean up LaunchServices to remove duplicates in the “Open With” menu
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 
 # Spotlight Control
