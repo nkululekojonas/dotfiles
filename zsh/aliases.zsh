@@ -27,7 +27,7 @@ alias tl='tldr'
 alias pip='python -m pip'
 alias man='MANWIDTH=105 man'
 alias type='type -a'
-alias trash='mv -t ~/.Trash'
+# alias trash='mv -t ~/.Trash'
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
