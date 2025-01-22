@@ -11,6 +11,7 @@
 
 [alias]
     st = status
+    cl = clone
     co = checkout
     ci = commit
     cn = config
