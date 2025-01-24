@@ -12,6 +12,19 @@ files=("git/gitconfig" "tmux/tmux.conf" "vim/vimrc" "zed/settings.json" "zsh/.zs
 # Flag for dry run
 DRY_RUN=false
 
+# Function to backup existing files
+backup_file() {
+    local file="$1"
+    if [ -e "$file" ] && [ ! -L "$file" ]; then
+        if [ "$DRY_RUN" = true ]; then
+            echo "[DRY RUN] Would backup existing file: $file -> ${file}.bak"
+        else
+            mv "$file" "${file}.bak"
+            echo "Backed up existing file: $file -> ${file}.bak"
+        fi
+    fi
+}
+
 # Function to create symlink
 create_symlink() {
     local src="${DOTFILES_DIR}/$1"
@@ -36,14 +49,25 @@ create_symlink() {
     fi
 
     # Create destination directory if it doesn't exist
-    mkdir -p "$dest_dir"
+    if [ "$DRY_RUN" = true ]; then
+        echo "[DRY RUN] Would create directory: $dest_dir"
+    else
+        mkdir -p "$dest_dir"
+    fi
+
+    # Backup existing file if it's not a symlink
+    backup_file "$dest"
 
     # Create symlink
-    if ln -sf "$src" "$dest"; then
-        echo "Created symlink: $dest -> $src"
+    if [ "$DRY_RUN" = true ]; then
+        echo "[DRY RUN] Would create symlink: $dest -> $src"
     else
-        echo "Error: Failed to create symlink for $1" >&2
-        return 1
+        if ln -sf "$src" "$dest"; then
+            echo "Created symlink: $dest -> $src"
+        else
+            echo "Error: Failed to create symlink for $1" >&2
+            return 1
+        fi
     fi
 }
 
