@@ -10,6 +10,7 @@ alias cdback='cd -'
 alias cl='clear'
 alias rm='rm -rfI'  # Interactive prompt for safety
 alias bn='cd ~/bin'
+alias tm='cd ~/tmp'
 alias dk='cd ~/Desktop'
 alias dt='cd ~/dotfiles'
 alias dl='cd ~/Downloads'
