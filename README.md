@@ -7,16 +7,16 @@ Welcome to my personal dotfiles repository! This collection of configuration fil
 ```bash
 git clone https://github.com/nkululekojonas/dotfiles.git
 cd dotfiles
-./install.sh
+./install
 ```
 This will create a .config directory in your home directory if one doesn't already exit, this is where all config files will be stored.
 
 ## 📦 Some of What's Inside
 
-- `.zshrc`: ZSH shell configuration
-- `.vimrc`: Vim editor settings
-- `.tmux.conf`: Tmux terminal multiplexer configuration
-- `.gitconfig`: Git version control preferences
+- `zshrc`: ZSH shell configuration
+- `vimrc`: Vim editor settings
+- `tmux.conf`: Tmux terminal multiplexer configuration
+- `gitconfig`: Git version control preferences
 - `Brewfile`: List of packages to install via Homebrew
 
 This includes some custom functions and personal aliases located in zsh/.
@@ -53,6 +53,12 @@ Feel free to modify these dotfiles to suit your preferences. The main configurat
 - `git/gitconfig` for Git setup
 
 After making changes, run `./install.sh` again to update the symlinks.
+
+## TODO
+
+- [ ] Add oh-my-zsh installation 
+- [ ] Check for broken symlinks
+- [ ] Add a `--help` flag
 
 ## 📚 What I Use
 
