@@ -135,15 +135,6 @@ function update() {
     echo "All updates completed successfully!"
 }
 
-# Search for files in the current directory
-function search() {
-    if [ $# -eq 0 ]; then
-        echo "Usage: search <filename>"
-        return 1
-    fi
-    find . -iname "*$1*" -print
-}
-
 # Extract various archive formats
 function extract() {
     if [ -f "$1" ] ; then
