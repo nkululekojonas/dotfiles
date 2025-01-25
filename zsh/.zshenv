@@ -42,6 +42,14 @@ for path_entry in "${extra_paths[@]}"; do
     fi
 done
 
+# Set custom locations
+if [[ -d "${HOME}/dotfiles" ]]; then
+    # set dotfiles variable for easier access
+    export DOT="${HOME}/dotfiles"
+else 
+    echo "Warning: Dotfiles directory not found at ${HOME}/dotfiles"
+fi 
+
 # Default applications
 export EDITOR="vim"
 export VISUAL="vim"

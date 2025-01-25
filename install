@@ -7,7 +7,7 @@ DOTFILES_DIR="${HOME}/dotfiles"
 CONFIG_DIR="${HOME}/.config"
 
 # List of files/directories to symlink
-files=("git/gitconfig" "git/gitignore" "tmux/tmux.conf" "vim/vimrc" "zed/settings.json" "zsh/.zshenv" "zsh/.zshrc" "zsh/aliases.zsh" "zsh/functions.zsh")
+files=("git/gitconfig" "git/gitignore" "tmux/tmux.conf" "vim/vimrc" "ssh/config" "zed/settings.json" "zsh/.zshenv" "zsh/.zshrc" "zsh/aliases.zsh" "zsh/functions.zsh")
 
 # Flag for dry run
 DRY_RUN=false
