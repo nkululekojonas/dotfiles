@@ -7,7 +7,7 @@ DOTFILES_DIR="${HOME}/dotfiles"
 CONFIG_DIR="${HOME}/.config"
 
 # List of files/directories to symlink
-files=("git/gitconfig" "tmux/tmux.conf" "vim/vimrc" "zed/settings.json" "zsh/.zshenv" "zsh/.zshrc" "zsh/aliases.zsh" "zsh/functions.zsh")
+files=("git/gitconfig" "git/gitignore" "tmux/tmux.conf" "vim/vimrc" "zed/settings.json" "zsh/.zshenv" "zsh/.zshrc" "zsh/aliases.zsh" "zsh/functions.zsh")
 
 # Flag for dry run
 DRY_RUN=false
@@ -37,7 +37,11 @@ create_symlink() {
         if [ ! -e "$src" ]; then
             echo "[DRY RUN] Error: Source file $src does not exist."
         else
-            echo "[DRY RUN] Would create symlink: $dest -> $src"
+            if [ "$1" = "zsh/.zshenv" ]; then
+                echo "[DRY RUN] Would create symlink: /etc/zshenv -> $src"
+            else
+                echo "[DRY RUN] Would create symlink: $dest -> $src"
+            fi
         fi
         return
     fi
@@ -49,18 +53,15 @@ create_symlink() {
     fi
 
     # Create destination directory if it doesn't exist
-    if [ "$DRY_RUN" = true ]; then
-        echo "[DRY RUN] Would create directory: $dest_dir"
-    else
-        mkdir -p "$dest_dir"
-    fi
+    mkdir -p "$dest_dir"
 
     # Backup existing file if it's not a symlink
     backup_file "$dest"
 
     # Create symlink
-    if [ "$DRY_RUN" = true ]; then
-        echo "[DRY RUN] Would create symlink: $dest -> $src"
+    if [ "$1" = "zsh/.zshenv" ]; then
+        sudo ln -sf "$src" "/etc/zshenv"
+        echo "Created symlink: /etc/zshenv -> $src"
     else
         if ln -sf "$src" "$dest"; then
             echo "Created symlink: $dest -> $src"
@@ -98,7 +99,7 @@ if ! command -v brew &>/dev/null; then
         echo "[DRY RUN] Would install Homebrew."
     else
         echo "Installing Homebrew"
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
+        /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" || {
             echo "Error: Failed to install Homebrew" >&2
             exit 1
         }
@@ -114,7 +115,10 @@ if [ -f "$BREWFILE" ]; then
         echo "[DRY RUN] Would run: brew bundle --file=$BREWFILE"
     else
         echo "Installing Homebrew dependencies from Brewfile"
-        brew bundle --file="$BREWFILE"
+        if ! brew bundle --file="$BREWFILE"; then
+            echo "Error: Failed to install Homebrew dependencies." >&2
+            exit 1
+        fi
     fi
 else
     echo "Warning: Brewfile not found at $BREWFILE. Skipping Homebrew dependencies."
