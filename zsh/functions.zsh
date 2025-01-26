@@ -57,11 +57,6 @@ function o() {
     fi
 }
 
-# Check for connection
-function check_internet() {
-    ping -c 1 google.com >/dev/null 2>&1
-    return $?
-}
 
 # Perform system update with enhanced error handling
 function update() {
