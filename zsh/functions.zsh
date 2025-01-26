@@ -103,12 +103,8 @@ function update() {
     # Homebrew update
     if ($update_all || $update_brew) && command -v brew &> /dev/null; then
         echo "Updating Homebrew..."
-        brew doctor || { echo "Error: Brew doctor check failed."; return 1; }
-        brew update || { echo "Error: Brew update failed."; return 1; }
-        brew outdated
+        brew cu -facy || { echo "Error: Brew upgrade outdated apps failed"; return 1 } 
         brew upgrade || { echo "Error: Brew upgrade failed."; return 1; }
-        brew outdated --cask
-        brew upgrade --cask || { echo "Error: Brew cask upgrade failed."; return 1; }
         brew cleanup || { echo "Error: Brew cleanup failed."; return 1; }
         brew autoremove || { echo "Error: Brew autoremove failed."; return 1; }
     elif $update_brew; then
