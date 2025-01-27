@@ -35,6 +35,7 @@ ensure_xdg_dirs || exit 1  # Exit if directory creation fails
 # PATH configuration
 local extra_paths=(
     "$HOME/bin"
+    "$HOME/Developer/Playgrounds"
 )
 for path_entry in "${extra_paths[@]}"; do
     if [[ -d "$path_entry" && ":$PATH:" != *":$path_entry:"* ]]; then
@@ -42,12 +43,12 @@ for path_entry in "${extra_paths[@]}"; do
     fi
 done
 
-# Set custom locations
+# Set DOT  only if ~/dotfiles exists otherwise clone github dotfiles repo to $HOME
 if [[ -d "${HOME}/dotfiles" ]]; then
     # set dotfiles variable for easier access
     export DOT="${HOME}/dotfiles"
-else 
-    echo "Warning: Dotfiles directory not found at ${HOME}/dotfiles"
+else
+    echo "Warning: ~/dotfiles not found"
 fi 
 
 # Default applications
