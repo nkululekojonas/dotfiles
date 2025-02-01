@@ -1,7 +1,14 @@
+# ------------------------------
+# Tap Repositories
+# ------------------------------
 tap "buo/cask-upgrade"
 tap "cloudflare/cloudflare"
 tap "homebrew/bundle"
 tap "kdabir/tap"
+
+# ------------------------------
+# Brew Formulas (Command-Line Tools)
+# ------------------------------
 brew "bash-completion"
 brew "bat"
 brew "cloudflared"
@@ -34,6 +41,10 @@ brew "write-good"
 brew "zsh-autosuggestions"
 brew "zsh-history-substring-search"
 brew "zsh-syntax-highlighting"
+
+# ------------------------------
+# Cask Applications
+# ------------------------------
 cask "arc"
 cask "google-chrome"
 cask "iterm2"
@@ -43,6 +54,10 @@ cask "rectangle"
 cask "topnotch"
 cask "whatsapp"
 cask "zed@preview"
+
+# ------------------------------
+# Mac App Store (MAS) Applications
+# ------------------------------
 mas "AdGuard for Safari", id: 1440147259
 mas "Amphetamine", id: 937984704
 mas "Boop", id: 1518425043
