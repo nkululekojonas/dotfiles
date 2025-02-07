@@ -17,6 +17,7 @@
     cn = config
     br = branch
     lg = log --pretty --graph --decorate
+    df = diff
     amend = commit --amend
     last = log -1 HEAD
     unstage = reset HEAD --
