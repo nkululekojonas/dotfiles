@@ -33,11 +33,16 @@ export YSU_MESSAGE_POSITION="after"
 source $ZSH/oh-my-zsh.sh
 
 # Load custom configurations
-source $ZDOTDIR/functions.zsh
-source $ZDOTDIR/aliases.zsh
+[[ -f "$ZDOTDIR/functions.zsh" ]] && source "$ZDOTDIR/functions.zsh"
+[[ -f "$ZDOTDIR/aliases.zsh" ]] && source "$ZDOTDIR/aliases.zsh"
 
 # FZF configuration
-source <(fzf --zsh)
+if command -v fzf >/dev/null 2>&1; then
+    source <(fzf --zsh)
+fi
+
+# Ensure HOMEBREW_PREFIX is set (fallback to brew --prefix)
+: ${HOMEBREW_PREFIX:=$(brew --prefix)}
 
 # Additional plugins
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -49,3 +54,29 @@ unset GIT_CONFIG
 autoload -Uz compinit && compinit
 zstyle ':completion:*:*:git:*' script "$ZDOTDIR/git-completion.zsh"
 fpath=("$ZDOTDIR" $fpath)
+
+# --- Node.js Configuration ---
+export NVM_DIR="$XDG_CONFIG_HOME/nvm"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+
+# NVM Lazy-Loading 
+load_nvm() {
+    unset -f nvm node npm  # Clean removal of loader functions
+    
+    # Load NVM only when needed
+    if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+        source "$NVM_DIR/nvm.sh"
+        source "$NVM_DIR/bash_completion"
+    else
+        echo "NVM not installed in $NVM_DIR" >&2
+        return 1
+    fi
+    
+    # Execute the command with arguments
+    "$@"
+}
+
+# Lazy-load aliases
+alias nvm="load_nvm nvm"
+alias node="load_nvm node"
+alias npm="load_nvm npm"
