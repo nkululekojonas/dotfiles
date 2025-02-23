@@ -53,12 +53,6 @@ topcmds() {
 
 # Perform system update with enhanced error handling
 update() {
-    # Check internet connectivity
-    if ! check_internet; then
-        echo "Error: No internet connection. Aborting update."
-        return 1
-    fi
-
     # Check sudo privileges
     sudo -v || { echo "Error: Failed to get sudo privileges. Aborting update."; return 1; }
 
