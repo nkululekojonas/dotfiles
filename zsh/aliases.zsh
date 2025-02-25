@@ -62,7 +62,7 @@ alias egrep='egrep --color=auto'
 alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* "delete from LSQuarantineEvent"'
 
 # Recursively delete `.DS_Store` files
-alias cleands='find . -type f -name "*.DS_Store" -ls -delete'
+# alias cleands='find . -type f -name "*.DS_Store" -ls -delete'
 
 # Run custom clean up (remove._DS_Store, Trash)
 alias cleanup='rmdsstore && emptytrash'

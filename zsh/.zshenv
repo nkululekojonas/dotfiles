@@ -1,29 +1,21 @@
 #!/bin/zsh
 
 # --- XDG Base Directory Specification Compliance ---
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-$HOME/.local/run}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-
-# Ensure secure runtime directory (critical for macOS)
-if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
-    mkdir -p "$XDG_RUNTIME_DIR" && chmod 0700 "$XDG_RUNTIME_DIR"
-fi
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
 # --- Zsh Configuration Setup ---
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
 # --- Directory Creation with Validation ---
 create_xdg() {
     local dirs=(
         "$ZDOTDIR"
-        "$XDG_CACHE_HOME/zsh"
-        "$XDG_CONFIG_HOME/vim"
-        "$XDG_CONFIG_HOME/nvm"
-        "$XDG_CONFIG_HOME/npm"
-        "$XDG_CONFIG_HOME/python"
+        "${XDG_CACHE_HOME}/zsh"
+        "${XDG_CONFIG_HOME}/vim"
+        "${XDG_CONFIG_HOME}/nvm"
+        "${XDG_CONFIG_HOME}/npm"
+        "${XDG_CONFIG_HOME}/python"
     )
     for dir in "${dirs[@]}"; do
         if [[ ! -d "$dir" ]]; then
@@ -35,24 +27,23 @@ create_xdg
 
 # --- PATH Configuration ---
 user_paths=(
-    "$HOME/bin"
-    "$HOME/.local/bin"  # Common macOS Homebrew install location
-    "$HOME/Developer/Playgrounds"
+    "${HOME}/bin"
+    "${HOME}/Developer/Playgrounds"
 )
 
 for custom_path in "${user_paths[@]}"; do
     if [[ -d "$custom_path" ]]; then
-        PATH="$custom_path:$PATH"
+        PATH="${custom_path}:$PATH"
     fi
 done
 typeset -U PATH
 
 # --- Dotfiles Management ---
-[[ -d "$HOME/dotfiles" ]] && export DOT="$HOME/dotfiles"
+[[ -d "${HOME}/dotfiles" ]] && export DOT="${HOME}/dotfiles"
 
 # --- Application Defaults ---
-export EDITOR="vim"
 export PAGER="less"
+export EDITOR="vim"
 export VISUAL="code"  # Fallback to VS Code for GUI editing on macOS
 
 # --- Less Configuration ---
@@ -65,9 +56,9 @@ export LC_COLLATE=C
 export LANG="en_US.UTF-8"
 
 # --- Python Configuration ---
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
-export PYTHONHISTORY="$XDG_CONFIG_HOME/python/history"
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+export PYTHONHISTORY="${XDG_CONFIG_HOME}/python/history"
 
 # --- Vim Configuration ---
-export MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+export MYVIMRC="${XDG_CONFIG_HOME}/vim/vimrc"
 export VIMINIT="source ${MYVIMRC}"
