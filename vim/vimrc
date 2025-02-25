@@ -99,14 +99,10 @@ set undodir=~/.config/vim/undodir
 
 " Plugin Manager
 call plug#begin('~/.config/vim/plugged')
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
-Plug 'whatyouhide/vim-gotham'
-Plug 'joshdick/onedark.vim'
-Plug 'bluz71/vim-moonfly-colors', { 'as': 'moonfly' }
 Plug 'kyoz/purify', { 'rtp': 'vim' }
 Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
