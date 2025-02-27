@@ -29,12 +29,14 @@ create_xdg
 user_paths=(
     "${HOME}/bin"
     "${HOME}/Developer/Playgrounds"
+    "${HOME}/Developer/Playgrounds/bash"
     "${HOME}/Developer/Projects/scripts"
 )
 
 for custom_path in "${user_paths[@]}"; do
     if [[ -d "$custom_path" ]]; then
-        PATH="${custom_path}:$PATH"
+         PATH="${custom_path}:$PATH"
+        # PATH="$PATH:${custom_path}"
     fi
 done
 typeset -U PATH
