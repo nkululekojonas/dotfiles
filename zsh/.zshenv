@@ -29,6 +29,7 @@ create_xdg
 user_paths=(
     "${HOME}/bin"
     "${HOME}/Developer/Playgrounds"
+    "${HOME}/Developer/Projects/scripts"
 )
 
 for custom_path in "${user_paths[@]}"; do
