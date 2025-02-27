@@ -21,6 +21,10 @@ zstyle ':zsh-session-manager:*' dir "${ZDOTDIR}"
 # Set zcompdump location
 export ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
 
+# Ensure proper run-help configuration
+unalias run-help
+autoload run-help
+
 # Plugin configuration
 plugins=(git macos tmux you-should-use)
 
