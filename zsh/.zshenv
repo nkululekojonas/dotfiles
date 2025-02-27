@@ -13,6 +13,7 @@ if [[ ! -d "$XDG_RUNTIME_DIR" ]]; then
         chmod 0700 "$XDG_RUNTIME_DIR"
     else
         echo "Error: Failed to create $XDG_RUNTIME_DIR. Check permissions." >&2
+        return 1
     fi
 fi
 
@@ -51,7 +52,7 @@ for custom_path in "${user_paths[@]}"; do
         # PATH="$PATH:${custom_path}"
     fi
 done
-typeset -U PATH
+typeset -U PATH path
 
 # --- Dotfiles Management ---
 [[ -d "${HOME}/dotfiles" ]] && export DOT="${HOME}/dotfiles"
