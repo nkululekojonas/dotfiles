@@ -88,3 +88,6 @@ load_nvm() {
 alias nvm="load_nvm nvm"
 alias node="load_nvm node"
 alias npm="load_nvm npm"
+
+# Zoxide setup
+eval "$(zoxide init zsh --cmd cd)"
