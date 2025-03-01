@@ -2,10 +2,15 @@
 export ZSH="${XDG_CONFIG_HOME}/oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
-# History options
-setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format
-setopt HIST_IGNORE_DUPS         # Do not record an event that was just recorded again
-setopt HIST_IGNORE_ALL_DUPS     # Delete an old recorded event if a new event is a duplicate
+# Globing and Expansion
+setopt EXTENDED_GLOB         
+
+# History & Navigation
+setopt AUTO_CD
+setopt EXTENDED_HISTORY      
+setopt HIST_IGNORE_DUPS     
+setopt HIST_IGNORE_ALL_DUPS  
+setopt INC_APPEND_HISTORY
 
 # More History configuration
 export HISTSIZE=10000
@@ -22,11 +27,15 @@ zstyle ':zsh-session-manager:*' dir "${ZDOTDIR}"
 export ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
 
 # Ensure proper run-help configuration
-unalias run-help
-autoload run-help
+# Remove the default 'run-help' alias if it exists
+unalias run-help 2> /dev/null
+
+# Load Zsh's enhanced run-help system
+autoload -Uz run-help
+autoload -Uz run-help-git  # Enable git-specific help (optional)
 
 # Plugin configuration
-plugins=(git macos tmux you-should-use)
+plugins=(git macos tmux)
 
 # You-should-use settings
 export YSU_MODE="ALL"
@@ -84,10 +93,14 @@ load_nvm() {
     [[ $# -gt 0 ]] && "$@"
 }
 
-# Lazy-load aliases
-alias nvm="load_nvm nvm"
-alias node="load_nvm node"
-alias npm="load_nvm npm"
+# Detect which `ls` flavor is in use
+if ls --color > /dev/null 2>&1; then # GNU `ls`
+    colorflag="--color"
+    export LS_COLORS='no=00:fi=00:di=01;31:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:'
+else # macOS `ls`
+    colorflag="-G"
+    export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
+fi
 
 # Zoxide setup
 eval "$(zoxide init zsh --cmd cd)"
