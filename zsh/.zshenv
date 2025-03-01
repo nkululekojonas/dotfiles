@@ -19,6 +19,7 @@ fi
 
 # --- Zsh Configuration Setup ---
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+export HELPDIR="/usr/share/zsh/$(zsh --version | cut -d' ' -f2)/help"
 
 # --- Directory Creation with Validation ---
 create_xdg() {
@@ -41,15 +42,13 @@ create_xdg
 # --- PATH Configuration ---
 user_paths=(
     "${HOME}/bin"
-    "${HOME}/Developer/Playgrounds"
-    "${HOME}/Developer/Playgrounds/bash"
     "${HOME}/Developer/Projects/scripts"
 )
 
 for custom_path in "${user_paths[@]}"; do
     if [[ -d "$custom_path" ]]; then
-         PATH="${custom_path}:$PATH"
-        # PATH="$PATH:${custom_path}"
+       # PATH="${custom_path}:$PATH" # Never do this!!!
+        PATH="$PATH:${custom_path}"
     fi
 done
 typeset -U PATH path
