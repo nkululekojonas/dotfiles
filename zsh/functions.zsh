@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # functions.zsh: A collection of useful shell functions for enhanced command-line experience
-# To use these functions, source this file in your .zshrc:
-# source /path/to/functions.zsh
+# Author: Nkululeko Jonas
+# Date: 23-10-2023
 
 # Create a new directory and enter it
 mcd() {
@@ -42,7 +42,6 @@ fs() {
 genpass() {
     local length=${1:-16}
     LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&*()_+' </dev/urandom | head -c "$length"
-    echo
 }
 
 # Show most used commands
@@ -58,17 +57,17 @@ update() {
 
     # Parse arguments
     local update_all=true
-    local update_macos=false
-    local update_brew=false
     local update_mas=false
     local update_omz=false
+    local update_brew=false
+    local update_macos=false
 
     while [[ $# -gt 0 ]]; do
         case $1 in
-            --macos) update_macos=true; update_all=false ;;
-            --brew) update_brew=true; update_all=false ;;
             --mas) update_mas=true; update_all=false ;;
             --omz) update_omz=true; update_all=false ;;
+            --brew) update_brew=true; update_all=false ;;
+            --macos) update_macos=true; update_all=false ;;
             *) echo "Unknown option: $1"; return 1 ;;
         esac
         shift
