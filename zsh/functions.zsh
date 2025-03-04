@@ -38,6 +38,26 @@ fs() {
     fi;
 }
 
+# Print info about the enviroment accepts aguments
+uinfo() {
+    local default_info=(SHELL TERM USER HOME PWD)
+
+    # Append user-provided arguments if any
+    if [[ $# -gt 0 ]]; then
+        default_info+=("$@")
+    fi
+
+    local arg
+    for arg in "${default_info[@]}"; do 
+        # Use correct indirect expansion for Bash and Zsh
+        if [[ -n ${BASH_VERSION-} ]]; then
+            printf "%-15s: %s\n" "$arg" "${!arg:-No value assigned}"
+        else
+            printf "%-15s: %s\n" "$arg" "${(P)arg:-No value assigned}"
+        fi
+    done
+}
+
 # Generate a random password
 genpass() {
     local length=${1:-16}
