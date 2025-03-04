@@ -86,5 +86,5 @@ alias spoton='sudo mdutil -a -i on'
 # Miscellaneous
 alias help='run-help'
 alias reload='exec ${SHELL} -l'
-alias path='echo -e ${PATH//:/\\n}'
+alias paths='echo ${PATH//:/\\n}'
 alias relrc='source ${XDG_CONFIG_HOME}/zsh/.zshrc'
