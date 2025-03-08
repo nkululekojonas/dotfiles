@@ -107,19 +107,21 @@ if command -v brew >/dev/null 2>&1; then
 fi
 
 # Additional plugins loaded only in interactive terminals
-if [[ -o interactive ]]; then
-    if [[ -n "${HOMEBREW_PREFIX}" ]]; then
-        [[ -f "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-        [[ -f "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-        [[ -f "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
-    fi
+if [[ -o interactive && -n "${HOMEBREW_PREFIX}" ]]; then
+    [[ -f "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    [[ -f "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    [[ -f "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
 fi
 
 
 # Git configuration
 unset GIT_CONFIG
+
 [[ -f "${ZDOTDIR:-$HOME/.zsh}/git-completion.zsh" ]] && zstyle ':completion:*:*:git:*' script "${ZDOTDIR:-$HOME/.zsh}/git-completion.zsh"
 fpath=("${ZDOTDIR:-$HOME/.zsh}" "${fpath[@]}")
+
+# Re-run compinit after modifying fpath
+compinit -u
 
 # --- Node.js Configuration ---
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
