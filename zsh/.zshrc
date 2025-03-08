@@ -1,3 +1,11 @@
+# Compile zcompdump to speed up loading
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+	compinit
+else
+	compinit -C
+fi
+
 # Oh My Zsh configuration
 export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
 ZSH_THEME="robbyrussell"
@@ -54,7 +62,7 @@ setopt LONG_LIST_JOBS
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-zstyle ':zsh-session-manager:*' dir "${ZDOTDIR:-$HOME/.zsh}"
+zstyle ':zsh-session-manager:*' dir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 
 # Set zcompdump location
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
@@ -107,17 +115,13 @@ if [[ -o interactive ]]; then
     fi
 fi
 
+
 # Git configuration
 unset GIT_CONFIG
-autoload -Uz compinit && compinit
 [[ -f "${ZDOTDIR:-$HOME/.zsh}/git-completion.zsh" ]] && zstyle ':completion:*:*:git:*' script "${ZDOTDIR:-$HOME/.zsh}/git-completion.zsh"
 fpath=("${ZDOTDIR:-$HOME/.zsh}" "${fpath[@]}")
 
 # --- Node.js Configuration ---
-# export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
-# export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
-
-# Ensure these directories exist
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
 
