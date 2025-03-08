@@ -38,16 +38,34 @@ alias du='du -sh'
 alias rm='rm -i'    # Interactive prompt
 alias rmd='rm -rfI' # Interactive prompt for large directories
 
+alias h='history'
+alias j='jobs -l'
+
 # Dev Shortcuts
 alias g='git'
 alias v='vim'
 alias b='bat --paging=never'
 
-alias p='python3'
-alias -s py=python3    # Run Python scripts
-
 alias tl='tldr'
 alias type='type -a'
+
+# Python aliases
+alias p='python3'
+alias py='python3'
+alias python='python3'
+alias pip='pip3'
+alias pipup='pip install --upgrade pip'
+alias venv='python -m venv'
+alias activate='source venv/bin/activate'
+
+alias -s py=python3    # Run Python scripts
+
+# Vim aliases
+alias vi='vim'
+alias v='vim'
+
+# Open vim in the last session
+alias vlast='vim -c "normal '\''0"'
 
 # Package Management (macOS Homebrew)
 alias brewcl='brew cleanup && brew autoremove'
@@ -56,11 +74,6 @@ alias brewup='brew update && brew upgrade && brew cleanup'  # Update Homebrew & 
 # Networking Aliases
 alias myip='curl ifconfig.me' # Get public IP address
 alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder' # Flush DNS cache (macOS)
-
-# Lazy-load aliases
-alias nvm="load_nvm nvm"
-alias node="load_nvm node"
-alias npm="load_nvm npm"
 
 # Always use color output for `ls`
 alias ls='command ls ${colorflag}'
@@ -75,9 +88,14 @@ alias egrep='egrep --color=auto'
 
 # Empty the Trash and clean logs
 alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* "delete from LSQuarantineEvent"'
+
 alias clean-ds='find . -type f -name "*.DS_Store" -ls -delete'
 alias cleanup='rmdsstore && emptytrash'
 alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+
+# macOS specific
+alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES; killall Finder"
+alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO; killall Finder"
 
 # Spotlight Control
 alias spotoff='sudo mdutil -a -i off'

@@ -114,16 +114,16 @@ autoload -Uz compinit && compinit
 fpath=("${ZDOTDIR:-$HOME/.zsh}" "${fpath[@]}")
 
 # --- Node.js Configuration ---
-export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
-export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
+# export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+# export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
 
 # Ensure these directories exist
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
 
-# Node Version Manager (removing duplicate NVM configuration)
-[[ -s "${NVM_DIR}/nvm.sh" ]] && source "${NVM_DIR}/nvm.sh"  # This loads nvm
-[[ -s "${NVM_DIR}/bash_completion" ]] && source "${NVM_DIR}/bash_completion"  # This loads nvm bash_completion
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`

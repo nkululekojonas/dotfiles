@@ -48,10 +48,10 @@ mkdir -p "$(dirname "${LESSHISTFILE}")"
 
 # --- Locale Settings ---
 # Uncomment if needed:
-# export LC_ALL=C
-# export LC_COLLATE=C
+export LC_ALL=C
+export LC_COLLATE=C
 export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+# export LC_ALL="en_US.UTF-8"
 
 # --- Python Configuration ---
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
