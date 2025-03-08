@@ -1,13 +1,25 @@
 # Compile zcompdump to speed up loading
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-	compinit
+
+# Ensure zcompdump is stored in .cache/zsh/
+export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+
+# Ensure the .cache/zsh directory exists
+mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+
+if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
+    compinit -d "$ZSH_COMPDUMP"
 else
-	compinit -C
+    compinit -C -d "$ZSH_COMPDUMP"
 fi
 
 # Oh My Zsh configuration
 export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
+
+# Update fpath
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+
+# Set Oh My Zsh Theme
 ZSH_THEME="robbyrussell"
 
 # Improve autocompletion experience
@@ -87,6 +99,11 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search    # Up
 bindkey "^[[B" down-line-or-beginning-search  # Down
 
+# Edit command in editor
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
 # Load Oh My Zsh
 [[ -f "${ZSH}/oh-my-zsh.sh" ]] && source "${ZSH}/oh-my-zsh.sh"
 
@@ -113,15 +130,8 @@ if [[ -o interactive && -n "${HOMEBREW_PREFIX}" ]]; then
     [[ -f "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
 fi
 
-
 # Git configuration
 unset GIT_CONFIG
-
-[[ -f "${ZDOTDIR:-$HOME/.zsh}/git-completion.zsh" ]] && zstyle ':completion:*:*:git:*' script "${ZDOTDIR:-$HOME/.zsh}/git-completion.zsh"
-fpath=("${ZDOTDIR:-$HOME/.zsh}" "${fpath[@]}")
-
-# Re-run compinit after modifying fpath
-compinit -u
 
 # --- Node.js Configuration ---
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvm"

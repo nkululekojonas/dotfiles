@@ -14,9 +14,10 @@ mkdir -p "${XDG_RUNTIME_DIR}" && chmod 0700 "${XDG_RUNTIME_DIR}"
 
 # --- Zsh Configuration Setup ---
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-mkdir -p "${ZDOTDIR}"
-
 export HELPDIR="/usr/share/zsh/$(zsh --version | cut -d' ' -f2)/help"
+
+# Ensure Zsh directory exists
+mkdir -p "${ZDOTDIR}"
 
 # --- PATH Configuration ---
 # Add directories to PATH safely
