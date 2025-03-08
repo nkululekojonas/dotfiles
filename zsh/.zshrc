@@ -1,30 +1,63 @@
 # Oh My Zsh configuration
-export ZSH="${XDG_CONFIG_HOME}/oh-my-zsh"
+export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
 ZSH_THEME="robbyrussell"
 
-# Globing and Expansion
-setopt EXTENDED_GLOB         
+# Improve autocompletion experience
+setopt AUTO_MENU
 
-# History & Navigation
-setopt AUTO_CD
+# Enhance globbing
+setopt EXTENDED_GLOB
+setopt GLOB_DOTS
+
+# Improve history management
+setopt HIST_VERIFY
+setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY      
 setopt HIST_IGNORE_DUPS     
-setopt HIST_IGNORE_ALL_DUPS  
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS 
 setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_ALL_DUPS  
 
 # More History configuration
 export HISTSIZE=10000
 export SAVEHIST=20000
-export HISTFILE="${ZDOTDIR}/.zsh_history"
+export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+mkdir -p "$(dirname "${HISTFILE}")"
+
+# Disable terminal beeps
+setopt NO_BEEP
+
+# Directory options
+setopt AUTO_CD               # cd by typing directory name
+setopt AUTO_PUSHD            # Push the old directory onto the stack on cd
+setopt PUSHD_IGNORE_DUPS     # Don't push duplicate directories
+setopt PUSHD_SILENT  
+
+# Completion
+setopt ALWAYS_TO_END         # Move cursor to end of completed word
+setopt COMPLETE_IN_WORD      # Allow completion from within a word
+setopt PATH_DIRS             # Perform path search even on command names with slashes
+setopt AUTO_MENU             # Show completion menu on tab press
+setopt COMPLETE_ALIASES      # Complete aliases
+
+# Input/Output
+setopt INTERACTIVE_COMMENTS  # Allow comments in interactive shells
+setopt NO_FLOW_CONTROL       # Disable ^S/^Q flow control
+setopt RM_STAR_WAIT          # Wait 10 seconds before accepting rm *
+
+# Better job control
+setopt AUTO_RESUME
+setopt LONG_LIST_JOBS
 
 # Completion configuration
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh"
-zstyle ':zsh-session-manager:*' dir "${ZDOTDIR}"
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+zstyle ':zsh-session-manager:*' dir "${ZDOTDIR:-$HOME/.zsh}"
 
 # Set zcompdump location
-export ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
+export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
 
 # Ensure proper run-help configuration
 # Remove the default 'run-help' alias if it exists
@@ -37,61 +70,60 @@ autoload -Uz run-help-git  # Enable git-specific help (optional)
 # Plugin configuration
 plugins=(git macos tmux)
 
-# You-should-use settings
-export YSU_MODE="ALL"
-export YSU_HARDCORE=1
-export YSU_MESSAGE_POSITION="after"
+# Better history search
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search    # Up
+bindkey "^[[B" down-line-or-beginning-search  # Down
 
 # Load Oh My Zsh
-if [[ -f "${ZSH}/oh-my-zsh.sh" ]]; then
-    source "${ZSH}/oh-my-zsh.sh"
-else
-    echo "Warning: Oh My Zsh not found in ${ZSH}" >&2
-fi
+[[ -f "${ZSH}/oh-my-zsh.sh" ]] && source "${ZSH}/oh-my-zsh.sh"
 
 # Load custom configurations
-[[ -f "${ZDOTDIR}/functions.zsh" ]] && source "${ZDOTDIR}/functions.zsh"
-[[ -f "${ZDOTDIR}/aliases.zsh" ]] && source "${ZDOTDIR}/aliases.zsh"
+[[ -f "${ZDOTDIR:-$HOME/.zsh}/functions.zsh" ]] && source "${ZDOTDIR:-$HOME/.zsh}/functions.zsh"
+[[ -f "${ZDOTDIR:-$HOME/.zsh}/aliases.zsh" ]] && source "${ZDOTDIR:-$HOME/.zsh}/aliases.zsh"
 
 # FZF configuration using Homebrew paths
-if command -v fzf >/dev/null 2>&1; then
+if command -v fzf >/dev/null 2>&1 && command -v brew >/dev/null 2>&1; then
     FZF_PREFIX="$(brew --prefix)/opt/fzf/shell"
     [[ -f "${FZF_PREFIX}/key-bindings.zsh" ]] && source "${FZF_PREFIX}/key-bindings.zsh"
     [[ -f "${FZF_PREFIX}/completion.zsh" ]] && source "${FZF_PREFIX}/completion.zsh"
 fi
 
 # Ensure HOMEBREW_PREFIX is set (fallback to brew --prefix)
-HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
+if command -v brew >/dev/null 2>&1; then
+    HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
+fi
 
 # Additional plugins loaded only in interactive terminals
 if [[ -o interactive ]]; then
-    [[ -f "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    [[ -f "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-    [[ -f "$(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] && source "$(brew --prefix)/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+    if [[ -n "${HOMEBREW_PREFIX}" ]]; then
+        [[ -f "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+        [[ -f "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+        [[ -f "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
+    fi
 fi
 
 # Git configuration
 unset GIT_CONFIG
 autoload -Uz compinit && compinit
-zstyle ':completion:*:*:git:*' script "${ZDOTDIR}/git-completion.zsh"
-fpath=("${ZDOTDIR}" "${fpath[@]}")
+[[ -f "${ZDOTDIR:-$HOME/.zsh}/git-completion.zsh" ]] && zstyle ':completion:*:*:git:*' script "${ZDOTDIR:-$HOME/.zsh}/git-completion.zsh"
+fpath=("${ZDOTDIR:-$HOME/.zsh}" "${fpath[@]}")
 
 # --- Node.js Configuration ---
-export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
-export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
 
-# NVM Lazy-Loading 
-load_nvm() {
-    unset -f nvm node npm  # Clean removal of loader functions
-    if [[ -s "${NVM_DIR}/nvm.sh" ]]; then
-        source "${NVM_DIR}/nvm.sh"
-        [[ -s "${NVM_DIR}/bash_completion" ]] && source "${NVM_DIR}/bash_completion"
-    else
-        echo "NVM not installed in ${NVM_DIR}" >&2
-        return 1
-    fi
-    [[ $# -gt 0 ]] && "$@"
-}
+# Ensure these directories exist
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
+
+# Node Version Manager (removing duplicate NVM configuration)
+[[ -s "${NVM_DIR}/nvm.sh" ]] && source "${NVM_DIR}/nvm.sh"  # This loads nvm
+[[ -s "${NVM_DIR}/bash_completion" ]] && source "${NVM_DIR}/bash_completion"  # This loads nvm bash_completion
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
@@ -103,4 +135,4 @@ else # macOS `ls`
 fi
 
 # Zoxide setup
-eval "$(zoxide init zsh --cmd cd)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd cd)"
