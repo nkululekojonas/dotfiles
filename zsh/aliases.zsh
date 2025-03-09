@@ -48,6 +48,7 @@ alias b='bat --paging=never'
 
 alias tl='tldr'
 alias type='type -a'
+alias ts='tmux -u new-session -A -s'
 
 # Python aliases
 alias p='python3'
