@@ -3,24 +3,24 @@
 	email = 3524042+nkululekojonas@users.noreply.github.com
 
 [core]
+	eol = lf
     editor = vim
 	autocrlf = false
-    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
     excludesfile = ~/.config/git/gitignore
-	eol = lf
+    whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
 
 [alias]
     al = add .
-    st = status
     cl = clone
-    co = checkout
     ci = commit
     cn = config
+    co = checkout
+    st = status 
     br = branch
     lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' \
          --abbrev-commit
-    lgg = log --oneline --decorate --graph --all
-    lgs = log --stat
+    ld = log --oneline --decorate --graph --all
+    ls = log --stat
     df = diff
     amend = commit --amend
     last = log -1 HEAD
