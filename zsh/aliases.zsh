@@ -46,7 +46,7 @@ alias g='git'
 alias v='vim'
 alias b='bat --paging=never'
 
-alias tl='tldr'
+alias tll='tldr'
 alias type='type -a'
 
 # Python aliases
