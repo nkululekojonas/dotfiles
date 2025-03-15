@@ -1,14 +1,16 @@
 #!/bin/bash
 
-# install: symlink configuration dotfiles to config directory, check and install Homebrew
+# install.sh: symlink configuration dotfiles and install homebrew
 # Author: Nkululeko Jonas
-# License: MIT
+# Date: 01-10-2024
+
+# Enable strict error handling
 set -euo pipefail
 
-# Define the source (dotfiles) and target directories
-DOTFILES_DIR="${HOME}/dotfiles"
-ZSHENV_DEST="${ZSHENV_DEST:-/etc/zshenv}"
-CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}"
+# Flags
+DRY_RUN=false
+SKIP_BREW=false
+SKIP_SYMLINKS=false
 
 # List of files/directories to symlink
 files=(
@@ -24,19 +26,9 @@ files=(
     "zsh/functions.zsh"
 )
 
-# Flags
-DRY_RUN=false
-SKIP_BREW=false
-SKIP_SYMLINKS=false
-
-# Log input
-log() {
-    echo -e "\e[32m[INFO]\e[0m $1"
-}
-
-# Log error
+# Log errors
 error() {
-    echo -e "\e[31m[ERROR]\e[0m $1" >&2
+    echo "Error: $1" >&2
 }
 
 # Function to print usage
@@ -52,114 +44,110 @@ usage() {
 # Parse command-line arguments
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --dry-run) DRY_RUN=true; shift;;
-        --skip-symlinks) SKIP_SYMLINKS=true; shift;;
-        --skip-brew) SKIP_BREW=true; shift;;
+        --dry-run) DRY_RUN=true ;;
+        --skip-brew) SKIP_BREW=true ;;
+        --skip-symlinks) SKIP_SYMLINKS=true ;;
         -h|--help) usage; exit 0;;
         *) error "Invalid option: $1"; usage; exit 1;;
     esac
+    shift
 done
 
-# Function to backup existing files that aren't symlinks
+# Backup existing files that aren't symlinks
 backup() {
     local file="$1"
     if [ -e "$file" ] && [ ! -L "$file" ]; then
         if [ "$DRY_RUN" = true ]; then
-            log "[DRY RUN] Would backup: $file -> ${file}.bak"
+            echo "[DRY RUN] Would backup: $file -> ${file}.bak"
         else
             mv "$file" "${file}.bak"
-            log "Backed up: $file -> ${file}.bak"
+            echo "[BACKED UP]: $file -> ${file}.bak"
         fi
     fi
 }
 
-# Function to create symlink
+# Source (dotfiles) and target directories
+DOTFILES="${DOTFILES:-${HOME}/dotfiles}"
+ZSHENV_DEST="${ZSHENV_DEST:-/etc/zshenv}"
+CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}"
+
+# Create symnlinks
 symlink() {
-    local src="${DOTFILES_DIR}/$1"
-    local dest="${CONFIG_DIR}/$1"
-    local dest_dir
+    # Set source and destination targets
+    local src="${DOTFILES}/$1"
+    local dest
 
     # Override destination for specific files
     if [ "$1" = "zsh/.zshenv" ]; then
         dest="$ZSHENV_DEST"
     elif [ "$1" = "ssh/config" ]; then
         dest="$HOME/.ssh/config"
+    else
+        dest="${CONFIG_DIR}/$1"
     fi
-    dest_dir=$(dirname "$dest")
 
+    # Get the file destination directory 
+    local dest_dir="${dest%/*}"
+
+    # Check if destination directory exists
+    mkdir -p "$dest_dir"
+    backup "$dest"
+
+    # Check if source file exists
     if [ ! -e "$src" ]; then
         error "Source file $src does not exist."
         return 1
     fi
 
+    # Check for DRY RUN
     if [ "$DRY_RUN" = true ]; then
-        log "[DRY RUN] Would create symlink: $dest -> $src"
+        echo "[DRY RUN] Would create symlink: $dest -> $src"
         return 0
     fi
 
-    # Ensure directory exists
-    mkdir -p "$dest_dir"
-    backup "$dest"
-
     # Create the symlink; use sudo for /etc/zshenv if necessary
     if [ "$1" = "zsh/.zshenv" ] && [ ! -w "$dest_dir" ]; then
-        log "Requesting sudo access to link .zshenv..."
+        echo "Requesting sudo access to link .zshenv..."
         sudo ln -sf "$src" "$dest"
     else 
         ln -sf "$src" "$dest"
     fi
 
-    log "Created symlink: $dest -> $src"
+    # Report symlink creation
+    echo "[CREATED SYMLINK]: $dest -> $src"
 }
 
-if [ ! -d "$DOTFILES_DIR" ]; then
-    error "DOTFILES_DIR ($DOTFILES_DIR) does not exist."
+# Check if dotfiles directory exists
+if [ ! -d "$DOTFILES" ]; then
+    error "'$DOTFILES' does not exist."
     exit 1
 fi
 
-if [ "$SKIP_SYMLINKS" = false ]; then
-    log "Creating symlinks from $DOTFILES_DIR to $CONFIG_DIR"
+# Check symlink flag
+if [ "$SKIP_SYMLINKS" = true ]; then
+    # Report Skip
+    echo "Skipping symlink creation."
+else
+    # Symlink files
+    echo "Creating symlinks from $DOTFILES to $CONFIG_DIR"
     for file in "${files[@]}"; do
         symlink "$file"
     done
-    log "Symlink creation complete."
-else
-    log "Skipping symlink creation."
+    echo "Symlink creation complete."
 fi
 
-if [ "$SKIP_BREW" = false ]; then
-    if ! command -v brew &> /dev/null; then
-        if [ "$DRY_RUN" = true ]; then
-            log "[DRY RUN] Would install Homebrew."
-        else
-            log "Installing Homebrew"
-            if ! /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
-                error "Failed to install Homebrew"
-                exit 1
-            fi
-            eval "$(brew shellenv)"
-        fi
-    else
-        log "Homebrew is already installed."
-    fi
+# Check for Homebrew
+if [ "$SKIP_BREW" = true ]; then
+    echo "Skipping Homebrew installation."
+else 
+    if [ "$DRY_RUN" = true ]; then
+        echo "[DRY RUN]: Would run homebrew/install and check homebrew instillation"
+        echo "[DRY RUN]: Would run brew bundle --file=${BREWFILE:-$DOTFILES/homebrew/Brewfile}"
+    else 
+        # Install Homebrew
+        "${DOTFILES}/homebrew/install.sh" || error "Failed to install Homebrew"
+    fi 
+fi 
 
-    BREWFILE="${DOTFILES_DIR}/Brewfile"
-    if [ -f "$BREWFILE" ]; then
-        if [ "$DRY_RUN" = true ]; then
-            log "[DRY RUN] Would run: brew bundle --file=$BREWFILE"
-        else
-            log "Installing Homebrew dependencies from Brewfile"
-            if ! brew bundle --file="$BREWFILE"; then
-                error "Failed to install Homebrew dependencies."
-                exit 1
-            fi
-        fi
-    else
-        log "Warning: Brewfile not found at $BREWFILE. Skipping dependencies."
-    fi
-else
-    log "Skipping Homebrew installation."
-fi
-
-log "Setup complete!"
-exit
+echo "Setup complete!"
+exit 0
