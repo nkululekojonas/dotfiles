@@ -7,7 +7,7 @@
 # Enable strict error handling
 set -euo pipefail
 
-# Flags
+# Set Flags
 DRY_RUN=false
 SKIP_BREW=false
 SKIP_MACOS=false
@@ -166,4 +166,5 @@ fi
 
 # Finish Gracefully.
 echo "Setup complete!"
+
 exit 0

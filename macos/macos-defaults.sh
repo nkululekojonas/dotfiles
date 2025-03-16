@@ -7,10 +7,16 @@ osascript -e 'tell application "System Preferences" to quit'
 sudo -v
 
 # Keep-alive: update existing `sudo` time stamp until script has finished
-while true; do sudo -n true; sleep 60; done 2>/dev/null &
+# while true; do sudo -n true; sleep 60; done 2>/dev/null &
+# Keep sudo alive only for the script duration
+sudo -v
+(while true; do sudo -n true; sleep 60; done 2>/dev/null &) &  
+KEEP_ALIVE_PID=$!
+
+# Ensure the background process is killed when the script exits
+trap "kill $KEEP_ALIVE_PID" EXIT
 
 ### General UI/UX Tweaks ###
-
 echo "Setting macOS defaults..."
 
 # Disable the startup chime
