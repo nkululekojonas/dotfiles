@@ -10,7 +10,7 @@ set -euo pipefail
 # Flags
 DRY_RUN=false
 SKIP_BREW=false
-SKIP_MACOS=fals
+SKIP_MACOS=false
 SKIP_SYMLINKS=false
 
 # List of files/directories to symlink
