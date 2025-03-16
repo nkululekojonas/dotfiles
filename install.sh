@@ -145,7 +145,7 @@ if [ "$SKIP_BREW" = true ]; then
 else 
     if [ "$DRY_RUN" = true ]; then
         echo "[DRY RUN]: Would run '${DOTFILES}/homebrew/install.sh' for homebrew instillation."
-        echo "[DRY RUN]: Would run brew bundle --file=${BREWFILE:-$DOTFILES/homebrew/Brewfile}"
+        echo "[DRY RUN]: Would run 'brew bundle --file=${BREWFILE:-$DOTFILES/homebrew/Brewfile}'"
     else 
         # Install Homebrew
         "${DOTFILES}/homebrew/install.sh" || error "Failed to install Homebrew"
@@ -157,7 +157,7 @@ if [ "$SKIP_MACOS" = true ]; then
     echo "Skipping MacOS Defaults installation."
 else 
     if [ "$DRY_RUN" = true ]; then
-        echo "[DRY RUN]: Would run ${DOTFILES}/macos/macos-defaults.sh"
+        echo "[DRY RUN]: Would run '${DOTFILES}/macos/macos-defaults.sh'"
     else 
         # Insall MacOS Defaults
         "${DOTFILES}/macos/macos-defaults.sh" || { error "Failed to install MacOS Defaults."; return 4; }
