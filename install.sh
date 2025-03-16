@@ -10,6 +10,7 @@ set -euo pipefail
 # Flags
 DRY_RUN=false
 SKIP_BREW=false
+SKIP_MACOS=fals
 SKIP_SYMLINKS=false
 
 # List of files/directories to symlink
@@ -37,6 +38,7 @@ usage() {
     echo "Options:"
     echo "  --dry-run       Show actions without executing"
     echo "  --skip-brew     Skip Homebrew installation"
+    echo "  --skip-macos    Skip MacOS Defaults installation"
     echo "  --skip-symlinks Skip creating symlinks"
     echo "  -h, --help      Show this help message"
 }
@@ -46,6 +48,7 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --dry-run) DRY_RUN=true ;;
         --skip-brew) SKIP_BREW=true ;;
+        --skip-macos) SKIP_MACOS=true;;
         --skip-symlinks) SKIP_SYMLINKS=true ;;
         -h|--help) usage; exit 0;;
         *) error "Invalid option: $1"; usage; exit 1;;
@@ -141,7 +144,7 @@ if [ "$SKIP_BREW" = true ]; then
     echo "Skipping Homebrew installation."
 else 
     if [ "$DRY_RUN" = true ]; then
-        echo "[DRY RUN]: Would run homebrew/install and check homebrew instillation"
+        echo "[DRY RUN]: Would run '${DOTFILES}/homebrew/install.sh' for homebrew instillation."
         echo "[DRY RUN]: Would run brew bundle --file=${BREWFILE:-$DOTFILES/homebrew/Brewfile}"
     else 
         # Install Homebrew
@@ -149,5 +152,18 @@ else
     fi 
 fi 
 
+# Install MacOS defaults
+if [ "$SKIP_MACOS" = true ]; then
+    echo "Skipping MacOS Defaults installation."
+else 
+    if [ "$DRY_RUN" = true ]; then
+        echo "[DRY RUN]: Would run ${DOTFILES}/macos/macos-defaults.sh"
+    else 
+        # Insall MacOS Defaults
+        "${DOTFILES}/macos/macos-defaults.sh" || { error "Failed to install MacOS Defaults."; return 4; }
+    fi 
+fi 
+
+# Finish Gracefully.
 echo "Setup complete!"
 exit 0
