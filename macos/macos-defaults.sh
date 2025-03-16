@@ -38,20 +38,17 @@ defaults write NSGlobalDomain AppleReduceTransparency -bool true
 # Hide filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool false
 
-# Show hidden files in Finder
-defaults write com.apple.finder AppleShowAllFiles -bool true
-
-# Show path bar in Finder
-defaults write com.apple.finder ShowPathbar -bool true
-
-# Show status bar in Finder
-defaults write com.apple.finder ShowStatusBar -bool true
-
 # Keep folders on top when sorting by name
 defaults write com.apple.finder _FXSortFoldersFirst -bool true
 
-# Use list view in all Finder windows by default (Nlsv = list view)
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+# Automatically empty bin after 30 days
+defaults write com.apple.finder "FXRemoveOldTrashItems" -bool "true"
+
+# Do not display the warning when changing file extention
+defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false"
+
+# Do not display the warning
+defaults write com.apple.universalaccess "showWindowTitlebarIcons" -bool "false"
 
 ### Dock & Mission Control Tweaks ###
 
@@ -66,6 +63,9 @@ defaults write com.apple.dock persistent-apps -array
 
 # Speed up Mission Control animations
 defaults write com.apple.dock expose-animation-duration -float 0.1
+
+# Do not display recent apps in the Dock
+defaults write com.apple.dock "show-recents" -bool "false"
 
 ### Trackpad, Keyboard, and Input ###
 
