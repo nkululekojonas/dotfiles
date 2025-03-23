@@ -74,7 +74,7 @@ DOTFILES="${DOTFILES:-${HOME}/dotfiles}"
 ZSHENV_DEST="${ZSHENV_DEST:-/etc/zshenv}"
 CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
-# Create symnlinks
+# Create symlinks
 symlink() {
     # Set source and destination targets
     local src="${DOTFILES}/$1"
@@ -144,7 +144,7 @@ if [ "$SKIP_BREW" = true ]; then
     echo "Skipping Homebrew installation."
 else 
     if [ "$DRY_RUN" = true ]; then
-        echo "[DRY RUN]: Would run '${DOTFILES}/homebrew/install.sh' for homebrew instillation."
+        echo "[DRY RUN]: Would run '${DOTFILES}/homebrew/install.sh' for homebrew installation."
         echo "[DRY RUN]: Would run 'brew bundle --file=${BREWFILE:-$DOTFILES/homebrew/Brewfile}'"
     else 
         # Install Homebrew
@@ -159,7 +159,7 @@ else
     if [ "$DRY_RUN" = true ]; then
         echo "[DRY RUN]: Would run '${DOTFILES}/macos/macos-defaults.sh'"
     else 
-        # Insall MacOS Defaults
+        # Install MacOS Defaults
         "${DOTFILES}/macos/macos-defaults.sh" || { error "Failed to install MacOS Defaults."; return 4; }
     fi 
 fi 
