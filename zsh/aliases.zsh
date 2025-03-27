@@ -35,7 +35,7 @@ alias -s pcap='tcpdump -r' # Read packet captures with tcpdump
 alias cl='clear'
 alias df='df -h'
 alias du='du -sh'
-alias rm='rm -i'    # Interactive prompt
+# alias rm='rm -i'    # Interactive prompt
 alias rmd='rm -rfI' # Interactive prompt for large directories
 
 alias h='history'
