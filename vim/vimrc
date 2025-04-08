@@ -8,9 +8,9 @@ filetype plugin indent on
 
 " Set up fuzzy-finder (fzf)
 if has('nvim')
-  set rtp+=/opt/homebrew/opt/fzf
+    set rtp+=/opt/homebrew/opt/fzf
 else
-  set rtp+=~/.fzf
+    set rtp+=~/.fzf
 endif
 
 " Enable syntax highlighting
@@ -66,20 +66,20 @@ set smartindent
 
 " Change the location of .viminfo file (Neovim uses shada)
 if has('nvim')
-  set shada+=n~/.config/nvim/shada
+    set shada+=n~/.config/nvim/shada
 else
-  set viminfo+=n~/.config/vim/viminfo
+    set viminfo+=n~/.config/vim/viminfo
 endif
 
 " Prevent bad movement habits
-nnoremap <Left>  :echoe "Use h"<CR>
+nnoremap <Left>    :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
-nnoremap <Up>    :echoe "Use k"<CR>
-nnoremap <Down>  :echoe "Use j"<CR>
-inoremap <Left>  <ESC>:echoe "Use h"<CR>
+nnoremap <Up>      :echoe "Use k"<CR>
+nnoremap <Down>    :echoe "Use j"<CR>
+inoremap <Left>    <ESC>:echoe "Use h"<CR>
 inoremap <Right> <ESC>:echoe "Use l"<CR>
-inoremap <Up>    <ESC>:echoe "Use k"<CR>
-inoremap <Down>  <ESC>:echoe "Use j"<CR>
+inoremap <Up>      <ESC>:echoe "Use k"<CR>
+inoremap <Down>    <ESC>:echoe "Use j"<CR>
 
 " fzf shortcuts
 nnoremap <silent> <C-f> :FZF<CR>
@@ -104,16 +104,16 @@ set confirm
 set history=1000
 set undofile
 if has('nvim')
-  set undodir=~/.config/nvim/undodir
+    set undodir=~/.config/nvim/undodir
 else
-  set undodir=~/.config/vim/undodir
+    set undodir=~/.config/vim/undodir
 endif
 
 " Plugin Manager (vim-plug)
 if has('nvim')
-  call plug#begin('~/.config/nvim/plugged')
+    call plug#begin('~/.config/nvim/plugged')
 else
-  call plug#begin('~/.config/vim/plugged')
+    call plug#begin('~/.config/vim/plugged')
 endif
 
 Plug 'tpope/vim-surround'
@@ -130,17 +130,17 @@ syntax on " This is required
 colorscheme purify
 
 if exists('+termguicolors')
-  set termguicolors
+    set termguicolors
 endif
 
 " Enable persistent undo
 if has('persistent_undo')
-  set undofile
-  if has('nvim')
-    set undodir=~/.config/nvim/undo
-  else
-    set undodir=~/.vim/undo
-  endif
+    set undofile
+    if has('nvim')
+        set undodir=~/.config/nvim/undo
+    else
+        set undodir=~/.vim/undo
+    endif
 endif
 
 " Highlight current line
@@ -167,5 +167,50 @@ nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprevious<CR>
 
 " Set updatetime for faster git-gutter updates
-set updatetime=100" Make the cursor bold
+set updatetime=100
+
+" Make the cursor bold
 set guicursor=n-v-c-sm:block-blinkwait50-blinkon50-blinkoff50,i-ci-ve:ver25-blinkwait50-blinkon50-blinkoff50,r-cr-o:hor20-blinkwait50-blinkon50-blinkoff50,a:blinkon50-blinkwait50-blinkoff50
+
+"--- GitHub Dark Default Theme Colors ---
+
+" Background color
+set background=dark
+hi Normal guibg=#000000 ctermbg=0
+hi NonText guibg=#000000 ctermbg=0
+hi LineNr guibg=#000000 ctermbg=0
+hi VertSplit guibg=#000000 ctermbg=0
+hi StatusLine guibg=#ff0000 ctermbg=1 guifg=#ffffff ctermfg=15 " Red background
+hi StatusLineNC guibg=#800000 ctermbg=1 guifg=#808080 ctermfg=8 " Darker red for inactive
+hi CursorLine guibg=#000000 ctermbg=0
+hi CursorLineNr guibg=#000000 ctermbg=0
+
+" Editor colors
+hi Normal guifg=#ffffff ctermfg=15
+hi Comment guifg=#808080 ctermfg=8
+hi String guifg=#00ff00 ctermfg=2 "Example of a String color, modify as needed
+hi Character guifg=#00ff00 ctermfg=2
+hi Number guifg=#00ffff ctermfg=6
+hi Boolean guifg=#00ffff ctermfg=6
+hi Float guifg=#00ffff ctermfg=6
+hi Identifier guifg=#ffffff ctermfg=15
+hi Function guifg=#59A5FC ctermfg=12
+hi Statement guifg=#ff0000 ctermfg=1
+hi Conditional guifg=#ff0000 ctermfg=1
+hi Repeat guifg=#ff0000 ctermfg=1
+hi Label guifg=#ff0000 ctermfg=1
+hi Operator guifg=#ffffff ctermfg=15
+hi Keyword guifg=#ff0000 ctermfg=1
+hi PreProc guifg=#59A5FC ctermfg=12
+hi Type guifg=#59A5FC ctermfg=12
+hi StorageClass guifg=#59A5FC ctermfg=12
+hi Structure guifg=#59A5FC ctermfg=12
+hi Special guifg=#ff0000 ctermfg=1
+hi SpecialChar guifg=#ffffff ctermfg=15
+hi Delimiter guifg=#ffffff ctermfg=15
+hi SpecialComment guifg=#808080 ctermfg=8
+hi Constant guifg=#00ffff ctermfg=6
+hi Error guifg=#ff0000 ctermfg=1 guibg=#000000 ctermbg=0
+
+" Status line configuration (modified to red)
+set statusline=%F%m%r%h%w\ %=[Line\ %l\/%L,\ Col\ %c]\ %P
