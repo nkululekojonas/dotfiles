@@ -2,6 +2,7 @@
 .DS_Store
 .DS_Store?
 ._*
+.AppleDouble
 .Spotlight-V100
 .Trashes
 ehthumbs.db
@@ -13,16 +14,17 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.#* # Emacs lock files
+# .env # Consider adding globally, or handle per-project
 
-# Compiled source
+# Compiled source / Libraries / Packages
 *.com
 *.class
 *.dll
+*.dylib # macOS dynamic libraries
 *.exe
 *.o
 *.so
-
-# Packages
 *.7z
 *.dmg
 *.gz
@@ -31,44 +33,64 @@ Thumbs.db
 *.rar
 *.tar
 *.zip
+*.war
+*.ear
+*.gem # Ruby Gems
 
 # Logs and databases
 *.log
-*.sql
+*.sql # Use 'git add -f' if you need to track specific schema files
 *.sqlite
+*.db
 
-# Build directories
+# Build directories (generic)
 build/
 dist/
 out/
 
-# Node.js
+# Node.js / JavaScript
 node_modules/
-npm-debug.log
+npm-debug.log*
+yarn-error.log
+yarn-debug.log*
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+*.tsbuildinfo
 
-# Python
+# Python (includes some build/dist overlaps)
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*$py.class
 .Python
 env/
 venv/
+.venv/
 pip-log.txt
 pip-delete-this-directory.txt
+.eggs/
+*.egg-info/
+*.egg
+*.whl
+htmlcov/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
 
 # Java
-*.class
 .mtj.tmp/
-*.jar
-*.war
-*.ear
 hs_err_pid*
 
-# Ruby
-*.gem
+# Ruby (Review /.config and remove if unsure)
 *.rbc
-/.config
+# /.config # <-- Review this line carefully
 /coverage/
 /InstalledFiles
 /pkg/
@@ -78,8 +100,24 @@ hs_err_pid*
 /tmp/
 
 # Gradle
-.gradle
-/build/
+.gradle/
+# /build/ # Removed in favor of generic build/ above
 
 # Maven
 target/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Sensitive Files (Add cautiously - may need to override with git add -f)
+# *.pem
+# *.key
+# credentials.*
+# *.credential
