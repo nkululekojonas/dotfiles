@@ -1,64 +1,108 @@
 [user]
+    # User identification
     name = Nkululeko Jonas
-	email = 3524042+nkululekojonas@users.noreply.github.com
+    email = 3524042+nkululekojonas@users.noreply.github.com
+    # signingkey = YOUR_GPG_KEY_ID  
 
 [core]
-	eol = lf
+    # Filesystem and Editor
     editor = vim
-	autocrlf = false
-    excludesfile = ~/.config/git/gitignore
+    excludesfile = ~/.config/git/ignore 
+
+    # Line endings: Use LF in repo, don't perform automatic conversion
+    eol = lf
+    autocrlf = false
+
+    # Detect common whitespace errors
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+    # ignorecase = false # Usually not needed on macOS 
+
+[init]
+    # Use 'main' as the default branch name for new repositories
+    defaultBranch = main
 
 [alias]
-    al = add .
-    cl = clone
-    ci = commit
-    cn = config
+    # Status & Log
+    st = status -sb                         # Short branch status
     co = checkout
-    st = status 
-    br = branch
-    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' \
-         --abbrev-commit
+    cob = checkout -b                       # Create and checkout new branch
+    sw = switch                             # Switch branches (newer command)
+    swc = switch -c                         # Create and switch branches (newer command)
+    res = restore                           # Restore files (newer command)
+    ress = restore --staged                 # Unstage files (newer command)
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     ld = log --oneline --decorate --graph --all
     ls = log --stat
-    df = diff
-    amend = commit --amend
     last = log -1 HEAD
-    unstage = reset HEAD --
-    ignore = update-index --assume-unchanged
-    unignore = update-index --no-assume-unchanged
-    changes = diff --name-status -r HEAD
+    changes = diff --name-status HEAD       # Use HEAD instead of -r HEAD (usually equivalent for this purpose)
+
+    # Adding & Committing & Diffing
+    aa = add --all                          # Add all changes (new, modified, deleted) repo-wide
+    ap = add --patch                        # Interactively stage changes
+    ci = commit
+    amend = commit --amend                  # Amend last commit (opens editor)
+    amendne = commit --amend --no-edit      # Amend last commit (reuses previous message)
+    unstage = reset HEAD --                 # Unstage files added with 'git add'
+
+    # Branching & Diffing
+    br = branch -vv                         # List branches with upstream tracking info
+    df = diff                               # Show working directory changes
+    dc = diff --staged                      # Show staged changes
+
+    # Other
+    cl = clone
+    cn = config
 
 [branch]
+    # Automatically setup new branches to rebase on pull
     autosetuprebase = always
 
+[pull]
+    # Use rebase when pulling on branches that track a remote
+    rebase = true
+
 [merge]
+    # Use vimdiff for merging
     tool = vimdiff
+
+    # Show original, local, and remote versions in conflict markers
     conflictstyle = diff3
-    ff = only
 
 [diff]
+    # Use vimdiff for 'git difftool'
     tool = vimdiff
+    tool = vscode
+    [difftool "vscode"]
+       cmd = code --wait --diff $LOCAL $REMOTE
 
 [push]
+    # Safe default: push only the current branch to its upstream counterpart
     default = simple
 
+[fetch]
+    # Clean up remote-tracking branches that no longer exist on the remote
+    prune = true
+
 [color]
+    # Enable colored output
     ui = true
     branch = auto
     diff = auto
     interactive = auto
     status = auto
 
-[pull]
-    rebase = true
+# --- macOS Specific ---
+[credential]
+    # Use the macOS Keychain to store Git credentials securely
+    helper = osxkeychain
+
+[help]
+    autocorrect = 1 # Uncomment to enable auto-correction after 0.1s (e.g., 'git sttaus' -> 'git status')
+
+# --- Harmless Sections (usually managed by tools or for specific warnings) ---
 [fsck]
-	zeroPaddedFilemode = ignore
+    zeroPaddedFilemode = ignore
 [fetch "fsck"]
-	zeroPaddedFilemode = ignore
+    zeroPaddedFilemode = ignore
 [receive "fsck"]
-	zeroPaddedFilemode = ignore
-[oh-my-zsh]
-	lastVersion = 1514145a09140425b914e9cd98fc1d638a8c4003
-[init]
-	defaultBranch = main
+    zeroPaddedFilemode = ignore

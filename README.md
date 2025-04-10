@@ -69,7 +69,7 @@ After making changes, run `./install` again to update the symlinks.
 
 ## 🤝 Contributing
 
-While these dotfiles are personalized for my use, I'm open to suggestions and improvements! This is an ever changing repo of my personal preferances but feel free to fork this repository, make changes, and submit a pull request.
+While these dotfiles are personalized for my use, I'm open to suggestions and improvements! This is an ever changing repo of my personal preferences but feel free to fork this repository, make changes, and submit a pull request.
 
 ## 📄 License
 
