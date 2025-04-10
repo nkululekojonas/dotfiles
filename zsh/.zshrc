@@ -84,12 +84,10 @@ unset GIT_CONFIG
 # --- Oh My Zsh Plugin Configuration ---
 # List plugins for Oh My Zsh to load.
 plugins=(
-    git
-    macos
     tmux
-    zsh-syntax-highlighting  
     zsh-autosuggestions      
     history-substring-search 
+    fast-syntax-highlighting
 )
 
 # --- Custom Keybindings ---
@@ -126,14 +124,27 @@ fi
 
 # NVM (Node Version Manager) configuration using XDG paths
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
-
 # Ensure NVM directory exists
 mkdir -p "$NVM_DIR"
-# Load NVM script if it exists
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# Load NVM bash_completion script if it exists
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-# Ensure NPM config directory exists (NVM might not create it)
+
+lazy_load_nvm() {
+  unset -f nvm node npm npx yarn pnpm corepack # Remove placeholder functions
+  # Source NVM scripts
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  # Add other related tools if needed
+}
+
+# Define placeholder functions
+nvm() { lazy_load_nvm; nvm "$@"; }
+node() { lazy_load_nvm; node "$@"; }
+npm() { lazy_load_nvm; npm "$@"; }
+npx() { lazy_load_nvm; npx "$@"; }
+# Add yarn, pnpm, etc., if you use them
+yarn() { lazy_load_nvm; yarn "$@"; }
+pnpm() { lazy_load_nvm; pnpm "$@"; }
+corepack() { lazy_load_nvm; corepack "$@"; }
+
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
 
 # Zoxide (Smart cd) setup
