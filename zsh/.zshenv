@@ -14,27 +14,14 @@ mkdir -p "${XDG_RUNTIME_DIR}" && chmod 0700 "${XDG_RUNTIME_DIR}"
 
 # --- Zsh Configuration Setup ---
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-export HELPDIR="/usr/share/zsh/$(zsh --version | cut -d' ' -f2)/help"
 
 # Ensure Zsh directory exists
 mkdir -p "${ZDOTDIR}"
 
 # --- PATH Configuration ---
 # Add directories to PATH safely
-PATH="/usr/local/bin:${PATH}:${HOME}/bin"
+export PATH="/usr/local/bin:${PATH}:${HOME}/bin"
 
-# Add Homebrew to PATH if it exists
-if [[ -d "/opt/homebrew/bin" ]]; then
-    # Apple Silicon
-    PATH="/opt/homebrew/bin:${PATH}"
-    PATH="/opt/homebrew/sbin:${PATH}"
-elif [[ -d "/usr/local/Homebrew" ]]; then
-    # Intel Mac
-    PATH="/usr/local/bin:${PATH}"
-    PATH="/usr/local/sbin:${PATH}"
-fi
-
-export PATH
 # Remove duplicate entries in PATH
 typeset -U PATH path
 
@@ -54,19 +41,17 @@ mkdir -p "$(dirname "${LESSHISTFILE}")"
 # export LC_ALL=C
 export LC_COLLATE=C
 
-# export LANG="en_US.UTF-8"
-# export LC_ALL="en_US.UTF-8"
-# export LC_COLLATE="en_US.UTF-8"
-
 # --- Python Configuration ---
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
 export PYTHONHISTORY="${XDG_CONFIG_HOME}/python/history"
+
 # Ensure python directory exists
 mkdir -p "${XDG_CONFIG_HOME}/python"
 
 # --- Vim Configuration ---
 export MYVIMRC="${XDG_CONFIG_HOME}/vim/vimrc"
 export VIMINIT="source ${MYVIMRC}"
+
 # Ensure Vim directory exists
 mkdir -p "${XDG_CONFIG_HOME}/vim"
 

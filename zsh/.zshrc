@@ -1,154 +1,152 @@
-# Compile zcompdump to speed up loading
-autoload -Uz compinit
-
-# Ensure zcompdump is stored in .cache/zsh/
-export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
-
-# Ensure the .cache/zsh directory exists
-mkdir -p "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-
-if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
-    compinit -d "$ZSH_COMPDUMP"
-else
-    compinit -C -d "$ZSH_COMPDUMP"
-fi
-
-# Oh My Zsh configuration
-export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
-
-# Update fpath
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-
-# Set Oh My Zsh Theme
-ZSH_THEME="robbyrussell"
-
-# Improve autocompletion experience
-setopt AUTO_MENU
-
-# Enhance globbing
-setopt EXTENDED_GLOB
-setopt GLOB_DOTS
-
-# Improve history management
-setopt HIST_VERIFY
-setopt SHARE_HISTORY
-setopt EXTENDED_HISTORY      
-setopt HIST_IGNORE_DUPS     
-setopt HIST_SAVE_NO_DUPS
-setopt HIST_REDUCE_BLANKS 
-setopt INC_APPEND_HISTORY
-setopt HIST_IGNORE_ALL_DUPS  
-
-# More History configuration
-export HISTSIZE=10000
-export SAVEHIST=20000
-export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
-mkdir -p "$(dirname "${HISTFILE}")"
-
-# Disable terminal beeps
-setopt NO_BEEP
-
-# Directory options
-setopt AUTO_CD               # cd by typing directory name
-setopt AUTO_PUSHD            # Push the old directory onto the stack on cd
-setopt PUSHD_IGNORE_DUPS     # Don't push duplicate directories
-setopt PUSHD_SILENT  
-
-# Completion
-setopt ALWAYS_TO_END         # Move cursor to end of completed word
-setopt COMPLETE_IN_WORD      # Allow completion from within a word
-setopt PATH_DIRS             # Perform path search even on command names with slashes
-setopt AUTO_MENU             # Show completion menu on tab press
-setopt COMPLETE_ALIASES      # Complete aliases
-
-# Input/Output
-setopt INTERACTIVE_COMMENTS  # Allow comments in interactive shells
-setopt NO_FLOW_CONTROL       # Disable ^S/^Q flow control
-setopt RM_STAR_WAIT          # Wait 10 seconds before accepting rm *
-
-# Better job control
-setopt AUTO_RESUME
-setopt LONG_LIST_JOBS
-
-# Completion configuration
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-zstyle ':zsh-session-manager:*' dir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-
-# Set zcompdump location
+# --- Zsh Completion Cache Setup ---
+# Define Zsh completion cache/dump file path using XDG standard
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
 
-# Ensure proper run-help configuration
-# Remove the default 'run-help' alias if it exists
+# Ensure the cache directory exists
+mkdir -p "$(dirname ${ZSH_COMPDUMP})"
+
+# Initialize the completion system
+# Use compinit with cache file, only check insecurity (-i) if needed
+autoload -Uz compinit
+if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
+  compinit -i -d "$ZSH_COMPDUMP" # Load dump, check insecurity if needed
+else
+  compinit -C -i -d "$ZSH_COMPDUMP" # Create dump with insecurity check
+fi
+
+# --- Oh My Zsh Configuration ---
+# Set Oh My Zsh installation directory (using XDG standard)
+export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
+
+# Set Oh My Zsh Theme
+ZSH_THEME="robbyrussell" # Or your preferred theme
+
+# --- Zsh Options (`setopt`) ---
+# General Usability
+setopt AUTO_MENU           # Show completion menu on second tab press
+setopt COMPLETE_IN_WORD    # Allow completion from within a word
+setopt ALWAYS_TO_END       # Move cursor to end of completed word
+setopt GLOB_DOTS           # Include dotfiles in globbing results
+setopt EXTENDED_GLOB       # Use extended globbing patterns
+setopt NO_BEEP             # Disable terminal bells
+setopt NO_FLOW_CONTROL     # Disable ^S/^Q flow control
+setopt INTERACTIVE_COMMENTS # Allow comments in interactive shell
+setopt RM_STAR_WAIT        # Add 10 sec confirmation for 'rm *'
+
+# Directory Navigation
+setopt AUTO_CD             # cd by typing directory name if it's not a command
+setopt AUTO_PUSHD          # Push the old directory onto the stack on cd
+setopt PUSHD_IGNORE_DUPS   # Don't push duplicate directories onto the stack
+setopt PUSHD_SILENT        # Don't print the directory stack after pushd/popd
+
+# History
+setopt EXTENDED_HISTORY    # Record timestamp and duration for each command
+setopt HIST_VERIFY         # Show command from history before executing
+setopt HIST_IGNORE_ALL_DUPS # If new command is same as previous, don't save
+setopt HIST_SAVE_NO_DUPS   # Don't save duplicate commands in the history file
+setopt HIST_REDUCE_BLANKS  # Remove superfluous blanks from history items
+setopt INC_APPEND_HISTORY  # Save history entries as soon as they are entered
+setopt SHARE_HISTORY       # Share history between all active shells (requires INC_APPEND_HISTORY)
+
+# Job Control
+setopt AUTO_RESUME         # Attempt to resume jobs automatically
+setopt LONG_LIST_JOBS      # List jobs in long format by default
+setopt NOTIFY              # Report status of background jobs immediately
+
+# Completion Behavior
+setopt COMPLETE_ALIASES    # Complete aliases
+setopt PATH_DIRS           # Perform path search even on command names with slashes
+
+# --- History Configuration ---
+export HISTSIZE=10000      # Max history lines kept in memory per session
+export SAVEHIST=20000      # Max history lines saved in the history file
+export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+
+# Ensure history directory exists (compdump mkdir might have already done this)
+mkdir -p "$(dirname "${HISTFILE}")"
+
+# --- Completion Styling (`zstyle`) ---
+zstyle ':completion:*' accept-exact '*(N)' # Accept exact matches even if ambiguous
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" # Store cache per XDG spec
+
+# --- Enhanced Help Commands ---
+# Remove the default 'run-help' alias if it exists to avoid conflict
 unalias run-help 2> /dev/null
 
 # Load Zsh's enhanced run-help system
 autoload -Uz run-help
 autoload -Uz run-help-git  # Enable git-specific help (optional)
 
-# Plugin configuration
-plugins=(git macos tmux)
+# Git configuration
+unset GIT_CONFIG
 
-# Better history search
+# --- Oh My Zsh Plugin Configuration ---
+# List plugins for Oh My Zsh to load.
+plugins=(
+    git
+    macos
+    tmux
+    zsh-syntax-highlighting  
+    zsh-autosuggestions      
+    history-substring-search 
+)
+
+# --- Custom Keybindings ---
+# History search (up/down arrow searches history based on current line)
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
-
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search    # Up
-bindkey "^[[B" down-line-or-beginning-search  # Down
+bindkey "^[[A" up-line-or-beginning-search   # Up arrow (check your terminal's sequence if needed)
+bindkey "^[[B" down-line-or-beginning-search # Down arrow (check your terminal's sequence if needed)
 
-# Edit command in editor
+# Edit command line in $EDITOR (^X^E)
 autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
-# Load Oh My Zsh
+# --- Load Oh My Zsh ---
+# Source Oh My Zsh script if it exists
 [[ -f "${ZSH}/oh-my-zsh.sh" ]] && source "${ZSH}/oh-my-zsh.sh"
 
-# Load custom configurations
-[[ -f "${ZDOTDIR:-$HOME/.zsh}/functions.zsh" ]] && source "${ZDOTDIR:-$HOME/.zsh}/functions.zsh"
-[[ -f "${ZDOTDIR:-$HOME/.zsh}/aliases.zsh" ]] && source "${ZDOTDIR:-$HOME/.zsh}/aliases.zsh"
+# --- Load Custom Zsh Configurations ---
+# Source personal functions and aliases using ZDOTDIR path
+[[ -f "${ZDOTDIR}/functions.zsh" ]] && source "${ZDOTDIR}/functions.zsh"
+[[ -f "${ZDOTDIR}/aliases.zsh" ]] && source "${ZDOTDIR}/aliases.zsh"
 
-# FZF configuration using Homebrew paths
+# --- Tool Configurations ---
+
+# FZF (Find fuzzy) configuration using Homebrew paths
 if command -v fzf >/dev/null 2>&1 && command -v brew >/dev/null 2>&1; then
     FZF_PREFIX="$(brew --prefix)/opt/fzf/shell"
     [[ -f "${FZF_PREFIX}/key-bindings.zsh" ]] && source "${FZF_PREFIX}/key-bindings.zsh"
     [[ -f "${FZF_PREFIX}/completion.zsh" ]] && source "${FZF_PREFIX}/completion.zsh"
 fi
 
-# Ensure HOMEBREW_PREFIX is set (fallback to brew --prefix)
-if command -v brew >/dev/null 2>&1; then
-    HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
-fi
+# NVM (Node Version Manager) configuration using XDG paths
+export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
 
-# Additional plugins loaded only in interactive terminals
-if [[ -o interactive && -n "${HOMEBREW_PREFIX}" ]]; then
-    [[ -f "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    [[ -f "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-    [[ -f "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh" ]] && source "${HOMEBREW_PREFIX}/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
-fi
-
-# Git configuration
-unset GIT_CONFIG
-
-# --- Node.js Configuration ---
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+# Ensure NVM directory exists
+mkdir -p "$NVM_DIR"
+# Load NVM script if it exists
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# Load NVM bash_completion script if it exists
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# Ensure NPM config directory exists (NVM might not create it)
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
 
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+# Zoxide (Smart cd) setup
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd cd)"
 
-# Detect which `ls` flavor is in use
+# --- LS Colors ---
+# Detect which `ls` flavor is in use (GNU vs macOS/BSD)
 if ls --color > /dev/null 2>&1; then # GNU `ls`
-    colorflag="--color"
-    export LS_COLORS='no=00:fi=00:di=01;31:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:'
+    colorflag="--color=auto" # Use --color=auto for GNU ls
+    # export LS_COLORS='...' # Optional: Set custom LS_COLORS if desired
 else # macOS `ls`
-    colorflag="-G"
-    export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
+    colorflag="-G" # Use -G for macOS ls
+    export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx' # Default macOS LSCOLORS
 fi
 
-# Zoxide setup
-command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd cd)"
+# --- End of .zshrc ---

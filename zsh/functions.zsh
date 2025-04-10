@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # functions.zsh: A collection of useful shell functions for enhanced command-line experience
 # Author: Nkululeko Jonas
 # Date: 23-10-2023
