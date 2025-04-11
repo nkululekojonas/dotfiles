@@ -61,4 +61,8 @@ export COPY_EXTENDED_ATTRIBUTES_DISABLE=true
 export COPYFILE_DISABLE=true
 
 # --- Dotfiles Management ---
-[[ -d "${HOME}/dotfiles" ]] && export DOT="${HOME}/dotfiles"
+if [[ -d "${HOME}/dotfiles" ]]; then
+    export DOTFILES="${HOME}/dotfiles"
+elif [[ -d "${HOME}/.dotfiles" ]]; then
+    export DOTFILES="${HOME}/.dotfiles"
+fi

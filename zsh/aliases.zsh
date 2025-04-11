@@ -90,8 +90,7 @@ alias egrep='egrep --color=auto'
 alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* "delete from LSQuarantineEvent"'
 
 alias clean-ds='find . -type f -name "*.DS_Store" -ls -delete'
-alias cleanup='rmdsstore && emptytrash'
-alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+alias clean-env='clean-ds && emptytrash'
 
 # macOS specific
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES; killall Finder"
