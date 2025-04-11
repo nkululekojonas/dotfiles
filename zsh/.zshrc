@@ -19,7 +19,7 @@ fi
 export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
 
 # Set Oh My Zsh Theme
-ZSH_THEME="robbyrussell" # Or your preferred theme
+ZSH_THEME="robbyrussell" 
 
 # --- Zsh Options (`setopt`) ---
 # General Usability
@@ -124,8 +124,10 @@ fi
 
 # NVM (Node Version Manager) configuration using XDG paths
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+
 # Ensure NVM directory exists
 mkdir -p "$NVM_DIR"
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
 
 lazy_load_nvm() {
   unset -f nvm node npm npx yarn pnpm corepack # Remove placeholder functions
@@ -140,12 +142,11 @@ nvm() { lazy_load_nvm; nvm "$@"; }
 node() { lazy_load_nvm; node "$@"; }
 npm() { lazy_load_nvm; npm "$@"; }
 npx() { lazy_load_nvm; npx "$@"; }
+
 # Add yarn, pnpm, etc., if you use them
 yarn() { lazy_load_nvm; yarn "$@"; }
 pnpm() { lazy_load_nvm; pnpm "$@"; }
 corepack() { lazy_load_nvm; corepack "$@"; }
-
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
 
 # Zoxide (Smart cd) setup
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh --cmd cd)"
@@ -159,5 +160,4 @@ else # macOS `ls`
     colorflag="-G" # Use -G for macOS ls
     export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx' # Default macOS LSCOLORS
 fi
-
 # --- End of .zshrc ---
