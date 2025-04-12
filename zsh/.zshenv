@@ -1,4 +1,3 @@
-#!/bin/zsh
 # --- XDG Base Directory Specification Compliance ---
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-"${HOME}/.cache"}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"${HOME}/.config"}"
@@ -37,8 +36,7 @@ mkdir -p "$(dirname "${LESSHISTFILE}")"
 
 # --- Locale Settings ---
 # Uncomment if needed:
-# export LANG=C
-# export LC_ALL=C
+export LANG=en_AU.UTF-8
 export LC_COLLATE=C
 
 # --- Python Configuration ---

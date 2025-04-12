@@ -42,7 +42,7 @@ alias h='history'
 alias j='jobs -l'
 
 # Dev Shortcuts
-alias g='git'
+# alias g='git'
 alias v='vim'
 alias b='bat --paging=never'
 
