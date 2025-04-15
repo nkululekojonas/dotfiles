@@ -1,39 +1,27 @@
-# ~/.config/zsh/.zshrc
-
 # --- Oh My Zsh Configuration ---
 # Set Oh My Zsh installation directory (using XDG standard)
 export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
 
 # Set Oh My Zsh Theme
-# robbyrussell is simple and fast. Other themes might impact performance.
 ZSH_THEME="robbyrussell"
 
 # --- Oh My Zsh Plugin Configuration ---
-# List plugins for Oh My Zsh to load. Keep this list lean for faster startup.
-# Examples: git, brew, docker, python, node, etc.
 plugins=(
     tmux                     # tmux integration and shortcuts
     zsh-autosuggestions      # Fish-like autosuggestions
     history-substring-search # Advanced history search based on current input
     fast-syntax-highlighting # Faster syntax highlighting alternative
 )
-# Note: Ensure these plugins are compatible with OMZ or installed correctly.
 
 # --- Load Oh My Zsh ---
-# Source Oh My Zsh script. This loads the theme, plugins, and core OMZ functions.
-# This is often a significant part of the startup time.
-# Should be sourced *BEFORE* compinit and customisations that might depend on it.
 if [[ -f "${ZSH}/oh-my-zsh.sh" ]]; then
   source "${ZSH}/oh-my-zsh.sh"
 else
   echo "Warning: Oh My Zsh not found at ${ZSH}" >&2
 fi
-# --- End of Oh My Zsh Loading ---
-
 
 # --- Zsh Completion Cache Setup ---
 # Define Zsh completion cache/dump file path using XDG standard
-# Run this *AFTER* Oh My Zsh and other fpath modifications so it picks up all completions.
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
 
 # Ensure the cache directory exists
@@ -44,8 +32,6 @@ mkdir -p "$(dirname "${ZSH_COMPDUMP}")"
 autoload -Uz compinit
 
 # Check if the dump file exists and is older than 24 hours. Rebuild if needed.
-# Using the cache (`-C`) is faster but might result in stale completions if used unconditionally.
-# The `-i` flag makes compinit check for insecure files/dirs (recommended).
 if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
   # Dump file exists but is older than 24 hours, rebuild it with insecurity checks
   compinit -i -d "$ZSH_COMPDUMP"
@@ -53,12 +39,8 @@ else
   # Dump file is recent or doesn't exist; use cache if possible, create if needed, check insecurity
   compinit -C -i -d "$ZSH_COMPDUMP"
 fi
-# --- End of Completion Setup ---
-
 
 # --- Zsh Options (`setopt`) ---
-# Options enhance shell usability and behavior. Setting them is very fast.
-
 # General Usability
 setopt AUTO_MENU          # Show completion menu on second tab press
 setopt COMPLETE_IN_WORD   # Allow completion from within a word
@@ -114,11 +96,12 @@ unalias run-help 2> /dev/null
 
 # Load Zsh's enhanced run-help system for better help display
 autoload -Uz run-help
+
 # Load Git-specific help commands (optional, requires Git)
 autoload -Uz run-help-git
 
-# Git configuration (if needed)
-# unset GIT_CONFIG # Uncomment if you need to explicitly clear Git config lookup path
+# Git configuration
+unset GIT_CONFIG 
 
 # --- Custom Keybindings ---
 # Setup custom keybindings using Zsh Line Editor (zle).
@@ -138,12 +121,17 @@ bindkey "^X^E" edit-command-line
 
 # --- Load Custom Zsh Configurations ---
 # Source personal functions and aliases stored in separate files within ZDOTDIR.
-# Good practice to source these after OMZ and compinit are set up.
 [[ -f "${ZDOTDIR}/functions.zsh" ]] && source "${ZDOTDIR}/functions.zsh"
 [[ -f "${ZDOTDIR}/aliases.zsh" ]] && source "${ZDOTDIR}/aliases.zsh"
 
-# --- Tool Configurations ---
+# --- Dotfiles Management ---
+if [[ -d "${HOME}/dotfiles" ]]; then
+    export DOTFILES="${HOME}/dotfiles"
+elif [[ -d "${HOME}/.dotfiles" ]]; then
+    export DOTFILES="${HOME}/.dotfiles"
+fi
 
+# --- Tool Configurations ---
 # FZF (Find fuzzy) configuration using optimized path lookup
 # Try using HOMEBREW_PREFIX set in .zprofile first to avoid slower `brew --prefix` call.
 local fzf_base_path
@@ -164,15 +152,13 @@ if [[ -n "$fzf_base_path" ]]; then
     [[ -f "${fzf_base_path}/key-bindings.zsh" ]] && source "${fzf_base_path}/key-bindings.zsh"
     [[ -f "${fzf_base_path}/completion.zsh" ]] && source "${fzf_base_path}/completion.zsh" # Adds FZF completions
 else
-    # Optional: Warn if FZF setup failed
-    # echo "Warning: FZF shell integration not found or brew prefix unavailable." >&2
-    : # No-op, just ensures the if block is valid even if empty
+    echo "Warning: FZF shell integration not found or brew prefix unavailable." >&2
 fi
+
 unset fzf_base_path # Clean up temporary variable
 
 
 # NVM (Node Version Manager) configuration using XDG paths (Lazy Load)
-# This avoids running the slow nvm initialization on every shell startup.
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
 
 # Ensure NVM directory and related npm config directory exist
@@ -199,7 +185,6 @@ yarn() { lazy_load_nvm; yarn "$@"; }
 pnpm() { lazy_load_nvm; pnpm "$@"; }
 corepack() { lazy_load_nvm; corepack "$@"; }
 
-
 # Zoxide (Smart cd command) setup
 # Ensure Zoxide command is available before trying to initialize it
 if command -v zoxide >/dev/null 2>&1; then
@@ -216,8 +201,5 @@ else # Assume macOS/BSD `ls`
     colorflag="-G" # Use -G flag for enabling colors on macOS/BSD ls
     export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx' # Default macOS LSCOLORS (customize if needed)
 fi
-# Define aliases using this flag in your aliases.zsh file for consistency.
-# Example: alias ls='ls ${colorflag}'
-# Example: alias ll='ls -l ${colorflag}'
 
 # --- End of .zshrc ---

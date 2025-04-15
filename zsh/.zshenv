@@ -35,7 +35,6 @@ export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 mkdir -p "$(dirname "${LESSHISTFILE}")"
 
 # --- Locale Settings ---
-# Uncomment if needed:
 export LANG=en_AU.UTF-8
 export LC_COLLATE=C
 
@@ -57,10 +56,3 @@ mkdir -p "${XDG_CONFIG_HOME}/vim"
 # Prevent macOS from creating .DS_Store files on network volumes
 export COPY_EXTENDED_ATTRIBUTES_DISABLE=true
 export COPYFILE_DISABLE=true
-
-# --- Dotfiles Management ---
-if [[ -d "${HOME}/dotfiles" ]]; then
-    export DOTFILES="${HOME}/dotfiles"
-elif [[ -d "${HOME}/.dotfiles" ]]; then
-    export DOTFILES="${HOME}/.dotfiles"
-fi
