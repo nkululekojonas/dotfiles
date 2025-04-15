@@ -1,28 +1,24 @@
-# Set up Homebrew environment if brew command is available
+# Set up Homebrew environment
 
-if command -v brew > /dev/null; then
-    # If brew is already in PATH
-    brew_path=$(command -v brew)
-    eval "$($brew_path shellenv)"
+local brew_executable
+if brew_executable=$(command -v brew); then
+    eval "$($brew_executable shellenv)"
 else
-    # If not in PATH, check standard locations based on architecture
     local arch_name="$(uname -m)"
     local brew_prefix
-
-    # Determine potential Homebrew prefix
     if [ "${arch_name}" = "x86_64" ]; then
-        brew_prefix="/usr/local" # Standard Intel location
+        brew_prefix="/usr/local"
     else
-        brew_prefix="/opt/homebrew" # Standard Apple Silicon location
+        brew_prefix="/opt/homebrew"
     fi
 
-    # Check if brew executable exists at the determined prefix
     if [ -x "${brew_prefix}/bin/brew" ]; then
+        export HOMEBREW_PREFIX="${brew_prefix}" # Export for other scripts
         eval "$(${brew_prefix}/bin/brew shellenv)"
     else
-        echo "Error: brew command not found in PATH or standard locations." >&2
+        echo "Warning: brew command not found." >&2
     fi
 
-    # Clean up local variable
-    unset brew_prefix arch_name 
+    unset brew_prefix arch_name
 fi
+unset brew_executable
