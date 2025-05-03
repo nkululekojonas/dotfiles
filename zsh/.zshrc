@@ -1,3 +1,30 @@
+# ~/.config/zsh/.zshrc
+#------------------------------------------------------------------------------#
+# Zsh Interactive Shell Configuration                                          #
+#------------------------------------------------------------------------------#
+#
+# --- Ensure Required Directories Exist  ---
+mkdir -p \
+  "${XDG_CONFIG_HOME:=${HOME}/.config}" \
+  "${XDG_CACHE_HOME:=${HOME}/.cache}" \
+  "${XDG_DATA_HOME:=${HOME}/.local/share}" \
+  "${XDG_STATE_HOME:=${HOME}/.local/state}" \
+  "${XDG_RUNTIME_DIR:=${HOME}/.local/run}" \
+  "${XDG_CONFIG_HOME}/zsh" \
+  "${XDG_CONFIG_HOME}/python" \
+  "${XDG_CONFIG_HOME}/vim" \
+  "$(dirname "${XDG_CACHE_HOME}/less/history")" \
+  "${XDG_CACHE_HOME}/zsh" 
+
+# Ensure XDG_RUNTIME_DIR has the correct permissions (0700)
+if [[ -d "${XDG_RUNTIME_DIR}" ]]; then
+  chmod 0700 "${XDG_RUNTIME_DIR}"
+fi
+
+# --- PATH Uniqueness ---
+# Ensure the PATH variable does not contain duplicate directories.
+typeset -U PATH path
+
 # --- Oh My Zsh Configuration ---
 # Set Oh My Zsh installation directory (using XDG standard)
 export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
@@ -24,14 +51,12 @@ fi
 # Define Zsh completion cache/dump file path using XDG standard
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
 
-# Ensure the cache directory exists
-mkdir -p "$(dirname "${ZSH_COMPDUMP}")"
-
 # Initialize the completion system (`compinit`)
 # Autoload the compinit function if not already loaded
 autoload -Uz compinit
 
 # Check if the dump file exists and is older than 24 hours. Rebuild if needed.
+# This avoids regenerating the completions too often.
 if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
   # Dump file exists but is older than 24 hours, rebuild it with insecurity checks
   compinit -i -d "$ZSH_COMPDUMP"
@@ -41,6 +66,8 @@ else
 fi
 
 # --- Zsh Options (`setopt`) ---
+# Configure various shell behaviors for interactive use.
+
 # General Usability
 setopt AUTO_MENU          # Show completion menu on second tab press
 setopt COMPLETE_IN_WORD   # Allow completion from within a word
@@ -78,17 +105,16 @@ setopt PATH_DIRS          # Perform path search even on command names containing
 
 # --- History Configuration ---
 export HISTSIZE=10000      # Max history lines kept in memory per active session
-export SAVEHIST=20000      # Max history lines saved in the history file (~/.cache/zsh/history)
-export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history" # Use XDG path for history file
-
-# Ensure history directory exists (compdump mkdir might have already done this)
-mkdir -p "$(dirname "${HISTFILE}")"
+export SAVEHIST=20000      # Max history lines saved in the history file
+# Use XDG path for history file (directory created at the top)
+export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 
 # --- Completion Styling (`zstyle`) ---
 # Configure the behavior and appearance of the Zsh completion system.
 zstyle ':completion:*' accept-exact '*(N)' # Accept exact matches even if other completions exist
 zstyle ':completion:*' use-cache on        # Enable caching for completion results
-zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" # Store cache per XDG spec
+# Store cache per XDG spec (directory created at the top)
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 
 # --- Enhanced Help Commands ---
 # Remove the default 'run-help' alias if it exists to avoid conflict
@@ -100,8 +126,8 @@ autoload -Uz run-help
 # Load Git-specific help commands (optional, requires Git)
 autoload -Uz run-help-git
 
-# Git configuration
-unset GIT_CONFIG 
+# Git configuration (ensure Zsh doesn't interfere with Git's own config finding)
+unset GIT_CONFIG
 
 # --- Custom Keybindings ---
 # Setup custom keybindings using Zsh Line Editor (zle).
@@ -111,8 +137,9 @@ autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search  # Up arrow (Verify sequence with 'showkey -a' or similar if needed)
-bindkey "^[[B" down-line-or-beginning-search # Down arrow (Verify sequence if needed)
+# Note: Key sequences like ^[[A might vary between terminals. Use `showkey -a` or `cat -v` to verify.
+bindkey "^[[A" up-line-or-beginning-search  # Up arrow
+bindkey "^[[B" down-line-or-beginning-search # Down arrow
 
 # Edit command line in $EDITOR (^X^E)
 autoload -z edit-command-line
@@ -121,10 +148,12 @@ bindkey "^X^E" edit-command-line
 
 # --- Load Custom Zsh Configurations ---
 # Source personal functions and aliases stored in separate files within ZDOTDIR.
+# Ensure ZDOTDIR is set (should be inherited from .zshenv).
 [[ -f "${ZDOTDIR}/functions.zsh" ]] && source "${ZDOTDIR}/functions.zsh"
 [[ -f "${ZDOTDIR}/aliases.zsh" ]] && source "${ZDOTDIR}/aliases.zsh"
 
 # --- Dotfiles Management ---
+# Optionally set a DOTFILES variable if a standard location exists.
 if [[ -d "${HOME}/dotfiles" ]]; then
     export DOTFILES="${HOME}/dotfiles"
 elif [[ -d "${HOME}/.dotfiles" ]]; then
@@ -132,15 +161,17 @@ elif [[ -d "${HOME}/.dotfiles" ]]; then
 fi
 
 # --- Tool Configurations ---
+
 # FZF (Find fuzzy) configuration using optimized path lookup
 # Try using HOMEBREW_PREFIX set in .zprofile first to avoid slower `brew --prefix` call.
-local fzf_base_path
+local fzf_base_path # Use local to keep variable scope contained
 if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/fzf/shell" ]]; then
     # Use prefix found by brew shellenv in .zprofile if available
     fzf_base_path="$HOMEBREW_PREFIX/opt/fzf/shell"
 elif command -v brew >/dev/null 2>&1; then
     # Fallback: If HOMEBREW_PREFIX wasn't useful, try running brew --prefix now
-    local brew_prefix_fzf="$(brew --prefix)"
+    local brew_prefix_fzf # Local temporary variable
+    brew_prefix_fzf="$(brew --prefix)"
     if [[ -n "$brew_prefix_fzf" && -d "$brew_prefix_fzf/opt/fzf/shell" ]]; then
         fzf_base_path="$brew_prefix_fzf/opt/fzf/shell"
     fi
@@ -154,20 +185,19 @@ if [[ -n "$fzf_base_path" ]]; then
 else
     echo "Warning: FZF shell integration not found or brew prefix unavailable." >&2
 fi
-
 unset fzf_base_path # Clean up temporary variable
 
-
 # NVM (Node Version Manager) configuration using XDG paths (Lazy Load)
+# Set NVM directory according to XDG spec
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
 
-# Ensure NVM directory and related npm config directory exist
+# Ensure NVM directory and related npm config directory exist (using XDG)
 mkdir -p "$NVM_DIR"
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm" # Npm might use this based on npmrc
 
-# Define the lazy load function
+# Define the lazy load function (runs only when a node-related command is first used)
 lazy_load_nvm() {
-  # Remove these placeholder functions first
+  # Remove these placeholder functions first to avoid recursion
   unset -f nvm node npm npx yarn pnpm corepack
   # Source NVM scripts only when needed
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # Load nvm
@@ -189,6 +219,7 @@ corepack() { lazy_load_nvm; corepack "$@"; }
 # Ensure Zoxide command is available before trying to initialize it
 if command -v zoxide >/dev/null 2>&1; then
   # Initialize Zoxide for Zsh, hooking into the 'cd' command
+  # Using --cmd cd makes 'cd' behave like 'z' for directory matching
   eval "$(zoxide init zsh --cmd cd)"
 fi
 
@@ -196,10 +227,10 @@ fi
 # Detect which `ls` flavor is in use (GNU coreutils vs macOS/BSD) to set correct color flag.
 if ls --color > /dev/null 2>&1; then # Check if GNU `ls` supports --color
     colorflag="--color=auto" # Use --color=auto for GNU ls
-    # export LS_COLORS='...' # Optional: Set custom LS_COLORS for GNU ls if desired
 else # Assume macOS/BSD `ls`
     colorflag="-G" # Use -G flag for enabling colors on macOS/BSD ls
-    export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx' # Default macOS LSCOLORS (customize if needed)
+    # Set default macOS LSCOLORS (customize if needed)
+    export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
 fi
 
 # --- End of .zshrc ---
