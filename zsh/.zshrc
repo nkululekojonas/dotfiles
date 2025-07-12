@@ -35,6 +35,7 @@ ZSH_THEME="robbyrussell"
 # --- Oh My Zsh Plugin Configuration ---
 plugins=(
     tmux                     # tmux integration and shortcuts
+    macos
     zsh-autosuggestions      # Fish-like autosuggestions
     history-substring-search # Advanced history search based on current input
     fast-syntax-highlighting # Faster syntax highlighting alternative
