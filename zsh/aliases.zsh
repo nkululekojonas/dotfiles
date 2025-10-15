@@ -75,12 +75,12 @@ alias brewup='brew update && brew upgrade && brew cleanup'  # Update Homebrew & 
 alias myip='curl ifconfig.me' # Get public IP address
 alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder' # Flush DNS cache (macOS)
 
-# Always use color output for `ls`
-alias ls='command ls ${colorflag}'
-alias l='ls -AFlh ${colorflag}'
-alias ll='ls -aFlh ${colorflag}'
-alias lsd='ls -lF ${colorflag} | grep --color=never "^d"'
-
+# # Always use color output for `ls`
+# alias ls='command ls ${colorflag}'
+# alias l='ls -AFlh ${colorflag}'
+# alias ll='ls -aFlh ${colorflag}'
+# alias lsd='ls -lF ${colorflag} | grep --color=never "^d"'
+ 
 # Always enable colored `grep` output
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
