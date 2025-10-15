@@ -2,11 +2,6 @@
 # Author: Nkululeko Jonas
 # Date: 23-10-2023
 
-# vlast: open last argument of previous command
-vprev() {
-    vim "$_"
-}
-
 # Create a new directory and enter it
 mcd() {
     if [ $# -eq 0 ]; then
