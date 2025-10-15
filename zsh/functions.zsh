@@ -2,6 +2,17 @@
 # Author: Nkululeko Jonas
 # Date: 23-10-2023
 
+# Remove any previous alias definitions
+unalias ls l ll lsd 2>/dev/null
+
+
+# Define dynamic convenience functions
+ls()   { command ls $colorflag "$@"; }
+
+l()    { command ls -AFlh $colorflag "$@"; }
+ll()   { command ls -aFlh $colorflag "$@"; }
+lsd()  { command ls -lF $colorflag "$@" | grep "^d"; }
+
 # Create a new directory and enter it
 mcd() {
     if [ $# -eq 0 ]; then
@@ -54,12 +65,6 @@ uinfo() {
             printf "%-15s: %s\n" "$arg" "${(P)arg:-No value assigned}"
         fi
     done
-}
-
-# Generate a random password
-genpass() {
-    local length=${1:-16}
-    LC_ALL=C tr -dc 'A-Za-z0-9!@#$%^&*()_+' </dev/urandom | head -c "$length"
 }
 
 # Show most used commands
