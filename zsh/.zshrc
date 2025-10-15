@@ -107,6 +107,7 @@ setopt PATH_DIRS          # Perform path search even on command names containing
 # --- History Configuration ---
 export HISTSIZE=10000      # Max history lines kept in memory per active session
 export SAVEHIST=20000      # Max history lines saved in the history file
+
 # Use XDG path for history file (directory created at the top)
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 
@@ -138,6 +139,7 @@ autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
+
 # Note: Key sequences like ^[[A might vary between terminals. Use `showkey -a` or `cat -v` to verify.
 bindkey "^[[A" up-line-or-beginning-search  # Up arrow
 bindkey "^[[B" down-line-or-beginning-search # Down arrow
@@ -146,6 +148,14 @@ bindkey "^[[B" down-line-or-beginning-search # Down arrow
 autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
+
+# --- LS Colors ---
+# Detect which `ls` flavor is in use (GNU coreutils vs macOS/BSD) to set correct color flag.
+if ls --color > /dev/null 2>&1; then 
+    colorflag="--color=auto" 
+else # Assume macOS/BSD `ls`
+    colorflag="-G" 
+fi
 
 # --- Load Custom Zsh Configurations ---
 # Source personal functions and aliases stored in separate files within ZDOTDIR.
@@ -211,6 +221,7 @@ nvm() { lazy_load_nvm; nvm "$@"; }
 node() { lazy_load_nvm; node "$@"; }
 npm() { lazy_load_nvm; npm "$@"; }
 npx() { lazy_load_nvm; npx "$@"; }
+
 # Add placeholders for other Node-related tools you might use
 yarn() { lazy_load_nvm; yarn "$@"; }
 pnpm() { lazy_load_nvm; pnpm "$@"; }
@@ -222,16 +233,6 @@ if command -v zoxide >/dev/null 2>&1; then
   # Initialize Zoxide for Zsh, hooking into the 'cd' command
   # Using --cmd cd makes 'cd' behave like 'z' for directory matching
   eval "$(zoxide init zsh --cmd cd)"
-fi
-
-# --- LS Colors ---
-# Detect which `ls` flavor is in use (GNU coreutils vs macOS/BSD) to set correct color flag.
-if ls --color > /dev/null 2>&1; then # Check if GNU `ls` supports --color
-    colorflag="--color=auto" # Use --color=auto for GNU ls
-else # Assume macOS/BSD `ls`
-    colorflag="-G" # Use -G flag for enabling colors on macOS/BSD ls
-    # Set default macOS LSCOLORS (customize if needed)
-    export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
 fi
 
 # --- End of .zshrc ---
