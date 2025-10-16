@@ -1,17 +1,17 @@
-# functions.zsh: A collection of useful shell functions for enhanced command-line experience
+# functions.zsh: A collection of useful shell functions 
 # Author: Nkululeko Jonas
 # Date: 23-10-2023
 
 # Remove any previous alias definitions
 unalias ls l ll lsd 2>/dev/null
 
-
-# Define dynamic convenience functions
+# Override builtin 'ls'
 ls()   { command ls $colorflag "$@"; }
 
+# Useful colorful 'ls' helpers
 l()    { command ls -AFlh $colorflag "$@"; }
 ll()   { command ls -aFlh $colorflag "$@"; }
-lsd()  { command ls -lF $colorflag "$@" | grep "^d"; }
+lsd()  { command ls -lF ${colorflag} -d *(/) "$@" }
 
 # Create a new directory and enter it
 mcd() {
