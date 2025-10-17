@@ -47,7 +47,7 @@ alias v='vim'
 alias b='bat --paging=never'
 
 alias tll='tldr'
-alias type='type -a'
+alias type='whence -ac'
 
 # Python aliases
 alias p='python3'

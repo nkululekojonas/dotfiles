@@ -1,8 +1,6 @@
 # ~/.config/zsh/.zshrc
-#------------------------------------------------------------------------------#
-# Zsh Interactive Shell Configuration                                          #
-#------------------------------------------------------------------------------#
-#
+# Zsh Interactive Shell Configuration                                          
+
 # --- Ensure Required Directories Exist  ---
 mkdir -p \
   "${XDG_CONFIG_HOME:=${HOME}/.config}" \
@@ -22,12 +20,10 @@ if [[ -d "${XDG_RUNTIME_DIR}" ]]; then
 fi
 
 # --- PATH Uniqueness ---
-# Ensure the PATH variable does not contain duplicate directories.
-typeset -U PATH path
+typeset -U PATH path # Ensure the PATH variable does not contain duplicate directories.
 
 # --- Oh My Zsh Configuration ---
-# Set Oh My Zsh installation directory (using XDG standard)
-export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh"
+export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh" # Set Oh My Zsh installation directory (using XDG standard)
 
 # Set Oh My Zsh Theme
 ZSH_THEME="robbyrussell"
@@ -48,7 +44,6 @@ else
   echo "Warning: Oh My Zsh not found at ${ZSH}" >&2
 fi
 
-# --- Zsh Completion Cache Setup ---
 # Define Zsh completion cache/dump file path using XDG standard
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
 
@@ -104,7 +99,7 @@ setopt NOTIFY             # Report status of background jobs immediately upon co
 setopt COMPLETE_ALIASES   # Complete aliases like regular commands
 setopt PATH_DIRS          # Perform path search even on command names containing slashes
 
-# --- History Configuration ---
+# History Configuration 
 export HISTSIZE=10000      # Max history lines kept in memory per active session
 export SAVEHIST=20000      # Max history lines saved in the history file
 
@@ -115,6 +110,7 @@ export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 # Configure the behavior and appearance of the Zsh completion system.
 zstyle ':completion:*' accept-exact '*(N)' # Accept exact matches even if other completions exist
 zstyle ':completion:*' use-cache on        # Enable caching for completion results
+
 # Store cache per XDG spec (directory created at the top)
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 
@@ -132,7 +128,6 @@ autoload -Uz run-help-git
 unset GIT_CONFIG
 
 # --- Custom Keybindings ---
-# Setup custom keybindings using Zsh Line Editor (zle).
 
 # History search (up/down arrow searches history based on current line prefix)
 autoload -U up-line-or-beginning-search
@@ -150,21 +145,17 @@ zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
 # --- LS Colors ---
-# Detect which `ls` flavor is in use (GNU coreutils vs macOS/BSD) to set correct color flag.
 if ls --color > /dev/null 2>&1; then 
-    colorflag="--color=auto" 
-else # Assume macOS/BSD `ls`
-    colorflag="-G" 
+    colorflag="--color=auto"    # Modern macOS/BSD '/bin/ls' supports --colorflag
+else 
+    colorflag="-G"              # Assume older macOS/BSD ls or non-standard GNU ls
 fi
 
-# --- Load Custom Zsh Configurations ---
 # Source personal functions and aliases stored in separate files within ZDOTDIR.
-# Ensure ZDOTDIR is set (should be inherited from .zshenv).
 [[ -f "${ZDOTDIR}/functions.zsh" ]] && source "${ZDOTDIR}/functions.zsh"
 [[ -f "${ZDOTDIR}/aliases.zsh" ]] && source "${ZDOTDIR}/aliases.zsh"
 
-# --- Dotfiles Management ---
-# Optionally set a DOTFILES variable if a standard location exists.
+# Set a DOTFILES variable if a standard location exists.
 if [[ -d "${HOME}/dotfiles" ]]; then
     export DOTFILES="${HOME}/dotfiles"
 elif [[ -d "${HOME}/.dotfiles" ]]; then
@@ -234,5 +225,3 @@ if command -v zoxide >/dev/null 2>&1; then
   # Using --cmd cd makes 'cd' behave like 'z' for directory matching
   eval "$(zoxide init zsh --cmd cd)"
 fi
-
-# --- End of .zshrc ---
