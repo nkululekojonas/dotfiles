@@ -133,3 +133,31 @@ update() {
 
     echo "All updates completed successfully!"
 }
+
+# --- NVM (Node Version Manager) Configuration ---
+
+# Set NVM directory according to XDG spec
+export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+
+# Ensure NVM directory and related npm config directory exist (using XDG)
+mkdir -p "$NVM_DIR"
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
+
+# Define the lazy load function (runs only when a node-related command is first used)
+lazy_load_nvm() {
+  # Remove these placeholder functions first to avoid recursion
+  unset -f nvm node npm npx yarn pnpm corepack
+
+  # Source NVM scripts only when needed
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # Load nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # Load nvm bash_completion
+}
+
+# Define placeholder functions that trigger the lazy load on first call
+nvm() { lazy_load_nvm; nvm "$@"; }
+node() { lazy_load_nvm; node "$@"; }
+npm() { lazy_load_nvm; npm "$@"; }
+npx() { lazy_load_nvm; npx "$@"; }
+yarn() { lazy_load_nvm; yarn "$@"; }
+pnpm() { lazy_load_nvm; pnpm "$@"; }
+corepack() { lazy_load_nvm; corepack "$@"; }

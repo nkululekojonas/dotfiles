@@ -1,5 +1,4 @@
-# ~/.config/zsh/.zshrc
-# Zsh Interactive Shell Configuration                                          
+# Zsh Interactive Shell Configuration 
 
 # --- Ensure Required Directories Exist  ---
 mkdir -p \
@@ -23,7 +22,12 @@ fi
 typeset -U PATH path # Ensure the PATH variable does not contain duplicate directories.
 
 # --- Oh My Zsh Configuration ---
-export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh" # Set Oh My Zsh installation directory (using XDG standard)
+
+# Define Zsh completion cache/dump file path using XDG standard
+export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
+
+# Set Oh My Zsh installation directory (using XDG standard)
+export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh" 
 
 # Set Oh My Zsh Theme
 ZSH_THEME="robbyrussell"
@@ -42,23 +46,6 @@ if [[ -f "${ZSH}/oh-my-zsh.sh" ]]; then
   source "${ZSH}/oh-my-zsh.sh"
 else
   echo "Warning: Oh My Zsh not found at ${ZSH}" >&2
-fi
-
-# Define Zsh completion cache/dump file path using XDG standard
-export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
-
-# Initialize the completion system (`compinit`)
-# Autoload the compinit function if not already loaded
-autoload -Uz compinit
-
-# Check if the dump file exists and is older than 24 hours. Rebuild if needed.
-# This avoids regenerating the completions too often.
-if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
-  # Dump file exists but is older than 24 hours, rebuild it with insecurity checks
-  compinit -i -d "$ZSH_COMPDUMP"
-else
-  # Dump file is recent or doesn't exist; use cache if possible, create if needed, check insecurity
-  compinit -C -i -d "$ZSH_COMPDUMP"
 fi
 
 # --- Zsh Options (`setopt`) ---
@@ -114,7 +101,6 @@ zstyle ':completion:*' use-cache on        # Enable caching for completion resul
 # Store cache per XDG spec (directory created at the top)
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 
-# --- Enhanced Help Commands ---
 # Remove the default 'run-help' alias if it exists to avoid conflict
 unalias run-help 2> /dev/null
 
@@ -151,7 +137,7 @@ else
     colorflag="-G"              # Assume older macOS/BSD ls or non-standard GNU ls
 fi
 
-# Source personal functions and aliases stored in separate files within ZDOTDIR.
+# --- Source Personal Scripts ---
 [[ -f "${ZDOTDIR}/functions.zsh" ]] && source "${ZDOTDIR}/functions.zsh"
 [[ -f "${ZDOTDIR}/aliases.zsh" ]] && source "${ZDOTDIR}/aliases.zsh"
 
@@ -164,64 +150,25 @@ fi
 
 # --- Tool Configurations ---
 
-# FZF (Find fuzzy) configuration using optimized path lookup
-# Try using HOMEBREW_PREFIX set in .zprofile first to avoid slower `brew --prefix` call.
-local fzf_base_path # Use local to keep variable scope contained
-if [[ -n "$HOMEBREW_PREFIX" && -d "$HOMEBREW_PREFIX/opt/fzf/shell" ]]; then
-    # Use prefix found by brew shellenv in .zprofile if available
-    fzf_base_path="$HOMEBREW_PREFIX/opt/fzf/shell"
-elif command -v brew >/dev/null 2>&1; then
-    # Fallback: If HOMEBREW_PREFIX wasn't useful, try running brew --prefix now
-    local brew_prefix_fzf # Local temporary variable
-    brew_prefix_fzf="$(brew --prefix)"
-    if [[ -n "$brew_prefix_fzf" && -d "$brew_prefix_fzf/opt/fzf/shell" ]]; then
-        fzf_base_path="$brew_prefix_fzf/opt/fzf/shell"
-    fi
-    unset brew_prefix_fzf # Clean up temporary variable
+# FZF (Fuzzy Finder)
+# Find FZF shell integration files
+local fzf_prefix
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+    fzf_prefix="$HOMEBREW_PREFIX"
+elif (( $+commands[brew] )); then # More efficient Zsh way to check for a command
+    fzf_prefix="$(brew --prefix)"
 fi
 
-# If a valid FZF path was found, source its scripts
-if [[ -n "$fzf_base_path" ]]; then
+if [[ -d "${fzf_prefix}/opt/fzf/shell" ]]; then
+    local fzf_base_path="${fzf_prefix}/opt/fzf/shell"
     [[ -f "${fzf_base_path}/key-bindings.zsh" ]] && source "${fzf_base_path}/key-bindings.zsh"
-    [[ -f "${fzf_base_path}/completion.zsh" ]] && source "${fzf_base_path}/completion.zsh" # Adds FZF completions
+    [[ -f "${fzf_base_path}/completion.zsh" ]] && source "${fzf_base_path}/completion.zsh"
 else
-    echo "Warning: FZF shell integration not found or brew prefix unavailable." >&2
+    echo "Warning: FZF shell integration not found." >&2
 fi
-unset fzf_base_path # Clean up temporary variable
+unset fzf_prefix fzf_base_path # Clean up
 
-# NVM (Node Version Manager) configuration using XDG paths (Lazy Load)
-# Set NVM directory according to XDG spec
-export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
-
-# Ensure NVM directory and related npm config directory exist (using XDG)
-mkdir -p "$NVM_DIR"
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm" # Npm might use this based on npmrc
-
-# Define the lazy load function (runs only when a node-related command is first used)
-lazy_load_nvm() {
-  # Remove these placeholder functions first to avoid recursion
-  unset -f nvm node npm npx yarn pnpm corepack
-  # Source NVM scripts only when needed
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # Load nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # Load nvm bash_completion (works in zsh)
-  # Add other related tools here if needed after NVM loads
-}
-
-# Define placeholder functions that trigger the lazy load on first call
-nvm() { lazy_load_nvm; nvm "$@"; }
-node() { lazy_load_nvm; node "$@"; }
-npm() { lazy_load_nvm; npm "$@"; }
-npx() { lazy_load_nvm; npx "$@"; }
-
-# Add placeholders for other Node-related tools you might use
-yarn() { lazy_load_nvm; yarn "$@"; }
-pnpm() { lazy_load_nvm; pnpm "$@"; }
-corepack() { lazy_load_nvm; corepack "$@"; }
-
-# Zoxide (Smart cd command) setup
-# Ensure Zoxide command is available before trying to initialize it
+# Zoxide (Smart cd command)
 if command -v zoxide >/dev/null 2>&1; then
-  # Initialize Zoxide for Zsh, hooking into the 'cd' command
-  # Using --cmd cd makes 'cd' behave like 'z' for directory matching
   eval "$(zoxide init zsh --cmd cd)"
 fi
