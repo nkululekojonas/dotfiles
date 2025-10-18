@@ -1,24 +1,15 @@
 # --- Setup Homebrew ---
-local brew_path
-if brew_path=$(command -v brew); then
-    eval "$($brew_path shellenv)"
+if command -v brew >/dev/null 2>&1; then
+    eval "$(brew shellenv)"
 else
-    local arch_name="$(uname -m)"
-    local brew_prefix
-
-    if [ "${arch_name}" = "x86_64" ]; then
-        brew_prefix="/usr/local"
-    else
-        brew_prefix="/opt/homebrew"
+    # Check standard x86 and arm paths
+    for prefix in /opt/homebrew /usr/local; do
+        if [ -x "$prefix/bin/brew" ]; then
+            eval "$($prefix/bin/brew shellenv)"
+            break
+        fi
+    done
+    if ! command -v brew >/dev/null 2>&1; then
+        echo "Warning: Homebrew not found." >&2
     fi
-
-    if [ -x "${brew_prefix}/bin/brew" ]; then
-        export HOMEBREW_PREFIX="${brew_prefix}" 
-        eval "$(${brew_prefix}/bin/brew shellenv)"
-    else
-        echo "Warning: brew command not found." >&2
-    fi
-
-    unset brew_prefix arch_name
 fi
-unset brew_path
