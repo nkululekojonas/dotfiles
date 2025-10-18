@@ -15,6 +15,17 @@ alias dc='cd ~/Documents'
 alias pj='cd ~/Developer/Projects'
 alias pg='cd ~/Developer/Playgrounds'
 
+# Useful Shortcuts
+alias -g L='| less'
+alias -g G='| grep --color=auto'
+alias -g H='| head'
+alias -g T='| tail'
+alias -g C='| wc -l'
+
+alias -g E='2>&1'
+alias -g F='find . -name'
+alias -g DU='du -sh *'
+
 # File Editing (Vim as default editor)
 alias -s md=vim        # Open Markdown files in Vim
 alias -s txt=vim       # Open text files in Vim
