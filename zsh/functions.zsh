@@ -10,6 +10,7 @@ ls()   { command ls $colorflag "$@"; }
 
 # Useful colorful 'ls' helpers
 l()    { command ls -AFlh $colorflag "$@"; }
+l.()   { command ls -AFdlh $colorflag .*}
 ll()   { command ls -aFlh $colorflag "$@"; }
 lsd()  { command ls -lF ${colorflag} -d *(/) "$@" }
 
