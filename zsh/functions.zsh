@@ -2,6 +2,7 @@
 # Author: Nkululeko Jonas
 # Date: 23-10-2023
 
+# --- LS Configuration ---
 # Remove any previous alias definitions
 unalias ls l ll lsd 2>/dev/null
 
@@ -12,9 +13,25 @@ ls()   { command ls $colorflag "$@"; }
 l()    { command ls -AFlh $colorflag "$@"; }
 ll()   { command ls -aFlh $colorflag "$@"; }
 
+# Directory listings
 l.()   { command ls -AFdlh $colorflag .* "$@"; }
 lsd()  { command ls -dlF ${colorflag} -- *(/) "$@"; }
 lrd()  { command ls -dlh ${colorflag} -- ^(.*)/ "$@"; }
+
+# `o` with no arguments opens the current directory, otherwise opens the given
+# location
+o() {
+	if [ $# -eq 0 ]; then
+		open .;
+	else
+		open "$@";
+	fi;
+}
+
+# Change working directory to the top-most Finder window location
+cdf() { # short for `cdfinder`
+	cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
+}
 
 # Create a new directory and enter it
 mcd() {
