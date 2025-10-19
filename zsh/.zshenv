@@ -1,7 +1,5 @@
 # ~/.zshenv
-#------------------------------------------------------------------------------#
-# Zsh Environment Configuration (Loaded for ALL shell types)                   #
-#------------------------------------------------------------------------------#
+# Zsh Environment Configuration (Loaded for ALL shell types)                   
 #
 # --- XDG Base Directory Specification Compliance ---
 # Define standard locations for user-specific config, data, cache, etc.
@@ -18,7 +16,7 @@ export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
 # --- PATH Configuration ---
 # Set the initial command search path.
-export PATH="/usr/local/bin:${PATH}:${HOME}/bin"
+export PATH="${PATH}:${HOME}/bin"
 
 # --- Application Defaults ---
 # Set default applications used by various command-line tools.
@@ -56,10 +54,3 @@ export MYVIMRC="${XDG_CONFIG_HOME}/vim/vimrc"
 
 # Set VIMINIT to source the custom vimrc (alternative to ~/.vimrc).
 export VIMINIT="source ${MYVIMRC}"
-
-# --- macOS Specific Settings ---
-# Prevent macOS from creating hidden .DS_Store metadata files on network volumes.
-export COPY_EXTENDED_ATTRIBUTES_DISABLE=true
-export COPYFILE_DISABLE=true
-
-# --- End of .zshenv ---
