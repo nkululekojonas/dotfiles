@@ -16,9 +16,10 @@ alias pj='cd ~/Developer/Projects'
 alias pg='cd ~/Developer/Playgrounds'
 
 # Useful Shortcuts
-alias -g L='| less'
+alias -g B='| bat --paging=never'
 alias -g G='| grep --color=auto'
 alias -g H='| head'
+alias -g L='| less'
 alias -g T='| tail'
 alias -g C='| wc -l'
 
@@ -46,8 +47,7 @@ alias -s pcap='tcpdump -r' # Read packet captures with tcpdump
 alias cl='clear'
 alias df='df -h'
 alias du='du -sh'
-# alias rm='rm -i'    # Interactive prompt
-alias rmd='rm -rfI' # Interactive prompt for large directories
+alias rmd='rm -rf' 
 
 alias h='history'
 alias j='jobs -l'
@@ -72,8 +72,8 @@ alias activate='source venv/bin/activate'
 alias -s py=python3    # Run Python scripts
 
 # Vim aliases
-alias vi='vim'
 alias v='vim'
+alias vi='vim'
 
 # Open vim in the last session
 alias vlast='vim -c "normal '\''0"'
@@ -86,12 +86,6 @@ alias brewup='brew update && brew upgrade && brew cleanup'  # Update Homebrew & 
 alias myip='curl ifconfig.me' # Get public IP address
 alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder' # Flush DNS cache (macOS)
 
-# # Always use color output for `ls`
-# alias ls='command ls ${colorflag}'
-# alias l='ls -AFlh ${colorflag}'
-# alias ll='ls -aFlh ${colorflag}'
-# alias lsd='ls -lF ${colorflag} | grep --color=never "^d"'
- 
 # Always enable colored `grep` output
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -107,13 +101,10 @@ alias clean-env='clean-ds && emptytrash'
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES; killall Finder"
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO; killall Finder"
 
-# Spotlight Control
-alias spotoff='sudo mdutil -a -i off'
-alias spoton='sudo mdutil -a -i on'
-
 # Miscellaneous
 alias help='run-help'
 alias reload='exec ${SHELL} -l'
+alias relrc='source ${XDG_CONFIG_HOME}/zsh/.zshrc'
+
 alias paths='echo ${PATH//:/\\n}'
 alias fpths='printf "%s\n" "${fpath[@]}"'
-alias relrc='source ${XDG_CONFIG_HOME}/zsh/.zshrc'
