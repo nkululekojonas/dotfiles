@@ -1,6 +1,7 @@
 # Zsh Interactive Shell Configuration 
 
 # --- Ensure Required Directories Exist  ---
+
 mkdir -p \
   "${XDG_CONFIG_HOME:=${HOME}/.config}" \
   "${XDG_CACHE_HOME:=${HOME}/.cache}" \
@@ -14,12 +15,12 @@ mkdir -p \
   "${XDG_CACHE_HOME}/zsh" 
 
 # Ensure XDG_RUNTIME_DIR has the correct permissions (0700)
-if [[ -d "${XDG_RUNTIME_DIR}" ]]; then
-  chmod 0700 "${XDG_RUNTIME_DIR}"
-fi
+[[ -d "${XDG_RUNTIME_DIR}" ]] && chmod 0700 "${XDG_RUNTIME_DIR}"
 
-# --- PATH Uniqueness ---
-typeset -U PATH path # Ensure the PATH variable does not contain duplicate directories.
+# --- PATH Configuration ---
+
+# Ensure the PATH variable does not contain duplicate directories.
+typeset -U PATH path 
 
 # --- Oh My Zsh Configuration ---
 
@@ -35,21 +36,15 @@ ZSH_THEME="robbyrussell"
 # --- Oh My Zsh Plugin Configuration ---
 plugins=(
     tmux                     # tmux integration and shortcuts
-    macos
     zsh-autosuggestions      # Fish-like autosuggestions
     history-substring-search # Advanced history search based on current input
     fast-syntax-highlighting # Faster syntax highlighting alternative
 )
 
 # --- Load Oh My Zsh ---
-if [[ -f "${ZSH}/oh-my-zsh.sh" ]]; then
-  source "${ZSH}/oh-my-zsh.sh"
-else
-  echo "Warning: Oh My Zsh not found at ${ZSH}" >&2
-fi
+[[ -f "${ZSH}/oh-my-zsh.sh" ]] &&  source "${ZSH}/oh-my-zsh.sh"
 
 # --- Zsh Options (`setopt`) ---
-# Configure various shell behaviors for interactive use.
 
 # General Usability
 setopt AUTO_MENU          # Show completion menu on second tab press
@@ -89,17 +84,14 @@ setopt PATH_DIRS          # Perform path search even on command names containing
 # History Configuration 
 export HISTSIZE=10000      # Max history lines kept in memory per active session
 export SAVEHIST=20000      # Max history lines saved in the history file
-
-# Use XDG path for history file (directory created at the top)
-export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"       # Use XDG path for history file 
 
 # --- Completion Styling (`zstyle`) ---
+
 # Configure the behavior and appearance of the Zsh completion system.
 zstyle ':completion:*' accept-exact '*(N)' # Accept exact matches even if other completions exist
 zstyle ':completion:*' use-cache on        # Enable caching for completion results
-
-# Store cache per XDG spec (directory created at the top)
-zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"     # Store cache per XDG spec 
 
 # Remove the default 'run-help' alias if it exists to avoid conflict
 unalias run-help 2> /dev/null
@@ -107,10 +99,10 @@ unalias run-help 2> /dev/null
 # Load Zsh's enhanced run-help system for better help display
 autoload -Uz run-help
 
-# Load Git-specific help commands (optional, requires Git)
+# Load Git-specific help commands 
 autoload -Uz run-help-git
 
-# Git configuration (ensure Zsh doesn't interfere with Git's own config finding)
+# Git configuration 
 unset GIT_CONFIG
 
 # --- Custom Keybindings ---
@@ -125,11 +117,6 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search  # Up arrow
 bindkey "^[[B" down-line-or-beginning-search # Down arrow
 
-# Edit command line in $EDITOR (^X^E)
-autoload -z edit-command-line
-zle -N edit-command-line
-bindkey "^X^E" edit-command-line
-
 # --- LS Colors ---
 if ls --color > /dev/null 2>&1; then 
     colorflag="--color=auto"    # Modern macOS/BSD '/bin/ls' supports --colorflag
@@ -142,15 +129,13 @@ fi
 [[ -f "${ZDOTDIR}/.aliasrc" ]] && source "${ZDOTDIR}/.aliasrc"
 
 # Set a DOTFILES variable if a standard location exists.
-if [[ -d "${HOME}/dotfiles" ]]; then
-    export DOTFILES="${HOME}/dotfiles"
-elif [[ -d "${HOME}/.dotfiles" ]]; then
-    export DOTFILES="${HOME}/.dotfiles"
-fi
+[[ -d "${HOME}/dotfiles" ]] && export DOTFILES="${HOME}/dotfiles"
+[[ -d "${HOME}/.dotfiles" ]] && export DOTFILES="${HOME}/.dotfiles"
 
 # --- Tool Configurations ---
 
 # FZF (Fuzzy Finder)
+
 # Find FZF shell integration files
 local fzf_prefix
 if [[ -n "$HOMEBREW_PREFIX" ]]; then
