@@ -139,7 +139,7 @@ fi
 
 # --- Source Personal Scripts ---
 [[ -f "${ZDOTDIR}/functions.zsh" ]] && source "${ZDOTDIR}/functions.zsh"
-[[ -f "${ZDOTDIR}/aliases.zsh" ]] && source "${ZDOTDIR}/aliases.zsh"
+[[ -f "${ZDOTDIR}/.aliasrc" ]] && source "${ZDOTDIR}/.aliasrc"
 
 # Set a DOTFILES variable if a standard location exists.
 if [[ -d "${HOME}/dotfiles" ]]; then
