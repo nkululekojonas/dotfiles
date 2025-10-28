@@ -1,25 +1,32 @@
-# functions.zsh: A collection of useful shell functions 
-# Author: Nkululeko Jonas
-# Date: 23-10-2023
+# .functionsrc      : Useful Shell Functions Portable Across Bash and Zsh
+# Author            : Nkululeko Jonas
+# Date              : 23-10-2023
 
 # --- LS Configuration ---
-# Remove any previous alias definitions
+
+# Remove Any Previous Alias Definitions
 unalias ls l ll lsd 2>/dev/null
 
-# Override builtin 'ls'
+# Override Builtin 'ls'
 ls()   { command ls $colorflag "$@"; }
 
-# Useful colorful 'ls' helpers
+# Useful Colorful 'ls' Helpers
 l()    { command ls -AFlh $colorflag "$@"; }
 ll()   { command ls -aFlh $colorflag "$@"; }
 
-# Directory listings
+# Directory Listing
 l.()   { command ls -AFdlh $colorflag .* "$@"; }
-lsd()  { command ls -dlF ${colorflag} -- *(/) "$@"; }
-lrd()  { command ls -dlh ${colorflag} -- ^(.*)/ "$@"; }
 
-# `o` with no arguments opens the current directory, otherwise opens the given
-# location
+# List only directories (Zsh-specific glob pattern)
+if [[ -n ${ZSH_VERSION-} ]]; then
+    lsd() { command ls -lF ${colorflag} -d *(/) "$@"; }
+else
+    lsd() { command ls -lF ${colorflag} "$@" | grep --color=never "^d"; }
+fi
+
+# --- Directory Management ---
+
+# Open Current Directory 
 o() {
 	if [ $# -eq 0 ]; then
 		open .;
@@ -28,12 +35,12 @@ o() {
 	fi;
 }
 
-# Change working directory to the top-most Finder window location
-cdf() { # short for `cdfinder`
+# Change Working Directory To The Top-Most Finder Window Location (Short for `cdfinder`)
+cdf() { 
 	cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
 }
 
-# Create a new directory and enter it
+# Create A New Directory And Enter It
 mcd() {
     if [ $# -eq 0 ]; then
         echo "Error: No directory name provided"
@@ -47,7 +54,9 @@ mcd() {
     fi
 }
 
-# Determine size of a file or total size of a directory
+# --- File System Utilities ---
+
+# Determine Size Of A File Or Total Size Of A Directory
 fs() {
     if command -v gdu >/dev/null 2>&1; then
         local du_cmd="gdu"
@@ -67,7 +76,9 @@ fs() {
     fi;
 }
 
-# Print info about the enviroment accepts aguments
+# --- Environment Info ---
+
+# Print Info About The Enviroment Accepts Aguments
 uinfo() {
     local default_info=(SHELL TERM USER HOME PWD)
 
@@ -87,11 +98,7 @@ uinfo() {
     done
 }
 
-# Show most used commands
-topcmds() {
-  local num=${1:-10} # Default to showing top 10 commands
-  history | awk '{CMD[$2]++; count++;} END {for (a in CMD) print CMD[a], CMD[a]/count*100 "%", a;}' | sort -nr | head -n "$num"
-}
+# --- System Update ---
 
 # Perform system update with enhanced error handling
 update() {
@@ -155,28 +162,25 @@ update() {
 
 # --- NVM (Node Version Manager) Configuration ---
 
-# Set NVM directory according to XDG spec
-export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+if [[ $- == *i* ]]; then
 
-# Ensure NVM directory and related npm config directory exist (using XDG)
-mkdir -p "$NVM_DIR"
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
+    # Setup XDG Compliant Path
+    export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
+    mkdir -p "$NVM_DIR" "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
 
-# Define the lazy load function (runs only when a node-related command is first used)
-lazy_load_nvm() {
-  # Remove these placeholder functions first to avoid recursion
-  unset -f nvm node npm npx yarn pnpm corepack
+    lazy_load_nvm() {
+        unset -f nvm node npm npx yarn pnpm corepack
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+    }
 
-  # Source NVM scripts only when needed
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # Load nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # Load nvm bash_completion
-}
+    # Placeholder functions for lazy loading
+    nvm() { lazy_load_nvm; nvm "$@"; }
+    node() { lazy_load_nvm; node "$@"; }
+    npm() { lazy_load_nvm; npm "$@"; }
+    npx() { lazy_load_nvm; npx "$@"; }
+    yarn() { lazy_load_nvm; yarn "$@"; }
+    pnpm() { lazy_load_nvm; pnpm "$@"; }
+    corepack() { lazy_load_nvm; corepack "$@"; }
 
-# Define placeholder functions that trigger the lazy load on first call
-nvm() { lazy_load_nvm; nvm "$@"; }
-node() { lazy_load_nvm; node "$@"; }
-npm() { lazy_load_nvm; npm "$@"; }
-npx() { lazy_load_nvm; npx "$@"; }
-yarn() { lazy_load_nvm; yarn "$@"; }
-pnpm() { lazy_load_nvm; pnpm "$@"; }
-corepack() { lazy_load_nvm; corepack "$@"; }
+fi
