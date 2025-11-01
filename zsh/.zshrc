@@ -12,18 +12,10 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
 [[ ! -d "${XDG_CONFIG_HOME}/zsh" ]] && mkdir -p "${XDG_CONFIG_HOME}/zsh"
 [[ ! -d "${XDG_CACHE_HOME}/zsh" ]] && mkdir -p "${XDG_CACHE_HOME}/zsh"
 
-<<<<<<< HEAD
-# Optional: Only create DATA/STATE directories if you use tools that need them
-# Uncomment these lines if needed (npm, pipx, cargo, poetry, etc.):
-# [[ ! -d "${XDG_DATA_HOME}" ]] && mkdir -p "${XDG_DATA_HOME}"
-# [[ ! -d "${XDG_STATE_HOME}" ]] && mkdir -p "${XDG_STATE_HOME}"
-||||||| parent of 73d7954 (Optimised zshrc file)
-=======
 # Optional: Only create DATA/STATE directories if you use tools that need them
 # Uncomment these lines if needed (npm, pipx, cargo, poetry, etc.):
 [[ ! -d "${XDG_DATA_HOME}" ]] && mkdir -p "${XDG_DATA_HOME}"
 [[ ! -d "${XDG_STATE_HOME}" ]] && mkdir -p "${XDG_STATE_HOME}"
->>>>>>> 73d7954 (Optimised zshrc file)
 
 # --- PATH Configuration ---
 # Ensure the PATH variable does not contain duplicate directories.
