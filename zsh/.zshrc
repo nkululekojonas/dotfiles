@@ -1,51 +1,42 @@
 # Zsh Interactive Shell Configuration 
 
 # --- Ensure Required Directories Exist  ---
-
-mkdir -p \
-  "${XDG_CONFIG_HOME:=${HOME}/.config}" \
-  "${XDG_CACHE_HOME:=${HOME}/.cache}" \
-  "${XDG_DATA_HOME:=${HOME}/.local/share}" \
-  "${XDG_STATE_HOME:=${HOME}/.local/state}" \
-  "${XDG_RUNTIME_DIR:=${HOME}/.local/run}" \
-  "${XDG_CONFIG_HOME}/zsh" \
-  "${XDG_CONFIG_HOME}/python" \
-  "${XDG_CONFIG_HOME}/vim" \
-  "$(dirname "${XDG_CACHE_HOME}/less/history")" \
-  "${XDG_CACHE_HOME}/zsh" 
+# Only create if they don't exist (faster check)
+[[ ! -d "${XDG_CONFIG_HOME:=${HOME}/.config}" ]] && mkdir -p "${XDG_CONFIG_HOME}"
+[[ ! -d "${XDG_CACHE_HOME:=${HOME}/.cache}" ]] && mkdir -p "${XDG_CACHE_HOME}"
+[[ ! -d "${XDG_DATA_HOME:=${HOME}/.local/share}" ]] && mkdir -p "${XDG_DATA_HOME}"
+[[ ! -d "${XDG_STATE_HOME:=${HOME}/.local/state}" ]] && mkdir -p "${XDG_STATE_HOME}"
+[[ ! -d "${XDG_RUNTIME_DIR:=${HOME}/.local/run}" ]] && mkdir -p "${XDG_RUNTIME_DIR}"
+[[ ! -d "${XDG_CONFIG_HOME}/zsh" ]] && mkdir -p "${XDG_CONFIG_HOME}/zsh"
+[[ ! -d "${XDG_CACHE_HOME}/zsh" ]] && mkdir -p "${XDG_CACHE_HOME}/zsh"
 
 # Ensure XDG_RUNTIME_DIR has the correct permissions (0700)
 [[ -d "${XDG_RUNTIME_DIR}" ]] && chmod 0700 "${XDG_RUNTIME_DIR}"
 
 # --- PATH Configuration ---
-
 # Ensure the PATH variable does not contain duplicate directories.
 typeset -U PATH path 
 
 # --- Oh My Zsh Configuration ---
-
-# Define Zsh completion cache/dump file path using XDG standard
-export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-${ZSH_VERSION}"
-
 # Set Oh My Zsh installation directory (using XDG standard)
 export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh" 
 
 # Set Oh My Zsh Theme
 ZSH_THEME="robbyrussell"
 
+# Disable Oh My Zsh features we don't need for faster startup
+DISABLE_AUTO_UPDATE=true
+DISABLE_UPDATE_PROMPT=true
+DISABLE_MAGIC_FUNCTIONS=true  # Disables URL quoting, etc.
+
 # --- Oh My Zsh Plugin Configuration ---
-plugins=(
-    tmux                     # tmux integration and shortcuts
-    zsh-autosuggestions      # Fish-like autosuggestions
-    history-substring-search # Advanced history search based on current input
-    fast-syntax-highlighting # Faster syntax highlighting alternative
-)
+# Note: Loading plugins manually for faster startup
+plugins=()
 
 # --- Load Oh My Zsh ---
-[[ -f "${ZSH}/oh-my-zsh.sh" ]] &&  source "${ZSH}/oh-my-zsh.sh"
+[[ -f "${ZSH}/oh-my-zsh.sh" ]] && source "${ZSH}/oh-my-zsh.sh"
 
 # --- Zsh Options (`setopt`) ---
-
 # General Usability
 setopt AUTO_MENU          # Show completion menu on second tab press
 setopt COMPLETE_IN_WORD   # Allow completion from within a word
@@ -87,29 +78,29 @@ export SAVEHIST=20000      # Max history lines saved in the history file
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"       # Use XDG path for history file 
 
 # --- Completion Styling (`zstyle`) ---
-
 # Configure the behavior and appearance of the Zsh completion system.
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' accept-exact '*(N)' # Accept exact matches even if other completions exist
+zstyle ':completion:*' menu select
 zstyle ':completion:*' use-cache on        # Enable caching for completion results
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"     # Store cache per XDG spec 
+
+# Better completion for kill command
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 # Remove the default 'run-help' alias if it exists to avoid conflict
 unalias run-help 2> /dev/null
 
 # Load Zsh's enhanced run-help system for better help display
-autoload -Uz run-help
-
-# Load Git-specific help commands 
-autoload -Uz run-help-git
+autoload -Uz run-help run-help-git
 
 # Git configuration 
 unset GIT_CONFIG
 
 # --- Custom Keybindings ---
-
 # History search (up/down arrow searches history based on current line prefix)
-autoload -U up-line-or-beginning-search
-autoload -U down-line-or-beginning-search
+autoload -U up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
@@ -117,43 +108,63 @@ zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search  # Up arrow
 bindkey "^[[B" down-line-or-beginning-search # Down arrow
 
+# --- Load Plugins Manually (Faster) ---
+# zsh-autosuggestions - Fish-like autosuggestions
+[[ -f "${ZSH}/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
+    source "${ZSH}/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+# history-substring-search - Advanced history search based on current input
+# Note: Bind after defining arrow key functions above
+if [[ -f "${ZSH}/custom/plugins/history-substring-search/history-substring-search.zsh" ]]; then
+    source "${ZSH}/custom/plugins/history-substring-search/history-substring-search.zsh"
+    # Rebind to use history-substring-search with syntax highlighting
+    bindkey "^[[A" history-substring-search-up
+    bindkey "^[[B" history-substring-search-down
+fi
+
+# fast-syntax-highlighting - Faster syntax highlighting alternative (load LAST for proper highlighting)
+[[ -f "${ZSH}/custom/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]] && \
+    source "${ZSH}/custom/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+
 # --- LS Colors ---
-if ls --color > /dev/null 2>&1; then 
-    colorflag="--color=auto"    # Modern macOS/BSD '/bin/ls' supports --colorflag
-else 
-    colorflag="-G"              # Assume older macOS/BSD ls or non-standard GNU ls
+export CLICOLOR=1
+export LSCOLORS=Gxfxcxdxbxegedabagacad
+
+# For GNU ls (if installed via coreutils)
+if ls --color >/dev/null 2>&1; then
+    colorflag="--color=auto"
+    export LS_COLORS='di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+else
+    colorflag="-G"
 fi
 
 # --- Source Personal Scripts ---
+# These files work across both Zsh and Bash
 [[ -f "${ZDOTDIR}/.functionsrc" ]] && source "${ZDOTDIR}/.functionsrc"
 [[ -f "${ZDOTDIR}/.aliasrc" ]] && source "${ZDOTDIR}/.aliasrc"
 
+# --- Set DOTFILES Variable ---
 # Set a DOTFILES variable if a standard location exists.
-[[ -d "${HOME}/dotfiles" ]] && export DOTFILES="${HOME}/dotfiles"
-[[ -d "${HOME}/.dotfiles" ]] && export DOTFILES="${HOME}/.dotfiles"
+if [[ -d "${HOME}/dotfiles" ]]; then
+    export DOTFILES="${HOME}/dotfiles"
+elif [[ -d "${HOME}/.dotfiles" ]]; then
+    export DOTFILES="${HOME}/.dotfiles"
+fi
 
 # --- Tool Configurations ---
-
 # FZF (Fuzzy Finder)
-
 # Find FZF shell integration files
-local fzf_prefix
 if [[ -n "$HOMEBREW_PREFIX" ]]; then
-    fzf_prefix="$HOMEBREW_PREFIX"
-elif (( $+commands[brew] )); then # More efficient Zsh way to check for a command
-    fzf_prefix="$(brew --prefix)"
+    local fzf_base_path="${HOMEBREW_PREFIX}/opt/fzf/shell"
+elif (( $+commands[brew] )); then
+    local fzf_base_path="$(brew --prefix)/opt/fzf/shell"
 fi
 
-if [[ -d "${fzf_prefix}/opt/fzf/shell" ]]; then
-    local fzf_base_path="${fzf_prefix}/opt/fzf/shell"
+if [[ -n "$fzf_base_path" && -d "$fzf_base_path" ]]; then
     [[ -f "${fzf_base_path}/key-bindings.zsh" ]] && source "${fzf_base_path}/key-bindings.zsh"
     [[ -f "${fzf_base_path}/completion.zsh" ]] && source "${fzf_base_path}/completion.zsh"
-else
-    echo "Warning: FZF shell integration not found." >&2
 fi
-unset fzf_prefix fzf_base_path # Clean up
+unset fzf_base_path # Clean up
 
 # Zoxide (Smart cd command)
-if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init zsh --cmd cd)"
-fi
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh --cmd cd)"
