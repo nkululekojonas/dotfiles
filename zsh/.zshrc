@@ -1,25 +1,35 @@
 # Zsh Interactive Shell Configuration 
 
+# --- XDG Base Directory Specification ---
+# Set XDG directories with defaults if not already set (macOS doesn't set these by default)
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-${HOME}/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
+
 # --- Ensure Required Directories Exist  ---
-# Only create if they don't exist (faster check)
-[[ ! -d "${XDG_CONFIG_HOME:=${HOME}/.config}" ]] && mkdir -p "${XDG_CONFIG_HOME}"
-[[ ! -d "${XDG_CACHE_HOME:=${HOME}/.cache}" ]] && mkdir -p "${XDG_CACHE_HOME}"
-[[ ! -d "${XDG_DATA_HOME:=${HOME}/.local/share}" ]] && mkdir -p "${XDG_DATA_HOME}"
-[[ ! -d "${XDG_STATE_HOME:=${HOME}/.local/state}" ]] && mkdir -p "${XDG_STATE_HOME}"
-[[ ! -d "${XDG_RUNTIME_DIR:=${HOME}/.local/run}" ]] && mkdir -p "${XDG_RUNTIME_DIR}"
+# Only create essential directories that don't exist (faster check)
 [[ ! -d "${XDG_CONFIG_HOME}/zsh" ]] && mkdir -p "${XDG_CONFIG_HOME}/zsh"
 [[ ! -d "${XDG_CACHE_HOME}/zsh" ]] && mkdir -p "${XDG_CACHE_HOME}/zsh"
 
-# Ensure XDG_RUNTIME_DIR has the correct permissions (0700)
-[[ -d "${XDG_RUNTIME_DIR}" ]] && chmod 0700 "${XDG_RUNTIME_DIR}"
+# Optional: Only create DATA/STATE directories if you use tools that need them
+# Uncomment these lines if needed (npm, pipx, cargo, poetry, etc.):
+# [[ ! -d "${XDG_DATA_HOME}" ]] && mkdir -p "${XDG_DATA_HOME}"
+# [[ ! -d "${XDG_STATE_HOME}" ]] && mkdir -p "${XDG_STATE_HOME}"
 
 # --- PATH Configuration ---
 # Ensure the PATH variable does not contain duplicate directories.
 typeset -U PATH path 
 
+# --- History Configuration ---
+# Set history configuration before loading Oh My Zsh to ensure proper initialization
+export HISTSIZE=10000      # Max history lines kept in memory per active session
+export SAVEHIST=20000      # Max history lines saved in the history file
+export HISTFILE="${XDG_CACHE_HOME}/zsh/history"  # Use XDG path for history file 
+
 # --- Oh My Zsh Configuration ---
 # Set Oh My Zsh installation directory (using XDG standard)
-export ZSH="${XDG_CONFIG_HOME:-$HOME/.config}/oh-my-zsh" 
+export ZSH="${XDG_CONFIG_HOME}/oh-my-zsh" 
 
 # Set Oh My Zsh Theme
 ZSH_THEME="robbyrussell"
@@ -28,6 +38,7 @@ ZSH_THEME="robbyrussell"
 DISABLE_AUTO_UPDATE=true
 DISABLE_UPDATE_PROMPT=true
 DISABLE_MAGIC_FUNCTIONS=true  # Disables URL quoting, etc.
+DISABLE_UNTRACKED_FILES_DIRTY=true  # Faster git status in Oh My Zsh prompt
 
 # --- Oh My Zsh Plugin Configuration ---
 # Note: Loading plugins manually for faster startup
@@ -72,25 +83,20 @@ setopt NOTIFY             # Report status of background jobs immediately upon co
 setopt COMPLETE_ALIASES   # Complete aliases like regular commands
 setopt PATH_DIRS          # Perform path search even on command names containing slashes
 
-# History Configuration 
-export HISTSIZE=10000      # Max history lines kept in memory per active session
-export SAVEHIST=20000      # Max history lines saved in the history file
-export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"       # Use XDG path for history file 
-
 # --- Completion Styling (`zstyle`) ---
 # Configure the behavior and appearance of the Zsh completion system.
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' accept-exact '*(N)' # Accept exact matches even if other completions exist
 zstyle ':completion:*' menu select
 zstyle ':completion:*' use-cache on        # Enable caching for completion results
-zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"     # Store cache per XDG spec 
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/compcache"  # Store cache per XDG spec 
 
 # Better completion for kill command
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 # Remove the default 'run-help' alias if it exists to avoid conflict
-unalias run-help 2> /dev/null
+unalias run-help 2>/dev/null
 
 # Load Zsh's enhanced run-help system for better help display
 autoload -Uz run-help run-help-git
@@ -100,7 +106,7 @@ unset GIT_CONFIG
 
 # --- Custom Keybindings ---
 # History search (up/down arrow searches history based on current line prefix)
-autoload -U up-line-or-beginning-search down-line-or-beginning-search
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
@@ -110,21 +116,21 @@ bindkey "^[[B" down-line-or-beginning-search # Down arrow
 
 # --- Load Plugins Manually (Faster) ---
 # zsh-autosuggestions - Fish-like autosuggestions
-[[ -f "${ZSH}/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
-    source "${ZSH}/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -f "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && \
+    source "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # history-substring-search - Advanced history search based on current input
 # Note: Bind after defining arrow key functions above
-if [[ -f "${ZSH}/custom/plugins/history-substring-search/history-substring-search.zsh" ]]; then
-    source "${ZSH}/custom/plugins/history-substring-search/history-substring-search.zsh"
+if [[ -f "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/history-substring-search/history-substring-search.zsh" ]]; then
+    source "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/history-substring-search/history-substring-search.zsh"
     # Rebind to use history-substring-search with syntax highlighting
     bindkey "^[[A" history-substring-search-up
     bindkey "^[[B" history-substring-search-down
 fi
 
 # fast-syntax-highlighting - Faster syntax highlighting alternative (load LAST for proper highlighting)
-[[ -f "${ZSH}/custom/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]] && \
-    source "${ZSH}/custom/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+[[ -f "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]] && \
+    source "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 
 # --- LS Colors ---
 export CLICOLOR=1
@@ -140,8 +146,8 @@ fi
 
 # --- Source Personal Scripts ---
 # These files work across both Zsh and Bash
-[[ -f "${ZDOTDIR}/.functionsrc" ]] && source "${ZDOTDIR}/.functionsrc"
-[[ -f "${ZDOTDIR}/.aliasrc" ]] && source "${ZDOTDIR}/.aliasrc"
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functionsrc" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functionsrc"
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliasrc" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliasrc"
 
 # --- Set DOTFILES Variable ---
 # Set a DOTFILES variable if a standard location exists.
@@ -154,17 +160,19 @@ fi
 # --- Tool Configurations ---
 # FZF (Fuzzy Finder)
 # Find FZF shell integration files
-if [[ -n "$HOMEBREW_PREFIX" ]]; then
-    local fzf_base_path="${HOMEBREW_PREFIX}/opt/fzf/shell"
-elif (( $+commands[brew] )); then
-    local fzf_base_path="$(brew --prefix)/opt/fzf/shell"
-fi
+if command -v fzf &>/dev/null; then
+    if [[ -n "$HOMEBREW_PREFIX" ]]; then
+        local fzf_base_path="${HOMEBREW_PREFIX}/opt/fzf/shell"
+    elif command -v brew &>/dev/null; then
+        local fzf_base_path="$(brew --prefix fzf 2>/dev/null)/shell"
+    fi
 
-if [[ -n "$fzf_base_path" && -d "$fzf_base_path" ]]; then
-    [[ -f "${fzf_base_path}/key-bindings.zsh" ]] && source "${fzf_base_path}/key-bindings.zsh"
-    [[ -f "${fzf_base_path}/completion.zsh" ]] && source "${fzf_base_path}/completion.zsh"
+    if [[ -n "$fzf_base_path" && -d "$fzf_base_path" ]]; then
+        [[ -f "${fzf_base_path}/key-bindings.zsh" ]] && source "${fzf_base_path}/key-bindings.zsh"
+        [[ -f "${fzf_base_path}/completion.zsh" ]] && source "${fzf_base_path}/completion.zsh"
+    fi
+    unset fzf_base_path # Clean up
 fi
-unset fzf_base_path # Clean up
 
 # Zoxide (Smart cd command)
-(( $+commands[zoxide] )) && eval "$(zoxide init zsh --cmd cd)"
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh --cmd cd)"
