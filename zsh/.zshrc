@@ -12,10 +12,18 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-${HOME}/.local/state}"
 [[ ! -d "${XDG_CONFIG_HOME}/zsh" ]] && mkdir -p "${XDG_CONFIG_HOME}/zsh"
 [[ ! -d "${XDG_CACHE_HOME}/zsh" ]] && mkdir -p "${XDG_CACHE_HOME}/zsh"
 
+<<<<<<< HEAD
 # Optional: Only create DATA/STATE directories if you use tools that need them
 # Uncomment these lines if needed (npm, pipx, cargo, poetry, etc.):
 # [[ ! -d "${XDG_DATA_HOME}" ]] && mkdir -p "${XDG_DATA_HOME}"
 # [[ ! -d "${XDG_STATE_HOME}" ]] && mkdir -p "${XDG_STATE_HOME}"
+||||||| parent of 73d7954 (Optimised zshrc file)
+=======
+# Optional: Only create DATA/STATE directories if you use tools that need them
+# Uncomment these lines if needed (npm, pipx, cargo, poetry, etc.):
+[[ ! -d "${XDG_DATA_HOME}" ]] && mkdir -p "${XDG_DATA_HOME}"
+[[ ! -d "${XDG_STATE_HOME}" ]] && mkdir -p "${XDG_STATE_HOME}"
+>>>>>>> 73d7954 (Optimised zshrc file)
 
 # --- PATH Configuration ---
 # Ensure the PATH variable does not contain duplicate directories.
@@ -37,8 +45,15 @@ ZSH_THEME="robbyrussell"
 # Disable Oh My Zsh features we don't need for faster startup
 DISABLE_AUTO_UPDATE=true
 DISABLE_UPDATE_PROMPT=true
+<<<<<<< HEAD
 DISABLE_MAGIC_FUNCTIONS=true  # Disables URL quoting, etc.
 DISABLE_UNTRACKED_FILES_DIRTY=true  # Faster git status in Oh My Zsh prompt
+||||||| parent of 73d7954 (Optimised zshrc file)
+DISABLE_MAGIC_FUNCTIONS=true  # Disables URL quoting, etc.
+=======
+DISABLE_MAGIC_FUNCTIONS=true        # Disables URL quoting, etc.
+DISABLE_UNTRACKED_FILES_DIRTY=true  # Faster git status in Oh My Zsh prompt
+>>>>>>> 73d7954 (Optimised zshrc file)
 
 # --- Oh My Zsh Plugin Configuration ---
 # Note: Loading plugins manually for faster startup
@@ -175,4 +190,10 @@ if command -v fzf &>/dev/null; then
 fi
 
 # Zoxide (Smart cd command)
+<<<<<<< HEAD
 command -v zoxide &>/dev/null && eval "$(zoxide init zsh --cmd cd)"
+||||||| parent of 73d7954 (Optimised zshrc file)
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh --cmd cd)"
+=======
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh --cmd cd)"
+>>>>>>> 73d7954 (Optimised zshrc file)
