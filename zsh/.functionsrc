@@ -8,11 +8,9 @@
 unalias ls l ll lsd 2>/dev/null
 
 # Override Builtin 'ls'
-ls()   { command ls $colorflag "$@"; }
-
-# Useful Colorful 'ls' Helpers
 l()    { command ls -AFlh $colorflag "$@"; }
 ll()   { command ls -aFlh $colorflag "$@"; }
+ls()   { command ls $colorflag "$@"; }
 
 # Directory Listing
 l.()   { command ls -AFdlh $colorflag .* "$@"; }
@@ -27,7 +25,7 @@ fi
 # --- Directory Management ---
 
 # Open Current Directory 
-o() {
+op() {
 	if [ $# -eq 0 ]; then
 		open .;
 	else
