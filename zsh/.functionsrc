@@ -8,12 +8,12 @@
 unalias ls l ll lsd 2>/dev/null
 
 # Override Builtin 'ls'
-l()    { command ls -AFlh $colorflag "$@"; }
-ll()   { command ls -aFlh $colorflag "$@"; }
+l()    { command ls -AFLlh $colorflag "$@"; }
+ll()   { command ls -aFLlh $colorflag "$@"; }
 ls()   { command ls $colorflag "$@"; }
 
 # Directory Listing
-l.()   { command ls -AFdlh $colorflag .* "$@"; }
+l.()   { command ls -AFLdlh $colorflag .* "$@"; }
 
 # List only directories (Zsh-specific glob pattern)
 if [[ -n ${ZSH_VERSION-} ]]; then
