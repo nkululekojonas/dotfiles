@@ -14,7 +14,7 @@ cd ~/dotfiles
 > This assumes `$HOME` doesn't have a directory named `dotfiles` or that it's empty.
 
 > [!NOTE]
-> This will create a .config directory in your home directory if one doesn't already exit, this is where all config files will be stored.
+> This will create a `.config` directory in your home directory if one doesn't already exist, this is where all config files will be stored.
 
 ## 📦 What's Inside
 
@@ -22,9 +22,9 @@ cd ~/dotfiles
 - `zshrc`: Zsh shell configuration
 - `shell` : A collection of portable shell functions and aliases
 - `brew` : A Homebrew installation script
-- `macos` : Sensible masOS defaults
+- `macos` : Sensible macOS defaults
 - `vimrc`: Vim editor settings
-- `tmux.conf`: Tmux terminal multiplexer configuration
+- `tmux.conf`: Terminal multiplexer configuration
 - `git`: Git preferences
 - `Brewfile`: List of packages to install via Homebrew
 
