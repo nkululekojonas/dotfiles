@@ -5,21 +5,28 @@ Welcome to my personal dotfiles repository! This collection of configuration fil
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/nkululekojonas/dotfiles.git
-cd dotfiles
+git clone https://github.com/nkululekojonas/dotfiles.git ~/
+cd ~/dotfiles
 ./install
 ```
-This will create a .config directory in your home directory if one doesn't already exit, this is where all config files will be stored.
 
-## 📦 Some of What's Inside
+> [!NOTE] 
+> This assumes `$HOME` doesn't have a directory named `dotfiles` or that it's empty.
 
-- `zshrc`: ZSH shell configuration
+> [!NOTE]
+> This will create a .config directory in your home directory if one doesn't already exit, this is where all config files will be stored.
+
+## 📦 What's Inside
+
+- `bash` : Bash shell configuation
+- `zshrc`: Zsh shell configuration
+- `shell` : A collection of portable shell functions and aliases
+- `brew` : A Homebrew installation script
+- `masos` : Sensible masOS defaults
 - `vimrc`: Vim editor settings
 - `tmux.conf`: Tmux terminal multiplexer configuration
-- `gitconfig`: Git version control preferences
+- `git`: Git preferences
 - `Brewfile`: List of packages to install via Homebrew
-
-This includes some custom functions and personal aliases located in zsh/.
 
 ## 🛠 Installation
 
@@ -27,6 +34,10 @@ This includes some custom functions and personal aliases located in zsh/.
    ```
    git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
    ```
+
+> [!NOTE] 
+> This will fail if a non-empty `/dotfiles` exists in `$HOME`
+
 2. Run the installation script:
    ```
    cd ~/dotfiles
@@ -37,7 +48,6 @@ The install script will symlink the appropriate files to your home directory. Ma
 ## 🛠 Dry Run
 1. Run the installing script with --dry-run flag
     ```
-    cd ~/dotfiles
     ./install --dry-run
     ```
     This will will output the changes that will occur if there are any, this will also report any errors that occur, recommend running this first.
@@ -58,14 +68,6 @@ After making changes, run `./install` again to update the symlinks.
 - [ ] Add oh-my-zsh installation 
 - [ ] Check for broken symlinks
 - [ ] Add a `--help` flag
-
-## 📚 What I Use
-
-- **Shell**: ZSH with [Oh My Zsh](https://ohmyz.sh/)
-- **Terminal**: [iTerm2](https://iterm2.com/)
-- **Editor**: [Vim](https://www.vim.org/) 
-- **Version Control**: Git
-- **Package Manager**: [Homebrew](https://brew.sh/)
 
 ## 🤝 Contributing
 
