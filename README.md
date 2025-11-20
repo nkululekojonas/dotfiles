@@ -46,7 +46,7 @@ cd ~/dotfiles
 ./install
 ```
 
-    The install script will symlink the appropriate files to your home directory. Make sure to back up your existing dotfiles before running the script.
+The install script will symlink the appropriate files to your home directory. Make sure to back up your existing dotfiles before running the script.
 
 ## 🛠 Dry Run
 1. Run the installing script with --dry-run flag
