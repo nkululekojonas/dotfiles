@@ -5,7 +5,7 @@ Welcome to my personal dotfiles repository! This collection of configuration fil
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/nkululekojonas/dotfiles.git ~/
+git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ./install
 ```
@@ -22,7 +22,7 @@ cd ~/dotfiles
 - `zshrc`: Zsh shell configuration
 - `shell` : A collection of portable shell functions and aliases
 - `brew` : A Homebrew installation script
-- `masos` : Sensible masOS defaults
+- `macos` : Sensible masOS defaults
 - `vimrc`: Vim editor settings
 - `tmux.conf`: Tmux terminal multiplexer configuration
 - `git`: Git preferences
@@ -31,26 +31,31 @@ cd ~/dotfiles
 ## 🛠 Installation
 
 1. Clone this repository to your home directory:
-   ```
-   git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
-   ```
 
-> [!NOTE] 
-> This will fail if a non-empty `/dotfiles` exists in `$HOME`
+```bash
+git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
+```
+
+    > [!NOTE] 
+    > This will fail if a non-empty `/dotfiles` exists in `$HOME`
 
 2. Run the installation script:
-   ```
-   cd ~/dotfiles
-   ./install
-   ```
-The install script will symlink the appropriate files to your home directory. Make sure to back up your existing dotfiles before running the script.
+
+```bash
+cd ~/dotfiles
+./install
+```
+
+    The install script will symlink the appropriate files to your home directory. Make sure to back up your existing dotfiles before running the script.
 
 ## 🛠 Dry Run
 1. Run the installing script with --dry-run flag
-    ```
-    ./install --dry-run
-    ```
-    This will will output the changes that will occur if there are any, this will also report any errors that occur, recommend running this first.
+
+```bash
+./install --dry-run
+```
+
+This will will output the changes that will occur if there are any, this will also report any errors that occur, recommend running this first.
 
 ## ⚙️ Customization
 
@@ -61,6 +66,23 @@ Feel free to modify these dotfiles to suit your preferences. The main configurat
 - `vim/vimrc` for Vim configuration
 - `git/gitconfig` for Git configuration
 
+### Sensible macOS defaults
+
+When setting up a new Mac, you may want to set some sensible macOS defaults:
+
+```bash
+./.macos
+```
+
+### Install Homebrew formulae
+
+When setting up a new Mac, you may want to install some common [Homebrew](https://brew.sh/) formulae (after installing Homebrew, of course):
+
+```bash
+./brew.sh
+```
+
+Some of the functionality of these dotfiles depends on formulae installed by `brew.sh`. If you don’t plan to run `brew.sh`, you should look carefully through the script and manually install any particularly important ones. A good example is Bash/Git completion: the dotfiles use a special version from Homebrew.
 After making changes, run `./install` again to update the symlinks.
 
 ## TODO
