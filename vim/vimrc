@@ -1,4 +1,4 @@
-" Vim/Neovim Configuration File
+" Vim Configuration File
 
 " Disable Vi compatibility mode
 set nocompatible
@@ -7,11 +7,7 @@ set nocompatible
 filetype plugin indent on
 
 " Set up fuzzy-finder (fzf)
-if has('nvim')
-    set rtp+=/opt/homebrew/opt/fzf
-else
-    set rtp+=~/.fzf
-endif
+set rtp+=~/.fzf
 
 " Enable syntax highlighting
 syntax enable
@@ -65,11 +61,7 @@ set autoindent
 set smartindent
 
 " Change the location of .viminfo file (Neovim uses shada)
-if has('nvim')
-    set shada+=n~/.config/nvim/shada
-else
-    set viminfo+=n~/.config/vim/viminfo
-endif
+set viminfo+=n~/.config/vim/viminfo
 
 " Prevent bad movement habits
 nnoremap <Left>    :echoe "Use h"<CR>
@@ -103,18 +95,11 @@ set ruler
 set confirm
 set history=1000
 set undofile
-if has('nvim')
-    set undodir=~/.config/nvim/undodir
-else
-    set undodir=~/.config/vim/undodir
-endif
+
+set undodir=~/.config/vim/undodir
 
 " Plugin Manager (vim-plug)
-if has('nvim')
-    call plug#begin('~/.config/nvim/plugged')
-else
-    call plug#begin('~/.config/vim/plugged')
-endif
+call plug#begin('~/.config/vim/plugged')
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -136,11 +121,7 @@ endif
 " Enable persistent undo
 if has('persistent_undo')
     set undofile
-    if has('nvim')
-        set undodir=~/.config/nvim/undo
-    else
-        set undodir=~/.vim/undo
-    endif
+    set undodir=~/.vim/undo
 endif
 
 " Highlight current line
