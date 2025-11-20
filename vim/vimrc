@@ -7,7 +7,7 @@ set nocompatible
 filetype plugin indent on
 
 " Set up fuzzy-finder (fzf)
-set rtp+=~/.fzf
+set rtp+=/opt/homebrew/opt/fzf
 
 " Enable syntax highlighting
 syntax enable
