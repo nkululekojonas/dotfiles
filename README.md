@@ -36,8 +36,8 @@ cd ~/dotfiles
 git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
 ```
 
-    > [!NOTE] 
-    > This will fail if a non-empty `/dotfiles` exists in `$HOME`
+> [!NOTE] 
+> This will fail if a non-empty `/dotfiles` exists in `$HOME`
 
 2. Run the installation script:
 
@@ -52,6 +52,7 @@ cd ~/dotfiles
 1. Run the installing script with --dry-run flag
 
 ```bash
+cd ~/dotfiles
 ./install --dry-run
 ```
 
@@ -71,6 +72,7 @@ Feel free to modify these dotfiles to suit your preferences. The main configurat
 When setting up a new Mac, you may want to set some sensible macOS defaults:
 
 ```bash
+cd ~/dotfiles/macos
 ./.macos
 ```
 
@@ -79,6 +81,7 @@ When setting up a new Mac, you may want to set some sensible macOS defaults:
 When setting up a new Mac, you may want to install some common [Homebrew](https://brew.sh/) formulae (after installing Homebrew, of course):
 
 ```bash
+cd ~/dotfiles/brew
 ./brew.sh
 ```
 
