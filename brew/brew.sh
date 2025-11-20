@@ -1,11 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# install.sh: Installs Homebrew and dependencies from a Brewfile.
+# brew.sh: Install Homebrew and dependencies 
 # Author: Nkululeko Jonas
 
 # --- Configuration ---
 DOTFILES_DIR="${HOME}/dotfiles"
-BREWFILE_PATH="${DOTFILES_DIR}/homebrew/Brewfile"
+BREWFILE_PATH="${DOTFILES_DIR}/brew/Brewfile"
 
 # --- Functions for Clarity ---
 info() {
@@ -24,6 +24,7 @@ error() {
 # --- Ensure Homebrew is Installed ---
 if ! command -v brew &> /dev/null; then
     info "Homebrew not found. Attempting to install..."
+
     # Note: The official installer might require user interaction (e.g., password, pressing Enter)
     if /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
         info "Homebrew installed successfully."
@@ -36,15 +37,10 @@ fi
 
 # --- Set up Homebrew Environment ---
 # Ensure brew command and its paths are available in this script's environment
-# Correct path depends on CPU architecture (Intel vs Apple Silicon)
 ARCH_NAME="$(uname -m)"
-if [ "${ARCH_NAME}" = "x86_64" ]; then
-    # Intel Macs
-    HOMEBREW_PREFIX="/usr/local"
-else
-    # Apple Silicon Macs
-    HOMEBREW_PREFIX="/opt/homebrew"
-fi
+
+# Hombrew path on Apple Silicon Macs
+HOMEBREW_PREFIX="/opt/homebrew"
 
 # Check if brew shellenv needs to be evaluated
 if [ -x "${HOMEBREW_PREFIX}/bin/brew" ]; then
@@ -57,12 +53,8 @@ fi
 
 # --- Install Dependencies via Brew Bundle ---
 if [ -f "$BREWFILE_PATH" ]; then
-    info "Updating Homebrew..."
-    if ! brew update --quiet; then
-        warn "Brew update failed, continuing bundle install anyway..."
-    fi
-
     info "Installing dependencies from Brewfile: ${BREWFILE_PATH}"
+
     # Run brew bundle install using the specified Brewfile
     if ! brew bundle install --file="$BREWFILE_PATH"; then
         # Provide specific retry instructions on failure
