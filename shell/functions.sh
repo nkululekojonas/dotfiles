@@ -66,6 +66,8 @@ mcd()
 }
 
 # --- File System Utilities ---
+df() { command df -h "$@"; }
+du() { command du -sh "$@"; }
 
 # Determine Size Of A File Or Total Size Of A Directory
 fs() 
