@@ -24,19 +24,11 @@ alias j='jobs -l'
 alias cl='clear'
 alias rmd='rm -rf'
 
-# --- Grep with Color (Conditional for GNU vs. BSD grep) ---
+# --- Grep with Color ---
 
-if command -v grep --color=auto &> /dev/null
-then
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-else
-    # Fallback for BSD grep (common on macOS before Homebrew)
-    alias grep='grep'
-    alias fgrep='fgrep'
-    alias egrep='egrep'
-fi
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 # --- Python aliases ---
 
@@ -52,8 +44,6 @@ alias activate='source venv/bin/activate'
 
 alias v='vim'
 alias vi='vim'
-# Using single quotes to clearly delimit the outer string
-alias vlast='vim -c "normal '\''0"'
 
 # --- Miscellaneous ---
 
