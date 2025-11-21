@@ -132,18 +132,6 @@ fi
 [[ -f "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]] && \
     source "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 
-# --- LS Colors ---
-export CLICOLOR=1
-export LSCOLORS=Gxfxcxdxbxegedabagacad
-
-# For GNU ls (if installed via coreutils)
-if ls --color >/dev/null 2>&1; then
-    colorflag="--color=auto"
-    export LS_COLORS='di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
-else
-    colorflag="-G"
-fi
-
 # --- Source Personal Scripts ---
 # These files work across both Zsh and Bash
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functionsrc" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functionsrc"

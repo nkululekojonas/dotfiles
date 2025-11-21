@@ -3,48 +3,61 @@
 # Date              : 23-10-2023
 
 # --- LS Configuration ---
+export CLICOLOR=1
+export LSCOLORS=Gxfxcxdxbxegedabagacad
 
-# Remove Any Previous Alias Definitions
 unalias ls l ll lsd 2>/dev/null
+
+if command -v ls --color &> /dev/null
+then
+    colorflag="--color=auto"
+    export LS_COLORS='di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+fi
 
 # Override Builtin 'ls'
 l()    { command ls -AFLlh "$colorflag" "$@"; }
 ll()   { command ls -aFLlh "$colorflag" "$@"; }
 ls()   { command ls "$colorflag" "$@"; }
 
-# Directory Listing
-l.()   { command ls -AFLdlh $colorflag .* "$@"; }
-
-# List only directories (Zsh-specific glob pattern)
-if [[ -n ${ZSH_VERSION-} ]]; then
-    lsd() { command ls -lF "${colorflag}" -d *(/) "$@"; }
+# Directory Listing (Zsh-specific glob pattern)
+if [[ -n ${ZSH_VERSION-} ]]
+then
+    eval 'l.()  { command ls -AFLdlh $colorflag .* "$@"; }'
+    eval 'lsd() { command ls -lF "${colorflag}" -d *(/) "$@"; }'
 else
-    lsd() { command ls -lF "${colorflag}" "$@" | grep --color=never "^d"; }
+    lsd()  { command ls -lF "${colorflag}" "$@" | grep --color=never "^d"; }
 fi
 
 # --- Directory Management ---
 
 # Open Current Directory 
-op() {
-	if [ $# -eq 0 ]; then
-		open .;
-	else
-		open "$@";
-	fi;
+op() 
+{
+    if [ $# -eq 0 ]
+    then
+        open .
+    else
+        open "$@"
+    fi
 }
 
 # Change Working Directory To The Top-Most Finder Window Location (Short for `cdfinder`)
-cdf() { 
-	cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
+cdf() 
+{
+    cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')"
 }
 
 # Create A New Directory And Enter It
-mcd() {
-    if [ $# -eq 0 ]; then
+mcd() 
+{
+    if [ $# -eq 0 ]
+    then
         echo "Error: No directory name provided"
         return 1
     fi
-    if mkdir -p "$@"; then
+
+    if mkdir -p "$@"
+    then
         cd "$_" || return 1
     else
         echo "Error: Failed to create directory"
@@ -55,19 +68,24 @@ mcd() {
 # --- File System Utilities ---
 
 # Determine Size Of A File Or Total Size Of A Directory
-fs() {
-    if command -v gdu >/dev/null 2>&1; then
+fs() 
+{
+    if command -v gdu &> /dev/null
+    then
         local du_cmd="gdu"
     else
         local du_cmd="du"
     fi
 
-    if $du_cmd -b /dev/null > /dev/null 2>&1; then
+    if $du_cmd -b /dev/null &> /dev/null 
+    then
         local arg=-sbh;
     else
         local arg=-sh;
     fi
-    if [[ -n "$*" ]]; then
+
+    if [[ $# -gt 0 ]]
+    then
         $du_cmd $arg -- "$@";
     else
         $du_cmd $arg .[^.]* ./*;
@@ -77,18 +95,22 @@ fs() {
 # --- Environment Info ---
 
 # Print Info About The Enviroment Accepts Aguments
-uinfo() {
+uinfo() 
+{
     local default_info=(SHELL TERM USER HOME PWD)
 
     # Append user-provided arguments if any
-    if [[ $# -gt 0 ]]; then
+    if [[ $# -gt 0 ]]
+    then
         default_info+=("$@")
     fi
 
     local arg
-    for arg in "${default_info[@]}"; do 
+    for arg in "${default_info[@]}"
+    do 
         # Use correct indirect expansion for Bash and Zsh
-        if [[ -n ${BASH_VERSION-} ]]; then
+        if [[ -n ${BASH_VERSION-} ]]
+        then
             printf "%-15s: %s\n" "$arg" "${!arg:-No value assigned}"
         else
             printf "%-15s: %s\n" "$arg" "${(P)arg:-No value assigned}"
@@ -159,14 +181,15 @@ update() {
 }
 
 # --- NVM (Node Version Manager) Configuration ---
-
-if [[ $- == *i* ]]; then
+if [[ $- == *i* ]]
+then
 
     # Setup XDG Compliant Path
     export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/nvm"
     mkdir -p "$NVM_DIR" "${XDG_CONFIG_HOME:-$HOME/.config}/npm"
 
-    lazy_load_nvm() {
+    lazy_load_nvm() 
+    {
         unset -f nvm node npm npx yarn pnpm corepack
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
