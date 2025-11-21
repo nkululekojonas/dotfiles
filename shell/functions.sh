@@ -9,7 +9,7 @@ export LSCOLORS=Gxfxcxdxbxegedabagacad
 unalias ls l ll lsd 2>/dev/null
 
 colorflag=""
-if command -v ls --color=auto &> /dev/null
+if ls --color=auto / &> /dev/null 2>&1
 then
     colorflag="--color=auto"
     export LS_COLORS='di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
@@ -34,6 +34,12 @@ fi
 # Open Current Directory 
 op() 
 {
+    if ! command -v open &> /dev/null
+    then
+        echo "Error: 'open' command not found (macOS only)"
+        return 1
+    fi
+
     if [ $# -eq 0 ]
     then
         open .
@@ -42,10 +48,25 @@ op()
     fi
 }
 
-# Change Working Directory To The Top-Most Finder Window Location (Short for `cdfinder`)
+# Change Working Directory To The Top-Most Finder Window Location
 cdf() 
 {
-    cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')"
+    if ! command -v osascript &> /dev/null
+    then
+        echo "Error: 'osascript' not found (macOS only)"
+        return 1
+    fi
+
+    local finder_path
+    finder_path=$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)' 2>/dev/null)
+    
+    if [[ -z "$finder_path" ]]
+    then
+        echo "Error: Could not get Finder location. Is Finder running?"
+        return 1
+    fi
+
+    cd "$finder_path" || return 1
 }
 
 # Create A New Directory And Enter It
@@ -57,13 +78,15 @@ mcd()
         return 1
     fi
 
-    if mkdir -p "$@"
+    local target_dir="$1"
+    
+    if ! mkdir -p "$target_dir"
     then
-        cd "$_" || return 1
-    else
-        echo "Error: Failed to create directory"
+        echo "Error: Failed to create directory '$target_dir'"
         return 1
     fi
+
+    cd "$target_dir" || return 1
 }
 
 # --- File System Utilities ---
@@ -149,16 +172,21 @@ update() {
     # macOS Software update
     if $update_all || $update_macos; then
         echo "Updating macOS software..."
-        sudo softwareupdate -i -a || { echo "Error: macOS software update failed."; return 1; }
+        sudo softwareupdate -i -a || echo "Warning: macOS software update had issues"
     fi
 
     # Homebrew update
     if ($update_all || $update_brew) && command -v brew &> /dev/null; then
         echo "Updating Homebrew..."
-        brew cu -facy || { echo "Error: Brew upgrade outdated apps failed"; return 1; } 
-        brew upgrade || { echo "Error: Brew upgrade failed."; return 1; }
-        brew cleanup || { echo "Error: Brew cleanup failed."; return 1; }
-        brew autoremove || { echo "Error: Brew autoremove failed."; return 1; }
+        
+        # Only run brew cu if the tap is installed
+        if brew tap | grep -q "buo/cask-upgrade"; then
+            brew cu -facy || echo "Warning: brew cu failed, continuing..."
+        fi
+        
+        brew upgrade || echo "Warning: brew upgrade had issues"
+        brew cleanup || echo "Warning: brew cleanup had issues"
+        brew autoremove || echo "Warning: brew autoremove had issues"
     elif $update_brew; then
         echo "Warning: Homebrew is not installed."
     fi
@@ -167,7 +195,7 @@ update() {
     if ($update_all || $update_mas) && command -v mas &> /dev/null; then
         echo "Updating Mac App Store apps..."
         mas outdated
-        mas upgrade || { echo "Error: Mac App Store upgrade failed."; return 1; }
+        mas upgrade || echo "Warning: Mac App Store upgrade had issues"
     elif $update_mas; then
         echo "Warning: mas-cli (Mac App Store CLI) is not installed."
     fi
@@ -175,12 +203,27 @@ update() {
     # Oh My Zsh update
     if ($update_all || $update_omz) && command -v omz &> /dev/null; then
         echo "Updating Oh My Zsh..."
-        omz update || { echo "Error: Oh My Zsh update failed."; return 1; }
+        omz update || echo "Warning: Oh My Zsh update had issues"
     elif $update_omz; then
         echo "Warning: Oh My Zsh is not installed."
     fi
 
-    echo "All updates completed successfully!"
+    echo "Update process completed!"
+}
+
+# Open last edited file in vim
+vlast()
+{
+    local last_file
+    last_file=$(ls -t | head -1)
+    
+    if [[ -z "$last_file" ]]
+    then
+        echo "Error: No files in current directory"
+        return 1
+    fi
+    
+    vim "$last_file"
 }
 
 # --- NVM (Node Version Manager) Configuration ---
