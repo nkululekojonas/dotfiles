@@ -8,21 +8,22 @@ export LSCOLORS=Gxfxcxdxbxegedabagacad
 
 unalias ls l ll lsd 2>/dev/null
 
-if command -v ls --color &> /dev/null
+colorflag=""
+if command -v ls --color=auto &> /dev/null
 then
     colorflag="--color=auto"
     export LS_COLORS='di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 fi
 
 # Override Builtin 'ls'
-l()    { command ls -AFLlh "$colorflag" "$@"; }
-ll()   { command ls -aFLlh "$colorflag" "$@"; }
-ls()   { command ls "$colorflag" "$@"; }
+l()    { command ls -AFLlh ${colorflag} "$@"; }
+ll()   { command ls -aFLlh ${colorflag} "$@"; }
+ls()   { command ls ${colorflag} "$@"; }
 
 # Directory Listing (Zsh-specific glob pattern)
 if [[ -n ${ZSH_VERSION-} ]]
 then
-    eval 'l.()  { command ls -AFLdlh $colorflag .* "$@"; }'
+    eval 'l.()  { command ls -AFLdlh ${colorflag} .* "$@"; }'
     eval 'lsd() { command ls -lF "${colorflag}" -d *(/) "$@"; }'
 else
     lsd()  { command ls -lF "${colorflag}" "$@" | grep --color=never "^d"; }

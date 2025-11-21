@@ -1,6 +1,6 @@
-# .aliasrc  : Useful Shell Aliases Portable Across Bash and Zsh 
-# Author    : Nkululeko Jonas
-# Date      : 23-10-2023
+# .aliasrc  : Useful Shell Aliases Portable Across Bash and Zsh 
+# Author    : Nkululeko Jonas
+# Date      : 23-10-2023
 
 # --- Shell Variables ---
 # Define OS variables for cleaner checks
@@ -22,7 +22,7 @@ alias .....='cd ../../../..'
 alias h='history'
 alias j='jobs -l'
 alias cl='clear'
-alias rmd='rm -rf' 
+alias rmd='rm -rf'
 
 # --- Grep with Color (Conditional for GNU vs. BSD grep) ---
 
@@ -53,7 +53,7 @@ alias activate='source venv/bin/activate'
 alias v='vim'
 alias vi='vim'
 # Using single quotes to clearly delimit the outer string
-alias vlast='vim -c "normal '\''0"' 
+alias vlast='vim -c "normal '\''0"'
 
 # --- Miscellaneous ---
 
@@ -62,7 +62,7 @@ alias paths='echo ${PATH//:/\\n}'
 
 # --- Networking Aliases ---
 
-alias myip='curl ifconfig.me' 
+alias myip='curl ifconfig.me'
 
 # --- Zsh-specific Aliases ---
 
@@ -86,22 +86,22 @@ then
     alias -g DU='du -sh *'
 
     # Suffix Aliases
-    alias -s md=vim 	    # Open Markdown files in Vim
-    alias -s txt=vim 	    # Open text files in Vim
-    alias -s yaml=vim      # Open YAML files in Vim
-    alias -s conf=vim      # Open config files in Vim
-    alias -s pdf=open      
+    alias -s md=vim
+    alias -s txt=vim
+    alias -s yaml=vim
+    alias -s conf=vim
+    alias -s pdf=open
     alias -s png=open
-    alias -s jpg=open  
-    alias -s docx=open     
-    alias -s log='less'        # View log files with less
-    alias -s pcap='tcpdump -r' # Read packet captures with tcpdump
+    alias -s jpg=open
+    alias -s docx=open
+    alias -s log='less'
+    alias -s pcap='tcpdump -r'
 
     # Shell Help
     alias b='bat --paging=never'
     alias type='whence -ac'
     alias help='run-help'
-fi 
+fi
 
 # --- Tmux Aliases (Conditional on installation) ---
 
@@ -130,15 +130,15 @@ then
     alias pj='cd ~/Developer/Projects'
     alias pg='cd ~/Developer/Playgrounds'
 
-    # Package Management (macOS Homebrew) 
+    # Package Management (macOS Homebrew)
     alias brewcl='brew cleanup && brew autoremove'
-    alias brewup='brew update && brew upgrade && brew cleanup' 
+    alias brewup='brew update && brew upgrade && brew cleanup'
 
     # Trash and cleanup
     alias clean-ds='find . -type f -name "*.DS_Store" -ls -delete'
     alias clean-env='clean-ds && emptytrash'
     alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* "delete from LSQuarantineEvent"'
-    alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder' 
+    alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
 
     # Finder
     alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES; killall Finder"
