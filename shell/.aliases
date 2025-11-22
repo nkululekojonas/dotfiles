@@ -1,12 +1,11 @@
-# .aliases  : Useful Shell Aliases Portable Across Bash and Zsh 
+# .aliases  : Useful Shell Aliases Portable Across Bash and Zsh
 # Author    : Nkululeko Jonas
 
-# --- Shell Variables ---
-# Define OS variables for cleaner checks
+macos=false
+linux=false
 case "$OSTYPE" in
     darwin*) macos=true ;;
     linux*) linux=true ;;
-    *) ;;
 esac
 
 # --- System Navigation ---
@@ -110,7 +109,7 @@ fi
 
 # --- macOS Specific Aliases (Conditional on OSTYPE) ---
 
-if [[ -n ${macos} ]]
+if [[ "$macos" == true ]]
 then
     # System Naviagtion
     alias bn='cd ~/bin'
