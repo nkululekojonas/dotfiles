@@ -16,8 +16,8 @@ then
 fi
 
 # Override Builtin 'ls'
-l()    { command ls -AFLlh ${colorflag} "$@"; }
-ll()   { command ls -aFLlh ${colorflag} "$@"; }
+l()    { command ls -AFlh ${colorflag} "$@"; }
+ll()   { command ls -aFlh ${colorflag} "$@"; }
 ls()   { command ls ${colorflag} "$@"; }
 
 # Directory Listing (Zsh-specific glob pattern)
