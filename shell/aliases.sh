@@ -49,7 +49,6 @@ alias vi='vim'
 
 alias reload='exec ${SHELL} -l'
 alias paths='echo ${PATH//:/\\n}'
-alias codepts='echo hello, world!'
 
 # --- Networking Aliases ---
 
