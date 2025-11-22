@@ -25,12 +25,10 @@ DISABLE_AUTO_UPDATE=true
 DISABLE_UPDATE_PROMPT=true
 DISABLE_MAGIC_FUNCTIONS=true  # Disables URL quoting, etc.
 DISABLE_UNTRACKED_FILES_DIRTY=true  # Faster git status in Oh My Zsh prompt
-ZSH_DISABLE_COMPFIX=true
-DISABLE_AUTO_TITLE=true
 ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
 
 # --- Oh My Zsh Plugin Configuration ---
-plugins=( git macos zsh-autosuggestions history-substring-search fast-syntax-highlighting )
+plugins=( git zsh-autosuggestions history-substring-search fast-syntax-highlighting )
 
 # --- Load Oh My Zsh ---
 [[ -f "${ZSH}/oh-my-zsh.sh" ]] && source "${ZSH}/oh-my-zsh.sh"
@@ -94,6 +92,5 @@ if [[ -d "/opt/homebrew/opt/fzf/shell" ]]; then
     source /opt/homebrew/opt/fzf/shell/completion.zsh
 fi
 
-# Zoxide (Smart cd command) - cached for faster startup
-# Regenerate cache with: zoxide init zsh --cmd cd > ~/.config/zsh/zoxide.zsh
-[[ -f "${XDG_CONFIG_HOME}/zsh/zoxide.zsh" ]] && source "${XDG_CONFIG_HOME}/zsh/zoxide.zsh"
+# Zoxide (Smart cd command)
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh --cmd cd)"
