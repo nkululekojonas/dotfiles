@@ -23,12 +23,21 @@ ZSH_THEME="robbyrussell"
 # Disable Oh My Zsh features we don't need for faster startup
 DISABLE_AUTO_UPDATE=true
 DISABLE_UPDATE_PROMPT=true
-DISABLE_MAGIC_FUNCTIONS=true  # Disables URL quoting, etc.
+DISABLE_MAGIC_FUNCTIONS=true        # Disables URL quoting, etc.
 DISABLE_UNTRACKED_FILES_DIRTY=true  # Faster git status in Oh My Zsh prompt
+ZSH_DISABLE_COMPFIX=true            # Skip permission checks
+DISABLE_AUTO_TITLE=true             # Don't auto-set terminal title
 ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
 
 # --- Oh My Zsh Plugin Configuration ---
-plugins=( git zsh-autosuggestions history-substring-search fast-syntax-highlighting )
+plugins=( 
+    git 
+    brew        # Homebrew aliases and completion 
+    colored-man-pages  # Colorized man pages
+    zsh-autosuggestions 
+    history-substring-search 
+    fast-syntax-highlighting 
+)
 
 # --- Load Oh My Zsh ---
 [[ -f "${ZSH}/oh-my-zsh.sh" ]] && source "${ZSH}/oh-my-zsh.sh"
