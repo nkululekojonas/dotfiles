@@ -5,8 +5,8 @@
 
 # --- Source Shared Configurations ---
 # Source aliases and functions shared with Zsh
-[[ -f "$HOME/dotfiles/shell/aliases.sh" ]] && source "$HOME/dotfiles/shell/aliases.sh"
-[[ -f "$HOME/dotfiles/shell/functions.sh" ]] && source "$HOME/dotfiles/shell/functions.sh"
+[[ -f "$HOME/dotfiles/shell/.aliases" ]] && source "$HOME/dotfiles/shell/.aliases"
+[[ -f "$HOME/dotfiles/shell/.functions" ]] && source "$HOME/dotfiles/shell/functions"
 
 # --- Bash Options ---
 # check the window size after each command and, if necessary,
