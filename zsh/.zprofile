@@ -1,15 +1,8 @@
 # --- Setup Homebrew ---
-if command -v brew >/dev/null 2>&1; then
-    eval "$(brew shellenv)"
+# Check Standard Arm Path
+if [ -x "/opt/homebrew/bin/brew" ]
+then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 else
-    # Check standard x86 and arm paths
-    for prefix in /opt/homebrew /usr/local; do
-        if [ -x "$prefix/bin/brew" ]; then
-            eval "$($prefix/bin/brew shellenv)"
-            break
-        fi
-    done
-    if ! command -v brew >/dev/null 2>&1; then
-        echo "Warning: Homebrew not found." >&2
-    fi
+    echo "Warning: Homebrew not found." >&2
 fi
