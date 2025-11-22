@@ -81,9 +81,6 @@ autoload -Uz run-help run-help-git
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functions" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functions"
 [[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliases" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliases"
 
-# --- Set DOTFILES Variable ---
-[[ -d "${HOME}/dotfiles" ]] && export DOTFILES="${HOME}/dotfiles"
-
 # --- Tool Configurations ---
 
 # FZF (Fuzzy Finder)

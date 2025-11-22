@@ -50,6 +50,9 @@ export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 export LANG=en_AU.UTF-8 # Primary language and character encoding
 export LC_COLLATE=C     # Use standard C/POSIX collation order for sorting (often faster)
 
+# --- Set DOTFILES Variable ---
+[[ -d "${HOME}/dotfiles" ]] && export DOTFILES="${HOME}/dotfiles"
+
 # --- Python Configuration ---
 # Configure Python's interactive startup and history files (using XDG standard).
 export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
