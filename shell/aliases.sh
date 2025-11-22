@@ -1,12 +1,11 @@
-# .aliasrc  : Useful Shell Aliases Portable Across Bash and Zsh 
+# .aliases  : Useful Shell Aliases Portable Across Bash and Zsh 
 # Author    : Nkululeko Jonas
-# Date      : 23-10-2023
 
 # --- Shell Variables ---
 # Define OS variables for cleaner checks
 case "$OSTYPE" in
-    darwin*) is_macos=true ;;
-    linux*) is_linux=true ;;
+    darwin*) macos=true ;;
+    linux*) linux=true ;;
     *) ;;
 esac
 
@@ -34,8 +33,8 @@ alias egrep='egrep --color=auto'
 
 alias p='python3'
 alias py='python3'
-alias python='python3'
 alias pip='pip3'
+alias python='python3'
 alias pipup='pip install --upgrade pip'
 alias venv='python -m venv'
 alias activate='source venv/bin/activate'
@@ -107,7 +106,7 @@ fi
 
 # --- macOS Specific Aliases (Conditional on OSTYPE) ---
 
-if [[ -n ${is_macos} ]]
+if [[ -n ${macos} ]]
 then
     # System Naviagtion
     alias bn='cd ~/bin'
@@ -117,16 +116,14 @@ then
     alias dl='cd ~/Downloads'
     alias dv='cd ~/Developer'
     alias dc='cd ~/Documents'
-    alias pj='cd ~/Developer/Projects'
-    alias pg='cd ~/Developer/Playgrounds'
 
     # Package Management (macOS Homebrew)
     alias brewcl='brew cleanup && brew autoremove'
     alias brewup='brew update && brew upgrade && brew cleanup'
 
     # Trash and cleanup
-    alias clean-ds='find . -type f -name "*.DS_Store" -ls -delete'
-    alias clean-env='clean-ds && emptytrash'
+    alias clenv='cleands && emptytrash'
+    alias cleands='find . -type f -name "*.DS_Store" -ls -delete'
     alias emptytrash='sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* "delete from LSQuarantineEvent"'
     alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
 
