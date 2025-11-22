@@ -26,6 +26,7 @@ alias rmd='rm -rf'
 
 # --- Grep with Color ---
 
+alias gr='rg'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
