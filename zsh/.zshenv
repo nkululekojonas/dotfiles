@@ -1,4 +1,4 @@
-# ~/.zshenv
+# .zshenv
 # Zsh Environment Configuration (Loaded for ALL shell types)                   
 #
 # --- XDG Base Directory Specification Compliance ---
@@ -13,6 +13,12 @@ export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-"${HOME}/.local/run"}"
 # --- Zsh Configuration Setup ---
 # Tell Zsh where to find its configuration files (using XDG standard)
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+
+# --- History Configuration ---
+# Set history configuration before loading Oh My Zsh to ensure proper initialization
+export HISTSIZE=10000      # Max history lines kept in memory per active session
+export SAVEHIST=20000      # Max history lines saved in the history file
+export HISTFILE="${XDG_CACHE_HOME}/zsh/history"  # Use XDG path for history file 
 
 # --- PATH Configuration ---
 # Set the initial command search path.
