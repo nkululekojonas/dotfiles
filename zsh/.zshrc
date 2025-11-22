@@ -92,5 +92,5 @@ if [[ -d "/opt/homebrew/opt/fzf/shell" ]]; then
     source /opt/homebrew/opt/fzf/shell/completion.zsh
 fi
 
-# Zoxide (Smart cd command)
-command -v zoxide &>/dev/null && eval "$(zoxide init zsh --cmd cd)"
+# Zoxide (Smart cd command) - cached for faster startup
+[[ -f "${XDG_CONFIG_HOME}/zoxide/zoxide.zsh" ]] && source "${XDG_CONFIG_HOME}/zoxide/zoxide.zsh"
