@@ -16,15 +16,17 @@ then
 fi
 
 # Override Builtin 'ls'
-l()    { command ls -AFlh ${colorflag} "$@"; }
-ll()   { command ls -aFlh ${colorflag} "$@"; }
+l()    { command ls -AFlh "${colorflag}" "$@"; }
+ll()   { command ls -aFlh "${colorflag}" "$@"; }
+lr()   { command ls -tRFh "${colorflag}" "$@"; }
+lrt()  { command ls -1AFlcrth "$colorflag" "$@";  }
 ls()   { command ls ${colorflag} "$@"; }
 
 # Directory Listing (Zsh-specific glob pattern)
 if [[ -n ${ZSH_VERSION-} ]]
 then
-    eval 'l.()  { command ls -AFLdlh ${colorflag} .* "$@"; }'
-    eval 'lsd() { command ls -lF "${colorflag}" -d *(/) "$@"; }'
+    eval 'lsd()   { command ls -lF "${colorflag}" -d *(/) "$@"; }'
+    eval 'ldot()  { command ls -AFLdlh ${colorflag} .* "$@"; }'
 else
     lsd()  { command ls -lF "${colorflag}" "$@" | grep --color=never "^d"; }
 fi
