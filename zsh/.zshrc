@@ -133,16 +133,12 @@ fi
     source "${ZSH_CUSTOM:-${ZSH}/custom}/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 
 # --- Source Personal Scripts ---
-# These files work across both Zsh and Bash
-[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functionsrc" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functionsrc"
-[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliasrc" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliasrc"
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functions" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functions"
+[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliases" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliases"
 
 # --- Set DOTFILES Variable ---
-# Set a DOTFILES variable if a standard location exists.
 if [[ -d "${HOME}/dotfiles" ]]; then
     export DOTFILES="${HOME}/dotfiles"
-elif [[ -d "${HOME}/.dotfiles" ]]; then
-    export DOTFILES="${HOME}/.dotfiles"
 fi
 
 # --- Tool Configurations ---
