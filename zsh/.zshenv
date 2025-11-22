@@ -30,10 +30,11 @@ export VISUAL="vim"
 # -i: Case-insensitive search unless uppercase letters are used
 # -g: Highlight only the current match in searches
 # -c: Clear screen before display instead of scrolling
-# -W: Highlight first line after EOF
+# -X: Don't clearn sceen on exit
 # -M: Display more detailed prompt (filename, line number, percentage)
 # -J: Display status column on left with marks for search results
-export LESS="-R -i -g -c -W -M -J"
+export LESS='-R -i -g -c -X -M -J'
+export MANPAGER="less -R --use-color -Dd+y -Du+g"
 
 # Set the location for less's history file (using XDG standard)
 export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
