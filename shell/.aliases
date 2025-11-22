@@ -20,18 +20,22 @@ alias .....='cd ../../../..'
 
 alias h='history'
 alias j='jobs -l'
+alias p='ps -f'
+alias t='tail -f'
 alias cl='clear'
 alias rmd='rm -rf'
 
-# --- Grep with Color ---
+# --- Grep & Find---
 
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
+alias ff='find . -type f -name'
+alias fnd='find . -type d -name'
+
 # --- Python aliases ---
 
-alias p='python3'
 alias py='python3'
 alias pip='pip3'
 alias python='python3'
