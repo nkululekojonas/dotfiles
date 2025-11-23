@@ -76,11 +76,6 @@ inoremap <Down>    <ESC>:echoe "Use j"<CR>
 " fzf shortcuts
 nnoremap <silent> <C-f> :FZF<CR>
 
-" CtrlP shortcuts
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-
 " Additional useful settings
 set wildmenu
 set wildmode=longest:full,full
@@ -121,7 +116,7 @@ endif
 " Enable persistent undo
 if has('persistent_undo')
     set undofile
-    set undodir=~/.vim/undo
+    set undodir=~/.config/vim/undo
 endif
 
 " Highlight current line
