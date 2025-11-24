@@ -5,8 +5,8 @@ Welcome to my personal dotfiles repository! This collection of configuration fil
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/nkululekojonas/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
 ./install
 ```
 
@@ -33,7 +33,7 @@ cd ~/dotfiles
 1. Clone this repository to your home directory:
 
 ```bash
-git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
+git clone https://github.com/nkululekojonas/dotfiles.git ~/.dotfiles
 ```
 
 > [!NOTE] 
@@ -42,7 +42,7 @@ git clone https://github.com/nkululekojonas/dotfiles.git ~/dotfiles
 2. Run the installation script:
 
 ```bash
-cd ~/dotfiles
+cd ~/.dotfiles
 ./install
 ```
 
@@ -52,7 +52,7 @@ The install script will symlink the appropriate files to your home directory. Ma
 1. Run the installing script with --dry-run flag
 
 ```bash
-cd ~/dotfiles
+cd ~/.dotfiles
 ./install --dry-run
 ```
 
@@ -72,7 +72,7 @@ Feel free to modify these dotfiles to suit your preferences. The main configurat
 When setting up a new Mac, you may want to set some sensible macOS defaults:
 
 ```bash
-cd ~/dotfiles/macos
+cd ~/.dotfiles/macos
 ./.macos
 ```
 
@@ -81,7 +81,7 @@ cd ~/dotfiles/macos
 When setting up a new Mac, you may want to install some common [Homebrew](https://brew.sh/) formulae (after installing Homebrew, of course):
 
 ```bash
-cd ~/dotfiles/brew
+cd ~/.dotfiles/brew
 ./brew.sh
 ```
 

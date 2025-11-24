@@ -1,6 +1,6 @@
 #!/bin/bash
 
-q# install.sh: Symlink configuration dotfiles and install dependencies
+# install.sh: Symlink configuration dotfiles and install dependencies
 # Author: Nkululeko Jonas (Optimized based on XDG setup)
 # Date: 01-10-2024 (Updated: 2025-05-03)
 
@@ -12,7 +12,7 @@ set -euo pipefail
 
 # Source directory for dotfiles
 # Uses environment variable DOTFILES if set, otherwise defaults to ~/dotfiles
-DOTFILES="${DOTFILES:-${HOME}/dotfiles}"
+DOTFILES="${DOTFILES:-${HOME}/.dotfiles}"
 
 # Destination directory for most configuration files (XDG Base Directory)
 # Uses environment variable XDG_CONFIG_HOME if set, otherwise defaults to ~/.config
