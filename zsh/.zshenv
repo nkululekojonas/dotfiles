@@ -3,7 +3,7 @@
 #
 # --- Zsh Configuration Setup ---
 # Load Enviroment (.env)
-if [[ -f "${XDG_CONFIG_HOME}/shell/.env" ]]
+if [[ -f "${HOME}/.config/shell/.env" ]]
 then
-    source "${XDG_CONFIG_HOME}/shell/.env"
+    source "${HOME}/.config/shell/.env"
 fi

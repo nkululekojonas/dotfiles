@@ -1,6 +1,6 @@
 # .bashrc
 # Bash Interactive Shell Configuration
-
+#
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -27,7 +27,6 @@ else
     PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] '
 fi
 
-# --- Source Shared Configurations ---
 # --- Source Shared Configurations ---
 [[ -f "${XDG_CONFIG_HOME}/shell/.functions" ]] && . "${XDG_CONFIG_HOME}/shell/.functions"
 [[ -f "${XDG_CONFIG_HOME}/shell/.aliases" ]] && . "${XDG_CONFIG_HOME}/shell/.aliases"

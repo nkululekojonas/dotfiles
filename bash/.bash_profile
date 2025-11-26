@@ -2,9 +2,9 @@
 # Bash Environment Configuration (Loaded for ALL shell types)                   
 #
 # Load Enviroment (.env)
-if [[ -f "${XDG_CONFIG_HOME}/shell/.env" ]]
+if [[ -f "${HOME}/.config/shell/.env" ]]
 then
-    . "${XDG_CONFIG_HOME}/shell/.env"
+    . "${HOME}/.config/shell/.env"
 fi
 
 # Get the aliases and functions
