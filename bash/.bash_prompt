@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Robbyrussell-style prompt for bash
+# Colors
+CYAN='\[\033[0;36m\]'
+GREEN='\[\033[0;32m\]'
+RED='\[\033[0;31m\]'
+YELLOW='\[\033[0;33m\]'
+RESET='\[\033[0m\]'
+
+# Git branch function
+git_branch() {
+    local branch
+    branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+    if [ -n "$branch" ]; then
+        echo " git:($branch)"
+    fi
+}
+
+# Git status function (checks if dirty)
+git_dirty() {
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
+            echo "✗"
+        fi
+    fi
+}
+
+# Build the prompt
+build_prompt() {
+    local git_info=$(git_branch)
+    local git_status=$(git_dirty)
+    
+    if [ -n "$git_info" ]; then
+        PS1="${CYAN}➜  ${GREEN}\W${CYAN}${git_info} ${RED}${git_status}${RESET} "
+    else
+        PS1="${CYAN}➜  ${GREEN}\W ${RESET}"
+    fi
+}
+
+PROMPT_COMMAND=build_prompt

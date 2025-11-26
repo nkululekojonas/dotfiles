@@ -89,7 +89,7 @@ unalias run-help 2>/dev/null
 # Load Zsh's enhanced run-help system for better help display
 autoload -Uz run-help run-help-git
 
-# --- Source Personal Scripts ---
+# --- Source Shared Configurations ---
 [[ -f "${XDG_CONFIG_HOME}/shell/.functions" ]] && source "${XDG_CONFIG_HOME}/shell/.functions"
 [[ -f "${XDG_CONFIG_HOME}/shell/.aliases" ]] && source "${XDG_CONFIG_HOME}/shell/.aliases"
 
