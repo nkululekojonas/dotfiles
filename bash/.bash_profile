@@ -5,6 +5,8 @@
 if [[ -f "${HOME}/.config/shell/.env" ]]
 then
     . "${HOME}/.config/shell/.env"
+else
+    echo "Warning: Couldn't set enviroment." >&2
 fi
 
 # Get the aliases and functions

@@ -16,6 +16,18 @@ mkdir -p "${XDG_CONFIG_HOME}/zsh" "${XDG_CACHE_HOME}/zsh"
 # Set the initial command search path.
 export PATH="${PATH}:${HOME}/bin"
 
+# --- Bash Options ---
+# Completion
+shopt -s nocaseglob      # Case-insensitive globbing
+shopt -s cdspell         # Auto-correct minor typos in cd
+shopt -s dirspell        # Auto-correct directory names during completion
+shopt -s dotglob         # Include dotfiles in globbing (like GLOB_DOTS)
+shopt -s extglob         # Extended pattern matching (like EXTENDED_GLOB)
+
+# History
+shopt -s histappend      # Append to history file, don't overwrite
+shopt -s cmdhist         # Save multi-line commands as one history entry
+
 # --- Prompt (PS1) ---
 if [[ -f "${XDG_CONFIG_HOME}/bash/.bash_prompt" ]] 
 then
@@ -27,28 +39,18 @@ else
     PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] '
 fi
 
+# --- Completion ---
+# Enable programmable completion
+if ! shopt -oq posix; then
+    if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+        source /usr/share/bash-completion/bash_completion
+    elif [[ -f /etc/bash_completion ]]; then
+        source /etc/bash_completion
+    elif [[ -f /opt/homebrew/etc/profile.d/bash_completion.sh ]]; then
+        source /opt/homebrew/etc/profile.d/bash_completion.sh
+    fi
+fi
+
 # --- Source Shared Configurations ---
 [[ -f "${XDG_CONFIG_HOME}/shell/.functions" ]] && . "${XDG_CONFIG_HOME}/shell/.functions"
 [[ -f "${XDG_CONFIG_HOME}/shell/.aliases" ]] && . "${XDG_CONFIG_HOME}/shell/.aliases"
-
-# --- Bash Options ---
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
-
-# # Append to the Bash history file, rather than overwriting it
-shopt -s histappend;
-
-# # Autocorrect typos in path names when using `cd`
-shopt -s cdspell;
-
-# # Enable some Bash 4 features when possible:
-# # * `autocd`, e.g. `**/qux` will enter `./foo/bar/baz/qux`
-# # * Recursive globbing, e.g. `echo **/*.txt`
-for option in autocd globstar 
-do
-  shopt -s "$option" 2> /dev/null
-done;
