@@ -8,7 +8,8 @@ then
 fi
 
 # Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-	. ~/.bashrc
+if [[ -f "${XDG_CONFIG_HOME}/bash/.bashrc" ]]
+then
+    . "${XDG_CONFIG_HOME}/bash/.bashrc"
 fi
 
