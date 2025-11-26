@@ -10,6 +10,9 @@ mkdir -p "${XDG_CONFIG_HOME}/zsh" "${XDG_CACHE_HOME}/zsh"
 # mkdir -p "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"
 
 # --- PATH Configuration ---
+# Set the initial command search path.
+export PATH="${PATH}:${HOME}/bin"
+
 # Ensure the PATH variable does not contain duplicate directories.
 typeset -U PATH path 
 
@@ -87,10 +90,16 @@ unalias run-help 2>/dev/null
 autoload -Uz run-help run-help-git
 
 # --- Source Personal Scripts ---
-[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functions" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.functions"
-[[ -f "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliases" ]] && source "${ZDOTDIR:-${XDG_CONFIG_HOME}/zsh}/.aliases"
+[[ -f "${XDG_CONFIG_HOME}/shell/.functions" ]] && source "${XDG_CONFIG_HOME}/shell/.functions"
+[[ -f "${XDG_CONFIG_HOME}/shell/.aliases" ]] && source "${XDG_CONFIG_HOME}/shell/.aliases"
 
 # --- Tool Configurations ---
+
+# Use vim style navigation keys in menu completion
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
 
 # FZF (Fuzzy Finder)
 if [[ -d "/opt/homebrew/opt/fzf/shell" ]]; then
