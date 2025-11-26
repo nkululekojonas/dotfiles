@@ -9,6 +9,21 @@
 # Enable strict error handling: exit on error (-e), undefined variable (-u),
 # pipe failure (-o pipefail). Report trace (-x) for debugging if needed.
 set -euo pipefail
+#
+# --- XDG Base Directory Specification Compliance ---
+# Define standard locations for user-specific config, data, cache, etc.
+# These provide defaults if the corresponding variables are not already set.
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-"${HOME}/.cache"}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"${HOME}/.config"}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-"${HOME}/.local/share"}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-"${HOME}/.local/state"}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-"${HOME}/.local/run"}"
+
+# --- Ensure Required Directories Exist  ---
+for dir in bash git shell tmux vim zsh
+do
+    mkdir -p "${XDG_CONFIG_HOME}/${dir}"
+done
 
 # Source directory for dotfiles
 # Uses environment variable DOTFILES if set, otherwise defaults to ~/dotfiles
@@ -23,19 +38,26 @@ CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}"
 # Destination is automatically determined based on XDG standards unless overridden.
 files_to_link=(
     "vim/vimrc"         # Target: $CONFIG_DIR/vim/vimrc
+    "tmux/tmux.conf"    # Target: $CONFIG_DIR/tmux/tmux.conf
+
     "git/gitconfig"     # Target: $CONFIG_DIR/git/gitconfig
     "git/gitignore"     # Target: $CONFIG_DIR/git/gitignore (Ensure git configured for this)
-    "tmux/tmux.conf"    # Target: $CONFIG_DIR/tmux/tmux.conf
+
+    "bash/.bash_profile"    # TARGET: $CONFIG_DIR/bash/.bash_profile
+    "bash/.bash_prompt"     # TARGET: $CONFIG_DIR/bash/.bash_prompt
+    "bash/.bashrc"          # TARGET: $CONFIG_DIR/bash/.bashrc
+
     "zsh/.zprofile"     # Target: $CONFIG_DIR/zsh/.zprofile (Uses ZDOTDIR)
     "zsh/.zshenv"       # Target: $CONFIG_DIR/zsh/.zshenv   (Uses ZDOTDIR)
     "zsh/.zshrc"        # Target: $CONFIG_DIR/zsh/.zshrc    (Uses ZDOTDIR)
-    "zsh/aliases.zsh"   # Target: $CONFIG_DIR/zsh/aliases.zsh
-    "zsh/functions.zsh" # Target: $CONFIG_DIR/zsh/functions.zsh
-    "ssh/config"        # Target: $HOME/.ssh/config (Special case)
+    
+    "shell/.env"        # Target: $CONFIG_DIR/shell/.env
+    "shell/.aliases"    # Target: $CONFIG_DIR/shell/.aliases
+    "shell/.functions"  # Target: $CONFIG_DIR/shell/.functions
 )
 
 # Homebrew Bundle file location
-BREWFILE="${BREWFILE:-${DOTFILES}/homebrew/Brewfile}"
+BREWFILE="${BREWFILE:-${DOTFILES}/brew/Brewfile}"
 
 # --- Flags ---
 DRY_RUN=false
@@ -46,17 +68,20 @@ SKIP_SYMLINKS=false
 # --- Helper Functions ---
 
 # Log an error message to stderr
-error() {
+error() 
+{
     echo "[ERROR] $1" >&2
 }
 
 # Log an informational message to stdout
-info() {
+info() 
+{
     echo "[INFO] $1"
 }
 
 # Print usage instructions
-usage() {
+usage() 
+{
     echo "Usage: $0 [options]"
     echo "Options:"
     echo "  --dry-run       Show actions without executing."
@@ -67,7 +92,8 @@ usage() {
 }
 
 # Backup an existing file or directory if it's not already a symlink
-backup() {
+backup() 
+{
     local target="$1"
     local backup_target="${target}.bak"
 
@@ -85,7 +111,8 @@ backup() {
 }
 
 # Create a symlink from source to destination
-create_symlink() {
+create_symlink() 
+{
     local source_path="$1" # Full path to the source file in dotfiles repo
     local target_path="$2" # Full path to the destination symlink
 
@@ -196,7 +223,7 @@ if [ "$SKIP_BREW" = true ]; then
     info "Skipping Homebrew installation and bundling as requested."
 else
     info "Starting Homebrew setup..."
-    brew_install_script="${DOTFILES}/homebrew/install.sh"
+    brew_install_script="${DOTFILES}/brew/brew.sh"
 
     if [[ ! -f "$brew_install_script" ]]; then
         error "Homebrew install script not found at '$brew_install_script'. Skipping Brew setup."
@@ -236,7 +263,7 @@ if [ "$SKIP_MACOS" = true ]; then
     info "Skipping macOS defaults configuration as requested."
 else
     info "Applying macOS defaults..."
-    macos_script="${DOTFILES}/macos/macos-defaults.sh"
+    macos_script="${DOTFILES}/macos/.macos"
 
     if [[ ! -f "$macos_script" ]]; then
         error "macOS defaults script not found at '$macos_script'. Skipping."
