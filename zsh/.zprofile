@@ -1,6 +1,9 @@
+# .zprofile
+# Zsh Login Configuration Setup
+#
 # --- Setup Homebrew ---
 # Check Standard Arm Path
-if [ -x "/opt/homebrew/bin/brew" ]
+if [[ -x "/opt/homebrew/bin/brew" ]]
 then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 else

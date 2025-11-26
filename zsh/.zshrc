@@ -35,7 +35,7 @@ ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
 # --- Oh My Zsh Plugin Configuration ---
 plugins=( 
     git 
-    brew        # Homebrew aliases and completion 
+    brew               # Homebrew aliases and completion 
     colored-man-pages  # Colorized man pages
     zsh-autosuggestions 
     history-substring-search 
