@@ -5,8 +5,9 @@
 [[ $- != *i* ]] && return
 
 # --- Ensure Required Directories Exist  ---
-# Only create essential directories that don't exist (faster check)
-mkdir -p "${XDG_CONFIG_HOME}/zsh" "${XDG_CACHE_HOME}/zsh"
+# Only create essential directories that don't exist 
+mkdir -p "$(dirname "$HISTFILE")"
+mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}"
 
 # Optional: Only create DATA/STATE directories if you use tools that need them
 # Uncomment these lines if needed (npm, pipx, cargo, poetry, etc.):

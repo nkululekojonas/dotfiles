@@ -3,6 +3,7 @@
 
 # --- Ensure Required Directories Exist  ---
 # Only create essential directories that don't exist (faster check)
+mkdir -p "$(dirname "$HISTFILE")"
 mkdir -p "${XDG_CONFIG_HOME}/zsh" "${XDG_CACHE_HOME}/zsh"
 
 # Optional: Only create DATA/STATE directories if you use tools that need them
