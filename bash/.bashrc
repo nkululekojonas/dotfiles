@@ -14,7 +14,7 @@ mkdir -p "${XDG_CONFIG_HOME}/zsh" "${XDG_CACHE_HOME}/zsh"
 
 # --- PATH Configuration ---
 # Set the initial command search path.
-export PATH="${PATH}:${HOME}/bin"
+[[ -f "${HOME}/bin" ]] && export PATH="${PATH}:${HOME}/bin"
 
 # --- Bash Options ---
 # Completion
