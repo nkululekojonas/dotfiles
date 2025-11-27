@@ -1,18 +1,20 @@
 #!/bin/bash
-
+#
 # install.sh: Symlink configuration dotfiles and install dependencies
 # Author: Nkululeko Jonas (Optimized based on XDG setup)
-# Date: 01-10-2024 (Updated: 2025-05-03)
 
 # --- Configuration ---
+OS="$(uname -s)"
 
-# Enable strict error handling: exit on error (-e), undefined variable (-u),
-# pipe failure (-o pipefail). Report trace (-x) for debugging if needed.
-set -euo pipefail
-#
-# --- XDG Base Directory Specification Compliance ---
+macos=false
+case "$OS" in
+    Darwin*)macos=true ;;
+esac
+
 # Define standard locations for user-specific config, data, cache, etc.
 # These provide defaults if the corresponding variables are not already set.
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-"${HOME}/.cache"}"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-"${HOME}/.config"}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-"${HOME}/.local/share"}"
@@ -50,7 +52,7 @@ files_to_link=(
     "zsh/.zprofile"     # Target: $CONFIG_DIR/zsh/.zprofile (Uses ZDOTDIR)
     "zsh/.zshenv"       # Target: $CONFIG_DIR/zsh/.zshenv   (Uses ZDOTDIR)
     "zsh/.zshrc"        # Target: $CONFIG_DIR/zsh/.zshrc    (Uses ZDOTDIR)
-    
+
     "shell/.env"        # Target: $CONFIG_DIR/shell/.env
     "shell/.aliases"    # Target: $CONFIG_DIR/shell/.aliases
     "shell/.functions"  # Target: $CONFIG_DIR/shell/.functions
@@ -98,12 +100,13 @@ backup()
     local backup_target="${target}.bak"
 
     # Check if the target exists and is not a symlink
-    if [[ -e "$target" && ! -L "$target" ]]; then
-        if [ "$DRY_RUN" = true ]; then
+    if [[ -e "$target" && ! -L "$target" ]]
+    then
+        if [ "$DRY_RUN" = true ]
+        then
             info "[DRY RUN] Would backup: '$target' -> '$backup_target'"
         else
             info "Backing up existing '$target' to '$backup_target'"
-            # Use -f to overwrite existing backup if necessary
             mv -f "$target" "$backup_target" || { error "Failed to backup '$target'"; return 1; }
         fi
     fi
@@ -120,8 +123,10 @@ create_symlink()
     target_dir="$(dirname "$target_path")"
 
     # Ensure the target directory exists
-    if [ "$DRY_RUN" = true ]; then
-        if [[ ! -d "$target_dir" ]]; then
+    if [ "$DRY_RUN" = true ]
+    then
+        if [[ ! -d "$target_dir" ]]
+        then
             info "[DRY RUN] Would create directory: '$target_dir'"
         fi
     else
@@ -133,13 +138,15 @@ create_symlink()
     backup "$target_path" || return 1
 
     # Check if source file exists
-    if [[ ! -e "$source_path" ]]; then
+    if [[ ! -e "$source_path" ]]
+    then
         error "Source file '$source_path' does not exist. Skipping."
         return 1 # Indicate failure
     fi
 
     # Create the symlink
-    if [ "$DRY_RUN" = true ]; then
+    if [ "$DRY_RUN" = true ]
+    then
         info "[DRY RUN] Would create symlink: '$target_path' -> '$source_path'"
     else
         # Use -f to force overwrite if a symlink/file already exists at target
@@ -166,7 +173,8 @@ done
 
 # 1. Check if Dotfiles Directory exists
 info "Checking for dotfiles directory at '$DOTFILES'..."
-if [[ ! -d "$DOTFILES" ]]; then
+if [[ ! -d "$DOTFILES" ]]
+then
     error "Dotfiles directory '$DOTFILES' not found. Please clone it or set the DOTFILES environment variable."
     exit 1
 fi
@@ -178,23 +186,24 @@ if [ "$SKIP_SYMLINKS" = true ]; then
 else
     info "Starting symlink creation..."
     info "Source base: '$DOTFILES'"
-    info "Target base: '$CONFIG_DIR' (and '$HOME/.ssh' for ssh config)"
+    info "Target base: '$CONFIG_DIR'"
 
     success_count=0
     fail_count=0
 
-    for item in "${files_to_link[@]}"; do
+    for item in "${files_to_link[@]}"
+    do
         src="${DOTFILES}/${item}"
         dest=""
 
         # Determine destination path
         case "$item" in
-            ssh/config)
-                dest="${HOME}/.ssh/config"
-                ;;
             zsh/*)
                 # Zsh files go into ZDOTDIR ($CONFIG_DIR/zsh/)
                 dest="${CONFIG_DIR}/zsh/$(basename "$item")"
+                ;;
+            bash/.bash_profile)
+                dest="${HOME}/.$(basename "$item")"
                 ;;
             *)
                 # Default: place in $CONFIG_DIR maintaining structure
@@ -203,7 +212,8 @@ else
         esac
 
         # Attempt to create the symlink
-        if create_symlink "$src" "$dest"; then
+        if create_symlink "$src" "$dest"
+        then
             ((success_count++))
         else
             ((fail_count++))
@@ -211,46 +221,39 @@ else
     done
 
     info "Symlink creation finished. Success: $success_count, Failed: $fail_count."
-    if (( fail_count > 0 )); then
+    if (( fail_count > 0 ))
+    then
         error "Some symlinks could not be created. Please check the errors above."
-        # Decide if this should be a fatal error
-        # exit 1
     fi
 fi
 
+if [ "$macos" = false ]
+then
+    SKIP_BREW=true
+    SKIP_MACOS=true
+fi
+
 # 3. Install Homebrew and Bundle
-if [ "$SKIP_BREW" = true ]; then
+if [ "$SKIP_BREW" = true ]
+then
     info "Skipping Homebrew installation and bundling as requested."
 else
     info "Starting Homebrew setup..."
     brew_install_script="${DOTFILES}/brew/brew.sh"
 
-    if [[ ! -f "$brew_install_script" ]]; then
+    if [[ ! -f "$brew_install_script" ]]
+    then
         error "Homebrew install script not found at '$brew_install_script'. Skipping Brew setup."
     else
-        if [ "$DRY_RUN" = true ]; then
+        if [ "$DRY_RUN" = true ]
+        then
             info "[DRY RUN] Would run Homebrew install script: '$brew_install_script'"
             info "[DRY RUN] Would run: brew bundle --file='$BREWFILE'"
         else
             info "Running Homebrew install script: '$brew_install_script'"
-            if "$brew_install_script"; then
+            if "$brew_install_script"
+            then
                 info "Homebrew install script finished."
-                # Check if Brewfile exists before bundling
-                if [[ -f "$BREWFILE" ]]; then
-                     # Check if brew command exists now
-                    if command -v brew &> /dev/null; then
-                        info "Running brew bundle install --file='$BREWFILE'..."
-                        if brew bundle install --file="$BREWFILE"; then
-                            info "Homebrew bundle completed successfully."
-                        else
-                            error "Homebrew bundle command failed."
-                        fi
-                    else
-                        error "Homebrew command 'brew' not found after running install script. Cannot run bundle."
-                    fi
-                else
-                    info "Brewfile not found at '$BREWFILE'. Skipping brew bundle."
-                fi
             else
                 error "Homebrew install script failed."
             fi
@@ -265,19 +268,20 @@ else
     info "Applying macOS defaults..."
     macos_script="${DOTFILES}/macos/.macos"
 
-    if [[ ! -f "$macos_script" ]]; then
+    if [[ ! -f "$macos_script" ]]
+    then
         error "macOS defaults script not found at '$macos_script'. Skipping."
     else
-        if [ "$DRY_RUN" = true ]; then
+        if [ "$DRY_RUN" = true ]
+        then
             info "[DRY RUN] Would run macOS defaults script: '$macos_script'"
         else
             info "Running macOS defaults script: '$macos_script'"
-            if "$macos_script"; then
+            if "$macos_script"
+            then
                 info "macOS defaults script finished successfully."
             else
                 error "macOS defaults script failed."
-                # Consider if this should be fatal
-                # exit 1
             fi
         fi
     fi
