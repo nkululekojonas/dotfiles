@@ -203,7 +203,7 @@ else
                 dest="${CONFIG_DIR}/zsh/$(basename "$item")"
                 ;;
             bash/.bash_profile)
-                dest="${HOME}/.$(basename "$item")"
+                dest="${HOME}/$(basename "$item")"
                 ;;
             *)
                 # Default: place in $CONFIG_DIR maintaining structure
