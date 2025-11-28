@@ -15,7 +15,10 @@ mkdir -p "${XDG_CONFIG_HOME}" "${XDG_CACHE_HOME}"
 
 # --- PATH Configuration ---
 # Set the initial command search path.
-[[ -f "${HOME}/bin" ]] && export PATH="${PATH}:${HOME}/bin"
+[[ -d "${HOME}/bin" ]] && export PATH="${PATH}:${HOME}/bin"
+
+# --- Set DOTFILES Variable ---
+[[ -d "${HOME}/.dotfiles" ]] && export DOTFILES="${HOME}/.dotfiles"
 
 # --- Bash Options ---
 # Completion

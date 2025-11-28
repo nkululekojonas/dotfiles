@@ -1,11 +1,9 @@
 # .functionsrc      : Useful Shell Functions Portable Across Bash and Zsh
 # Author            : Nkululeko Jonas
-# Date              : 23-10-2023
-
+#
 # --- LS Configuration ---
-export CLICOLOR=1
-export LSCOLORS=Gxfxcxdxbxegedabagacad
 
+# Unalias HomeBrew defaults
 unalias ls l ll lsd 2>/dev/null
 
 colorflag=""
@@ -149,7 +147,8 @@ uinfo()
 # --- System Update ---
 
 # Perform system update with enhanced error handling
-update() {
+update() 
+{
     # Check sudo privileges
     sudo -v || { echo "Error: Failed to get sudo privileges. Aborting update."; return 1; }
 
@@ -212,8 +211,25 @@ update() {
 
     echo "Update process completed!"
 }
+# --- PATH Manipulation ---
+path_remove() 
+{
+    PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
+}
 
-# Open last edited file in vim
+path_append() 
+{
+    path_remove "$1"
+    PATH="${PATH:+"$PATH:"}$1"
+}
+
+path_prepend() 
+{
+    path_remove "$1"
+    PATH="$1${PATH:+":$PATH"}"
+}
+
+# --- VIM Configuration ---
 vlast()
 {
     local last_file

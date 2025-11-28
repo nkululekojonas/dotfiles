@@ -1,15 +1,9 @@
 # .aliases  : Useful Shell Aliases Portable Across Bash and Zsh
 # Author    : Nkululeko Jonas
-
-macos=false
-linux=false
-case "$OSTYPE" in
-    darwin*) macos=true ;;
-    linux*) linux=true ;;
-esac
-
+#
 # --- System Navigation ---
 
+alias -- -='cd -'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -109,7 +103,7 @@ fi
 
 # --- macOS Specific Aliases (Conditional on OSTYPE) ---
 
-if [[ "$macos" == true ]]
+if [[ "$OSTYPE" == darwin* ]]
 then
     # System Naviagtion
     alias bn='cd ~/bin'

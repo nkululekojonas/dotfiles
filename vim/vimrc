@@ -1,5 +1,10 @@
 " Vim Configuration File
 
+" Native package manager - plugins go in ~/.config/vim/pack/plugins/start/
+" Install plugins with:
+" cd ~/.config/vim/pack/plugins/start
+" git clone <plugin-repo-url>
+
 " Disable Vi compatibility mode
 set nocompatible
 
@@ -8,6 +13,9 @@ filetype plugin indent on
 
 " Set up fuzzy-finder (fzf)
 set rtp+=/opt/homebrew/opt/fzf
+
+" Handle purify's non-standard directory structure
+set rtp+=~/.config/vim/pack/plugins/start/purify/vim
 
 " Enable syntax highlighting
 syntax enable
@@ -91,30 +99,9 @@ set confirm
 set history=1000
 set undofile
 
-set undodir=~/.config/vim/undodir
-
-" Auto-install vim-plug if not found
-if empty(glob('~/.config/vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.config/vim/autoload/plug.vim --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-" Plugin Manager (vim-plug)
-call plug#begin('~/.config/vim/plugged')
-
-Plug 'junegunn/goyo.vim'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'airblade/vim-gitgutter'
-Plug 'vim-airline/vim-airline'
-Plug 'kyoz/purify', { 'rtp': 'vim' }
-Plug 'christoomey/vim-tmux-navigator'
-
-call plug#end()
-
 " Set a color scheme
 syntax on " This is required
+set rtp+=~/.config/vim/pack/plugins/start/purify/vim
 colorscheme purify
 
 if exists('+termguicolors')
@@ -144,6 +131,9 @@ let mapleader = ","
 " Quick save
 nnoremap <leader>w :w<CR>
 
+" Quick Quit and
+nnoremap <leader>qq :xa<CR>
+
 " Split navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -159,46 +149,6 @@ set updatetime=100
 
 " Make the cursor bold
 set guicursor=n-v-c-sm:block-blinkwait50-blinkon50-blinkoff50,i-ci-ve:ver25-blinkwait50-blinkon50-blinkoff50,r-cr-o:hor20-blinkwait50-blinkon50-blinkoff50,a:blinkon50-blinkwait50-blinkoff50
-
-"--- GitHub Dark Default Theme Colors ---
-
-" Background color
-" set background=dark
-" hi Normal guibg=#000000 ctermbg=0
-" hi NonText guibg=#000000 ctermbg=0
-" hi LineNr guibg=#000000 ctermbg=0
-" hi VertSplit guibg=#000000 ctermbg=0
-" hi StatusLine guibg=#ff0000 ctermbg=1 guifg=#ffffff ctermfg=15 " Red background
-" hi StatusLineNC guibg=#800000 ctermbg=1 guifg=#808080 ctermfg=8 " Darker red for inactive
-" hi CursorLine guibg=#000000 ctermbg=0
-" hi CursorLineNr guibg=#000000 ctermbg=0
-" 
-" " Editor colors
-" hi Normal guifg=#ffffff ctermfg=15
-" hi Comment guifg=#808080 ctermfg=8
-" hi String guifg=#00ff00 ctermfg=2 "Example of a String color, modify as needed
-" hi Character guifg=#00ff00 ctermfg=2
-" hi Number guifg=#00ffff ctermfg=6
-" hi Boolean guifg=#00ffff ctermfg=6
-" hi Float guifg=#00ffff ctermfg=6
-" hi Identifier guifg=#ffffff ctermfg=15
-" hi Function guifg=#59A5FC ctermfg=12
-" hi Statement guifg=#ff0000 ctermfg=1
-" hi Conditional guifg=#ff0000 ctermfg=1
-" hi Repeat guifg=#ff0000 ctermfg=1
-" hi Label guifg=#ff0000 ctermfg=1
-" hi Operator guifg=#ffffff ctermfg=15
-" hi Keyword guifg=#ff0000 ctermfg=1
-" hi PreProc guifg=#59A5FC ctermfg=12
-" hi Type guifg=#59A5FC ctermfg=12
-" hi StorageClass guifg=#59A5FC ctermfg=12
-" hi Structure guifg=#59A5FC ctermfg=12
-" hi Special guifg=#ff0000 ctermfg=1
-" hi SpecialChar guifg=#ffffff ctermfg=15
-" hi Delimiter guifg=#ffffff ctermfg=15
-" hi SpecialComment guifg=#808080 ctermfg=8
-" hi Constant guifg=#00ffff ctermfg=6
-" hi Error guifg=#ff0000 ctermfg=1 guibg=#000000 ctermbg=0
 
 " Status line configuration (modified to red)
 set statusline=%F%m%r%h%w\ %=[Line\ %l\/%L,\ Col\ %c]\ %P
