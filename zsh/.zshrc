@@ -102,6 +102,10 @@ bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 
+# Use vim style navigation keys to search history
+bindkey '^K' history-search-backward
+bindkey '^J' history-search-forward
+
 # FZF (Fuzzy Finder)
 if [[ -d "/opt/homebrew/opt/fzf/shell" ]]; then
     source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
