@@ -16,6 +16,8 @@ alias j='jobs -l'
 alias p='ps -f'
 alias t='tail -f'
 alias cl='clear'
+alias mv='mv -i'
+alias rm='rm -i'
 alias rmd='rm -rf'
 
 # --- Grep & Find---
@@ -99,6 +101,13 @@ then
     alias tl='tmux list-sessions'
     alias tksv='tmux kill-server'
     alias tkss='tmux kill-session -t'
+fi
+
+# --- Github Copespaces (Conditional on installation) ---
+
+if command -v gh &> /dev/null
+then
+    alias ghc='gh codespace'
 fi
 
 # --- macOS Specific Aliases (Conditional on OSTYPE) ---
