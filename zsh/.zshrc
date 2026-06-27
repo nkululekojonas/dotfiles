@@ -114,3 +114,5 @@ fi
 
 # Zoxide (Smart cd command) - cached for faster startup
 [[ -f "${XDG_CONFIG_HOME}/zoxide/zoxide.zsh" ]] && source "${XDG_CONFIG_HOME}/zoxide/zoxide.zsh"
+
+test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh"

@@ -30,9 +30,6 @@ defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 
-# Set accent color to Graphite
-defaults write NSGlobalDomain AppleAccentColor -int 6
-
 # Set sidebar icon size to Medium
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
 
@@ -40,9 +37,6 @@ defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
 defaults write NSGlobalDomain AppleReduceTransparency -bool true
 
 ### Finder Tweaks ###
-
-# Hide filename extensions
-defaults write NSGlobalDomain AppleShowAllExtensions -bool false
 
 # Keep folders on top when sorting by name
 defaults write com.apple.finder _FXSortFoldersFirst -bool true
@@ -57,9 +51,6 @@ defaults write com.apple.finder "FXEnableExtensionChangeWarning" -bool "false"
 defaults write com.apple.universalaccess "showWindowTitlebarIcons" -bool "false"
 
 ### Dock & Mission Control Tweaks ###
-
-# Minimize windows into application icon
-defaults write com.apple.dock minimize-to-application -bool true
 
 # Automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool true

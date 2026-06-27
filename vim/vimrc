@@ -15,7 +15,7 @@ filetype plugin indent on
 set rtp+=/opt/homebrew/opt/fzf
 
 " Handle purify's non-standard directory structure
-set rtp+=~/.config/vim/pack/plugins/start/purify/vim
+set rtp+=~/.config/vim/pack/plugins/start/purify
 
 " Enable syntax highlighting
 syntax enable
