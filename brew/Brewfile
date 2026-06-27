@@ -27,7 +27,7 @@ brew "jpegoptim"
 brew "lsd"
 brew "mas"
 brew "mdless"
-brew "neofetch"
+brew "mole"
 brew "node"
 brew "perl"
 brew "psgrep"
@@ -46,16 +46,11 @@ brew "vim"
 brew "wget"
 brew "write-good"
 brew "xdg-ninja"
-brew "yt-dlp"
 brew "zoxide"
 brew "zsh-autosuggestions"
 brew "zsh-fast-syntax-highlighting"
 brew "zsh-history-substring-search"
-brew "zsh-syntax-highlighting"
 cask "alt-tab"
-cask "antigravity"
-cask "arc"
-cask "chatgpt-atlas"
 cask "claude"
 cask "firefox"
 cask "font-jetbrains-mono"
@@ -70,10 +65,4 @@ mas "Amphetamine", id: 937984704
 mas "Microsoft Excel", id: 462058435
 mas "Microsoft PowerPoint", id: 462062816
 mas "Microsoft Word", id: 462054704
-mas "Pages", id: 409201541
-mas "Shazam", id: 897118787
-mas "Speedtest", id: 1153157709
 mas "Xcode", id: 497799835
-vscode "github.copilot"
-vscode "github.copilot-chat"
-vscode "github.github-vscode-theme"
