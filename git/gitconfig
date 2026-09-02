@@ -7,7 +7,7 @@
 [core]
     # Filesystem and Editor
     editor = vim
-    excludesfile = ~/.config/git/ignore 
+    excludesfile = ~/.config/git/gitignore
 
     # Line endings: Use LF in repo, don't perform automatic conversion
     eol = lf

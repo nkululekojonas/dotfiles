@@ -2,24 +2,18 @@
 # Zsh Interactive Shell Configuration 
 
 # --- Ensure Required Directories Exist  ---
-# Only create essential directories that don't exist (faster check)
+
 mkdir -p "$(dirname "$HISTFILE")"
 mkdir -p "${XDG_CONFIG_HOME}/zsh" "${XDG_CACHE_HOME}/zsh"
 
-# Optional: Only create DATA/STATE directories if you use tools that need them
-# Uncomment these lines if needed (npm, pipx, cargo, poetry, etc.):
-# mkdir -p "${XDG_DATA_HOME}" "${XDG_STATE_HOME}"
-
 # --- PATH Configuration ---
-# Set the initial command search path.
 export PATH="${PATH}:${HOME}/bin"
 
 # Ensure the PATH variable does not contain duplicate directories.
 typeset -U PATH path 
 
 # --- Oh My Zsh Configuration ---
-# Set Oh My Zsh installation directory (using XDG standard)
-export ZSH="${XDG_CONFIG_HOME}/oh-my-zsh" 
+export ZSH="${XDG_CONFIG_HOME}/oh-my-zsh" # Set Oh My Zsh installation directory (using XDG standard)
 
 # Set Oh My Zsh Theme
 ZSH_THEME="robbyrussell"
@@ -67,6 +61,7 @@ setopt PUSHD_SILENT       # Don't print the directory stack after pushd/popd com
 setopt HIST_VERIFY        # Show command from history before executing it upon expansion
 setopt HIST_SAVE_NO_DUPS  # Don't save duplicate commands across the entire history file
 setopt HIST_REDUCE_BLANKS # Remove superfluous blanks from history items before saving
+export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history" # Use XDG path for history file 
 
 # Completion Behavior
 setopt COMPLETE_ALIASES   # Complete aliases like regular commands
@@ -115,4 +110,5 @@ fi
 # Zoxide (Smart cd command) - cached for faster startup
 [[ -f "${XDG_CONFIG_HOME}/zoxide/zoxide.zsh" ]] && source "${XDG_CONFIG_HOME}/zoxide/zoxide.zsh"
 
-test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh"
+# Load iterm2 shell intergration
+[[ -e "${XDG_CONFIG_HOME}/iterm2/.iterm2_shell_integration.zsh" ]] && source "${XDG_CONFIG_HOME}/iterm2/.iterm2_shell_integration.zsh"
