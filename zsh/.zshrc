@@ -1,18 +1,11 @@
-# .zshrc
-# Zsh Interactive Shell Configuration 
+# .zshrc: Zsh Interactive Shell Configuration 
 
-# --- Ensure Required Directories Exist  ---
-
+# Ensure Required Directories Exist  
+mkdir -p "${XDG_CACHE_HOME}/zsh"
+mkdir -p "${XDG_CONFIG_HOME}/zsh" 
 mkdir -p "$(dirname "$HISTFILE")"
-mkdir -p "${XDG_CONFIG_HOME}/zsh" "${XDG_CACHE_HOME}/zsh"
 
-# --- PATH Configuration ---
-export PATH="${PATH}:${HOME}/bin"
-
-# Ensure the PATH variable does not contain duplicate directories.
-typeset -U PATH path 
-
-# --- Oh My Zsh Configuration ---
+# Oh My Zsh Configuration 
 export ZSH="${XDG_CONFIG_HOME}/oh-my-zsh" # Set Oh My Zsh installation directory (using XDG standard)
 
 # Set Oh My Zsh Theme
@@ -27,7 +20,7 @@ ZSH_DISABLE_COMPFIX=true            # Skip permission checks
 DISABLE_AUTO_TITLE=true             # Don't auto-set terminal title
 ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
 
-# --- Oh My Zsh Plugin Configuration ---
+# Oh My Zsh Plugin Configuration 
 plugins=( 
     git 
     brew               # Homebrew aliases and completion 
@@ -37,13 +30,10 @@ plugins=(
     fast-syntax-highlighting 
 )
 
-# --- Load Oh My Zsh ---
+# Load Oh My Zsh 
 [[ -f "${ZSH}/oh-my-zsh.sh" ]] && source "${ZSH}/oh-my-zsh.sh"
 
-# --- Zsh Options (`setopt`) ---
-# Note: Oh-My-Zsh sets many options by default. Only adding/overriding specific ones here.
-
-# General Usability
+# Set Zsh options 
 setopt GLOB_DOTS          # Include dotfiles (starting with .) in globbing results
 setopt EXTENDED_GLOB      # Use extended globbing patterns (^, ~, #, etc.)
 setopt NO_BEEP            # Disable terminal bells for errors/completion
@@ -67,13 +57,18 @@ export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history" # Use XDG path for
 setopt COMPLETE_ALIASES   # Complete aliases like regular commands
 setopt PATH_DIRS          # Perform path search even on command names containing slashes
 
-# --- Completion Styling (`zstyle`) ---
 # Configure the behavior and appearance of the Zsh completion system.
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' accept-exact '*(N)' # Accept exact matches even if other completions exist
 zstyle ':completion:*' menu select
 zstyle ':completion:*' use-cache on        # Enable caching for completion results
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/compcache"  # Store cache per XDG spec 
+
+# PATH Configuration 
+export PATH="${PATH}:${HOME}/bin"
+
+# Purge duplicate PATH entries
+typeset -U PATH path 
 
 # Better completion for kill command
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
@@ -85,11 +80,9 @@ unalias run-help 2>/dev/null
 # Load Zsh's enhanced run-help system for better help display
 autoload -Uz run-help run-help-git
 
-# --- Source Shared Configurations ---
+# Source Shared Configurations 
 [[ -f "${XDG_CONFIG_HOME}/shell/.functions" ]] && source "${XDG_CONFIG_HOME}/shell/.functions"
 [[ -f "${XDG_CONFIG_HOME}/shell/.aliases" ]] && source "${XDG_CONFIG_HOME}/shell/.aliases"
-
-# --- Tool Configurations ---
 
 # Use vim style navigation keys in menu completion
 bindkey -M menuselect 'h' vi-backward-char
