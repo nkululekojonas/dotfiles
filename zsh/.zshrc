@@ -1,15 +1,18 @@
 # .zshrc: Zsh Interactive Shell Configuration 
 
-# Ensure Required Directories Exist  
-mkdir -p "${XDG_CACHE_HOME}/zsh"
-mkdir -p "${XDG_CONFIG_HOME}/zsh" 
-mkdir -p "$(dirname "$HISTFILE")"
-
-# Oh My Zsh Configuration 
-export ZSH="${XDG_CONFIG_HOME}/oh-my-zsh" # Set Oh My Zsh installation directory (using XDG standard)
+# Set Oh My Zsh installation directory using XDG standard
+export ZSH="${XDG_CONFIG_HOME}/oh-my-zsh" 
 
 # Set Oh My Zsh Theme
 ZSH_THEME="robbyrussell"
+
+# Oh My Zsh Plugin Configuration 
+plugins=( 
+    git 
+    zsh-autosuggestions 
+    history-substring-search 
+    fast-syntax-highlighting 
+)
 
 # Disable Oh My Zsh features we don't need for faster startup
 DISABLE_AUTO_UPDATE=true
@@ -19,16 +22,6 @@ DISABLE_UNTRACKED_FILES_DIRTY=true  # Faster git status in Oh My Zsh prompt
 ZSH_DISABLE_COMPFIX=true            # Skip permission checks
 DISABLE_AUTO_TITLE=true             # Don't auto-set terminal title
 ZSH_COMPDUMP="${XDG_CACHE_HOME}/zsh/zcompdump-${ZSH_VERSION}"
-
-# Oh My Zsh Plugin Configuration 
-plugins=( 
-    git 
-    brew               # Homebrew aliases and completion 
-    colored-man-pages  # Colorized man pages
-    zsh-autosuggestions 
-    history-substring-search 
-    fast-syntax-highlighting 
-)
 
 # Load Oh My Zsh 
 [[ -f "${ZSH}/oh-my-zsh.sh" ]] && source "${ZSH}/oh-my-zsh.sh"
@@ -51,6 +44,7 @@ setopt PUSHD_SILENT       # Don't print the directory stack after pushd/popd com
 setopt HIST_VERIFY        # Show command from history before executing it upon expansion
 setopt HIST_SAVE_NO_DUPS  # Don't save duplicate commands across the entire history file
 setopt HIST_REDUCE_BLANKS # Remove superfluous blanks from history items before saving
+
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history" # Use XDG path for history file 
 
 # Completion Behavior
@@ -65,10 +59,7 @@ zstyle ':completion:*' use-cache on        # Enable caching for completion resul
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME}/zsh/compcache"  # Store cache per XDG spec 
 
 # PATH Configuration 
-export PATH="${PATH}:${HOME}/bin"
-
-# Purge duplicate PATH entries
-typeset -U PATH path 
+export PATH="${HOME}/bin:${PATH}"
 
 # Better completion for kill command
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
@@ -79,10 +70,6 @@ unalias run-help 2>/dev/null
 
 # Load Zsh's enhanced run-help system for better help display
 autoload -Uz run-help run-help-git
-
-# Source Shared Configurations 
-[[ -f "${XDG_CONFIG_HOME}/shell/.functions" ]] && source "${XDG_CONFIG_HOME}/shell/.functions"
-[[ -f "${XDG_CONFIG_HOME}/shell/.aliases" ]] && source "${XDG_CONFIG_HOME}/shell/.aliases"
 
 # Use vim style navigation keys in menu completion
 bindkey -M menuselect 'h' vi-backward-char
@@ -105,3 +92,10 @@ fi
 
 # Load iterm2 shell intergration
 [[ -e "${XDG_CONFIG_HOME}/iterm2/.iterm2_shell_integration.zsh" ]] && source "${XDG_CONFIG_HOME}/iterm2/.iterm2_shell_integration.zsh"
+
+# Source Shared Configurations 
+[[ -f "${XDG_CONFIG_HOME}/shell/.functions" ]] && source "${XDG_CONFIG_HOME}/shell/.functions"
+[[ -f "${XDG_CONFIG_HOME}/shell/.aliases" ]] && source "${XDG_CONFIG_HOME}/shell/.aliases"
+
+# Purge duplicate PATH entries
+typeset -U PATH path 
