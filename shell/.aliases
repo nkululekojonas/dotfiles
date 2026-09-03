@@ -45,7 +45,7 @@ alias vi='vim'
 
 # --- Miscellaneous ---
 
-alias reload='exec ${SHELL} -l'
+alias rl='exec ${SHELL} -l'
 alias paths='echo ${PATH//:/\\n}'
 
 # --- Networking Aliases ---
